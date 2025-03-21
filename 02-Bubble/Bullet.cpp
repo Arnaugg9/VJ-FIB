@@ -4,6 +4,8 @@
 #include "Bullet.h"
 #include "Game.h"
 
+//Prueba git
+
 enum anims {
 	MOVING_LEFT, MOVING_RIGHT
 };
