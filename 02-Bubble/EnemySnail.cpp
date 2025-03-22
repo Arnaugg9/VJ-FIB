@@ -6,9 +6,11 @@
 
 #define MIN_TIME_CHANGE_DIR 2000
 #define CHANGE_DIR_PROBABILITY 35
-/*
+
 enum anims {
-	MOVING_LEFT, MOVING_RIGHT, MOVING_UP, MOVING_DOWN
+	MOVING_LEFT, MOVING_LEFT_UPSIDE, MOVING_RIGHT, MOVING_RIGHT_UPSIDE, MOVING_UP_LEFT_SIDE, MOVING_UP_RIGHT_SIDE,
+	MOVING_DOWN_LEFT_SIDE, MOVING_DOWN_RIGHT_SIDE, HIDE_LEFT, HIDE_LEFT_UPSIDE, HIDE_RIGHT, HIDE_RIGHT_UPSIDE,
+	HIDE_UP_LEFT_SIDE, HIDE_UP_RIGHT_SIDE, HIDE_DOWN_LEFT_SIDE, HIDE_DOWN_RIGHT_SIDE
 };
 
 enum Directions
@@ -16,73 +18,159 @@ enum Directions
 	LEFT, RIGHT, UP, DOWN
 };
 
+enum Walls
+{
+	BOTTOM_WALL, TOP_WALL, LEFT_WALL, RIGHT_WALL
+};
+
 void EnemySnail::init(const glm::ivec2& enemyPos, ShaderProgram& shaderProgram)
 {
 	Enemy::init(enemyPos, shaderProgram);
 
 	//Caracteristiques comunes
-	sizeEnemy = glm::ivec2(25.f, 26.f);
+	sizeHorizontal = glm::ivec2(21, 16);
+	sizeVertical = glm::ivec2(16, 21);
+	sizeEnemy = sizeHorizontal;
+
+	sizeColliderHorizontal = glm::ivec2(17, 13);
+	sizeColliderVertical = glm::ivec2(13, 17);
 
 	damage = 1;
 	health = 1;
 
-	hasBullet = true;
+	timeChangeDirection = MIN_TIME_CHANGE_DIR;
 
 	posCollider = posEnemy;
 	posCollider.x += 2;
-	posCollider.y -= 4;
-	sizeCollider = glm::ivec2(20, 19);
+	posCollider.y -= 2;
+	sizeCollider = sizeColliderHorizontal;
 
-	timeChangeDirection = MIN_TIME_CHANGE_DIR;
 	int direction = LEFT;
 
-	sprite->setNumberAnimations(2);
+	sprite->setNumberAnimations(16);
 
+	//MOVE_LEFT
 	sprite->setAnimationSpeed(MOVING_LEFT, 4);
-	sprite->addKeyframe(MOVING_LEFT, glm::vec2(0.0f, 0.25f));
-	sprite->addKeyframe(MOVING_LEFT, glm::vec2(0.125f, 0.25f));
+	sprite->addKeyframe(MOVING_LEFT, glm::vec2(0.f, 0.f));
+	sprite->addKeyframe(MOVING_LEFT, glm::vec2(0.125f, 0.f));
 
+	//MOVE_LEFT_UPSIDE
+	sprite->setAnimationSpeed(MOVING_LEFT_UPSIDE, 4);
+	sprite->addKeyframe(MOVING_LEFT_UPSIDE, glm::vec2(0.5f, 0.f));
+	sprite->addKeyframe(MOVING_LEFT_UPSIDE, glm::vec2(0.625f, 0.f));
+
+	//MOVE_RIGHT
 	sprite->setAnimationSpeed(MOVING_RIGHT, 4);
-	sprite->addKeyframe(MOVING_RIGHT, glm::vec2(0.25f, 0.25f));
-	sprite->addKeyframe(MOVING_RIGHT, glm::vec2(0.375f, 0.25f));
+	sprite->addKeyframe(MOVING_RIGHT, glm::vec2(0.0f, 0.125f));
+	sprite->addKeyframe(MOVING_RIGHT, glm::vec2(0.125f, 0.125f));
 
-	sprite->changeAnimation(0);
+	//MOVE_RIGHT
+	sprite->setAnimationSpeed(MOVING_RIGHT_UPSIDE, 4);
+	sprite->addKeyframe(MOVING_RIGHT_UPSIDE, glm::vec2(0.5f, 0.125f));
+	sprite->addKeyframe(MOVING_RIGHT_UPSIDE, glm::vec2(0.625f, 0.125f));
+
+	//MOVE_UP_LEFT_SIDE
+	sprite->setAnimationSpeed(MOVING_UP_LEFT_SIDE, 4);
+	sprite->addKeyframe(MOVING_UP_LEFT_SIDE, glm::vec2(0.f, 0.25f));
+	sprite->addKeyframe(MOVING_UP_LEFT_SIDE, glm::vec2(0.125f, 0.25f));
+
+	//MOVE_UP_RIGHT_SIDE
+	sprite->setAnimationSpeed(MOVING_UP_RIGHT_SIDE, 4);
+	sprite->addKeyframe(MOVING_UP_RIGHT_SIDE, glm::vec2(0.5f, 0.25f));
+	sprite->addKeyframe(MOVING_UP_RIGHT_SIDE, glm::vec2(0.625f, 0.25f));
+
+	//MOVE_DOWN_LEFT_SIDE
+	sprite->setAnimationSpeed(MOVING_DOWN_LEFT_SIDE, 4);
+	sprite->addKeyframe(MOVING_DOWN_LEFT_SIDE, glm::vec2(0.0f, 0.375f));
+	sprite->addKeyframe(MOVING_DOWN_LEFT_SIDE, glm::vec2(0.125f, 0.375f));
+
+	//MOVE_DOWN_RIGHT_SIDE
+	sprite->setAnimationSpeed(MOVING_DOWN_RIGHT_SIDE, 4);
+	sprite->addKeyframe(MOVING_DOWN_RIGHT_SIDE, glm::vec2(0.5f, 0.375f));
+	sprite->addKeyframe(MOVING_DOWN_RIGHT_SIDE, glm::vec2(0.625f, 0.375f));
+
+
+	//HIDE_LEFT
+	sprite->setAnimationSpeed(HIDE_LEFT, 4);
+	sprite->addKeyframe(HIDE_LEFT, glm::vec2(0.25f, 0.f));
+	sprite->addKeyframe(HIDE_LEFT, glm::vec2(0.375f, 0.f));
+
+	//HIDE_LEFT_UPSIDE
+	sprite->setAnimationSpeed(HIDE_LEFT_UPSIDE, 4);
+	sprite->addKeyframe(HIDE_LEFT_UPSIDE, glm::vec2(0.75f, 0.f));
+	sprite->addKeyframe(HIDE_LEFT_UPSIDE, glm::vec2(0.875f, 0.f));
+
+	//HIDE_RIGHT
+	sprite->setAnimationSpeed(HIDE_RIGHT, 4);
+	sprite->addKeyframe(HIDE_RIGHT, glm::vec2(0.25f, 0.125f));
+	sprite->addKeyframe(HIDE_RIGHT, glm::vec2(0.375f, 0.125f));
+
+	//HIDE_RIGHT_UPSIDE
+	sprite->setAnimationSpeed(HIDE_RIGHT_UPSIDE, 4);
+	sprite->addKeyframe(HIDE_RIGHT_UPSIDE, glm::vec2(0.75f, 0.125f));
+	sprite->addKeyframe(HIDE_RIGHT_UPSIDE, glm::vec2(0.875f, 0.125f));
+
+	//HIDE_UP_LEFT_SIDE
+	sprite->setAnimationSpeed(HIDE_UP_LEFT_SIDE, 4);
+	sprite->addKeyframe(HIDE_UP_LEFT_SIDE, glm::vec2(0.25f, 0.25f));
+	sprite->addKeyframe(HIDE_UP_LEFT_SIDE, glm::vec2(0.375f, 0.25f));
+
+	//HIDE_UP_RIGHT_SIDE
+	sprite->setAnimationSpeed(HIDE_UP_LEFT_SIDE, 4);
+	sprite->addKeyframe(HIDE_UP_LEFT_SIDE, glm::vec2(0.75f, 0.25f));
+	sprite->addKeyframe(HIDE_UP_LEFT_SIDE, glm::vec2(0.875f, 0.25f));
+
+	//HIDE_DOWN_LEFT_SIDE
+	sprite->setAnimationSpeed(HIDE_DOWN_LEFT_SIDE, 4);
+	sprite->addKeyframe(HIDE_DOWN_LEFT_SIDE, glm::vec2(0.25f, 0.375f));
+	sprite->addKeyframe(HIDE_DOWN_LEFT_SIDE, glm::vec2(0.375f, 0.375f));
+
+	//HIDE_DOWN_RIGHT_SIDE
+	sprite->setAnimationSpeed(HIDE_DOWN_LEFT_SIDE, 4);
+	sprite->addKeyframe(HIDE_DOWN_LEFT_SIDE, glm::vec2(0.75f, 0.375f));
+	sprite->addKeyframe(HIDE_DOWN_LEFT_SIDE, glm::vec2(0.875f, 0.375f));
+
+	sprite->changeAnimation(MOVING_LEFT);
 	sprite->setPosition(posEnemy);
 
 	//Caracteristiques especifiques Snail
 	hiding = false;
-
+	movingVertical = false;
 }
 
-void EnemyElephant::update(int deltaTime)
+void EnemySnail::update(int deltaTime)
 {
 	Enemy::update(deltaTime);
 	timeChangeDirection -= deltaTime;
-	move();
-	jump();
+	if (!hiding) handleMovement(deltaTime);
+	handleHiding(deltaTime);
+
 	posCollider = posEnemy;
 	posCollider.x += 2;
 	posCollider.y -= 4;
-	handleShoot(deltaTime);
 }
 
-void EnemyElephant::render()
+void EnemySnail::render()
 {
 	Enemy::render();
-
-	if (bullet->isActive()) bullet->render();
 }
 
-Bullet* EnemyElephant::getBullet()
+void EnemySnail::handleMovement(int deltaTime)
 {
-	return bullet;
+	if (!movingVertical) moveH(deltaTime);
+	else moveV(deltaTime);
 }
 
-void EnemyElephant::move()
+void EnemySnail::moveV(int deltaTime)
+{
+
+}
+
+void EnemySnail::moveH(int deltaTime)
 {
 	//Si ha passat molt temps potser canvia de direccio
-	int num = rand() % 100;
 	if (timeChangeDirection <= 0) {
+		int num = rand() % 100;
 		//cout << "END_TIME" << endl;
 		if (num < CHANGE_DIR_PROBABILITY) direction = (direction == LEFT) ? RIGHT : LEFT;
 		timeChangeDirection = MIN_TIME_CHANGE_DIR;
@@ -92,7 +180,29 @@ void EnemyElephant::move()
 	posEnemy.x += direction == LEFT ? -moveSpeed : moveSpeed;
 	posCollider.x = posEnemy.x + 2;
 
-	//cout << "POSITION: " << posEnemy.x << ' ' << posEnemy.y << endl;
+	//No tenim terra a sota
+	if (!map->collisionMoveDown(posCollider, sizeCollider, &posEnemy.y)) {
+		direction = DOWN;
+		sizeEnemy = sizeVertical;
+		sizeCollider = sizeColliderVertical;
+		movingVertical = true;
+	}
+
+	//No choquem a l'esquerra
+	if (direction == LEFT && map->collisionMoveLeft(posCollider, sizeCollider)) {
+		//No tenim terra a sota
+		if (!map->collisionMoveDown(posCollider, sizeCollider, &posEnemy.y)) {
+			direction = DOWN;
+			sizeEnemy = sizeVertical;
+			sizeCollider = sizeColliderVertical;
+			movingVertical = true;
+		}
+	}
+	//Choquem a l'esquerra
+	else {
+	
+	}
+
 
 	if ((direction == LEFT && map->collisionMoveLeft(posCollider, sizeCollider)) ||
 		(direction == RIGHT && map->collisionMoveRight(posCollider, sizeCollider))) {
@@ -104,65 +214,20 @@ void EnemyElephant::move()
 		posCollider.x = posEnemy.x + 2;
 	}
 
-	int new_anim = direction == LEFT ? MOVING_LEFT : MOVING_RIGHT;
+	int new_anim;
+	if(!movingVertical) new_anim = direction == LEFT ? MOVING_LEFT : MOVING_RIGHT;
+	else new_anim = direction == UP ? MOVING_UP : MOVING_DOWN;
 
 	if (new_anim != sprite->animation())
 		sprite->changeAnimation(new_anim);
 }
 
-void EnemyElephant::jump()
+void EnemySnail::handleHiding(int deltaTime)
 {
-	if (bJumping) {
-		jumpAngle += JUMP_ANGLE_STEP;
-		if (jumpAngle >= 180) {
-			bJumping = false;
-			posEnemy.y = startY;
-		}
-		else {
-			// Usa el tipo de salto que se determinó al iniciar el salto
-			posEnemy.y = int(startY - jumpHeight * sin(3.14159f * jumpAngle / 180.f));
-
-			if (jumpAngle > 90) {
-				posCollider.y = posEnemy.y;
-				bJumping = !map->collisionMoveDown(posCollider, sizeCollider, &posEnemy.y);
-				posCollider.y = posEnemy.y;
-			}
-		}
-	}
-	else {
-		posEnemy.y += FALL_STEP;
-		posCollider.y = posEnemy.y;
-		map->collisionMoveDown(posCollider, sizeCollider, &posEnemy.y);
-		posCollider.y = posEnemy.y;
-	}
-
-	int num = rand() % 100;
-	if (num < JUMP_PROBABILITY && !bJumping) {
-		bJumping = true;
-		jumpAngle = 0;
-		startY = posEnemy.y;
-
-		// Determina una sola vez si será un HIGH_JUMP o un LOW_JUMP
-		jumpHeight = (rand() % 100 < HIGH_JUMP_PROBABILITY) ? HIGH_JUMP_HEIGHT : LOW_JUMP_HEIGHT;
-	}
 }
 
-void EnemyElephant::shoot() {
-	bullet->activate(posEnemy, direction);
-	timeToShoot = TIME_BETWEEN_SHOOT;
-}
-
-void EnemyElephant::handleShoot(int deltaTime)
+void EnemySnail::hide()
 {
-	if (bullet->isActive()) {
-		bullet->update(deltaTime);
-		//cout << "Bullet active on: " <<  bullet->getPosition().x << ' ' << bullet->getPosition().y << endl;
-	}
-	if (timeToShoot <= 0) {
-		shoot();
-	}
-	else {
-		timeToShoot -= deltaTime;
-	}
 }
-*/
+
+

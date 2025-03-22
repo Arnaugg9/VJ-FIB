@@ -13,12 +13,19 @@ public:
 	Bullet* getBullet();
 
 private:
-	void handleMovement();
-	void moveV();
-	void moveH();
+	void handleMovement(int deltaTime);
+	void moveV(int deltaTime);
+	void moveH(int deltaTime);
+	void handleHiding(int deltaTime);
 	void hide();
 
 	bool hiding;
+	bool movingVertical;
+
+	glm::ivec2 sizeHorizontal;
+	glm::ivec2 sizeVertical;
+	glm::ivec2 sizeColliderHorizontal;
+	glm::ivec2 sizeColliderVertical;
 
 };
 
