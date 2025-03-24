@@ -10,8 +10,6 @@ public:
 	void update(int deltaTime);
 	void render();
 
-	Bullet* getBullet();
-
 private:
 	void handleMovement(int deltaTime);
 	void moveV(int deltaTime);
