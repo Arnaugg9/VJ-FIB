@@ -3,6 +3,7 @@
 
 #include <glm/glm.hpp>
 #include "ShaderProgram.h"
+#include "Sprite.h"
 
 class MenuScene
 {
@@ -17,12 +18,16 @@ public:
 
 private:
     void initShaders();
-    void initFramebuffer();
 
 private:
     ShaderProgram texProgram;
     float currentTime;
     glm::mat4 projection;
+
+    Texture spritesheet;
+	Sprite* sprite;
+    float animationTime = 20;
+
     bool startGame;
     bool transitioning;
     float transitionAlpha;
