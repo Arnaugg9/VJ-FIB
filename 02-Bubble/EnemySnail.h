@@ -10,6 +10,8 @@ public:
 	void update(int deltaTime);
 	void render();
 
+	void getHurt(int damage);
+
 private:
 	void handleMovement(int deltaTime);
 	void moveV(int deltaTime);

@@ -29,7 +29,7 @@ public:
 
     bool getHasBullet();
 
-    void getHurt(int damage);
+    virtual void getHurt(int damage);
 
     int getDamage();
 

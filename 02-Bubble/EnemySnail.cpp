@@ -682,4 +682,8 @@ void EnemySnail::handleHideAnimation(int deltaTime)
 		sprite->changeAnimation(new_anim);
 }
 
+void EnemySnail::getHurt(int damage) {
+	if(!hiding) Enemy::getHurt(damage);
+}
+
 
