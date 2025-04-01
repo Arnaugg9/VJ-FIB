@@ -29,6 +29,7 @@ public:
 
 private:
 	void initShaders();
+	void handleCamera();
 	void updateEnemiesOnScreen(int deltaTime);
 	void updateEnemy(int deltaTime, Enemy* enemy);
 	void renderEnemiesOnScreen();
@@ -53,7 +54,7 @@ private:
 	//Llistat d'enemics
 	EnemyFlower *enemyFlower[5];
 	EnemyElephant* enemyElephant[7];
-	EnemySnail* enemySnail[1];
+	EnemySnail* enemySnail[9];
 
 };
 

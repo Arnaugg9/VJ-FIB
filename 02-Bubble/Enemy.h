@@ -37,6 +37,8 @@ public:
 
     virtual Bullet* getBullet();
 
+    bool isInvencible();
+
 protected:
     //Data enemy position / collider
     glm::ivec2 posEnemy, sizeEnemy;
@@ -45,6 +47,10 @@ protected:
     //Data enemy properties
     int damage;
     int health;
+
+    bool invencible;
+    int timeInvencibility;
+    int auxAnimationHurt;
 
     bool hasBullet;
 

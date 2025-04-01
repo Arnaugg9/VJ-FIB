@@ -19,6 +19,14 @@
 #define TOP_IN_BOTTOM_OF_MAP 60*16
 #define LEFT_VERTICAL_LEFT 0
 #define TOP_IN_TOP_OF_MAP 0
+#define LEFT_BOSSFIGHT 48*16
+
+#define SCREEN_MARGIN_UPDATE 90
+
+enum Directions
+{
+	LEFT, RIGHT, UP_LEFT, UP_RIGHT, DOWN_LEFT, DOWN_RIGHT, LEFT_UPSIDE, RIGHT_UPSIDE
+};
 
 GameScene::GameScene()
 {
@@ -108,14 +116,46 @@ void GameScene::init()
 
 		//Snails
 		enemySnail[0] = new EnemySnail();
-		enemySnail[0]->init(glm::ivec2(50 * 16, 39 * 16), texProgram);
+		enemySnail[0]->init(glm::ivec2(94 * 16, 35 * 16), texProgram, LEFT);
 		enemySnail[0]->setMap(map);
+
+		enemySnail[1] = new EnemySnail();
+		enemySnail[1]->init(glm::ivec2(104 * 16, 34 * 16), texProgram, LEFT);
+		enemySnail[1]->setMap(map);
+
+		enemySnail[2] = new EnemySnail();
+		enemySnail[2]->init(glm::ivec2(118 * 16, 35 * 16), texProgram, RIGHT);
+		enemySnail[2]->setMap(map);
+
+		enemySnail[3] = new EnemySnail();
+		enemySnail[3]->init(glm::ivec2(138 * 16, 49 * 16), texProgram, RIGHT);
+		enemySnail[3]->setMap(map);
+
+		enemySnail[4] = new EnemySnail();
+		enemySnail[4]->init(glm::ivec2(131 * 16, 49 * 16), texProgram, UP_LEFT);
+		enemySnail[4]->setMap(map);
+
+		enemySnail[5] = new EnemySnail();
+		enemySnail[5]->init(glm::ivec2(134 * 16, 59 * 16), texProgram, LEFT);
+		enemySnail[5]->setMap(map);
+
+		enemySnail[6] = new EnemySnail();
+		enemySnail[6]->init(glm::ivec2(139 * 16, 56 * 16), texProgram, DOWN_RIGHT);
+		enemySnail[6]->setMap(map);
+
+		enemySnail[7] = new EnemySnail();
+		enemySnail[7]->init(glm::ivec2(142 * 16, 64 * 16), texProgram, UP_RIGHT);
+		enemySnail[7]->setMap(map);
+
+		enemySnail[8] = new EnemySnail();
+		enemySnail[8]->init(glm::ivec2(137 * 16, 63 * 16), texProgram, RIGHT_UPSIDE);
+		enemySnail[8]->setMap(map);
 
 	updateScreen();
 }
 
 bool GameScene::checkIfOnScreen(glm::ivec2 pos, glm::ivec2 size) {
-	int margin = 80;
+	int margin = SCREEN_MARGIN_UPDATE;
 
 	int right = leftCam + 16 * 16;
 	int bottom = topCam + 15 * 16;
@@ -146,36 +186,42 @@ void GameScene::updateScreen() {
 }
 
 bool GameScene::collidesWithPlayer(glm::ivec2 posColliderEnemy, glm::ivec2 sizeColliderEnemy) {
-	if (!player->isInvencible()) {
-		glm::ivec2 posColliderPlayer = player->getColliderPosition();
-		glm::ivec2 sizeColliderPlayer = player->getColliderSize();
-		//printf("POS_COLIDER_PLAYER:%d %d\n", posColliderPlayer.x, posColliderPlayer.y);
-		//printf("POS_COLIDER_ENEMY:%d %d\n", posColliderEnemy.x, posColliderEnemy.y);
-		//printf("SIZE_COLIDER_PLAYER:%d %d\n", sizeColliderPlayer.x, sizeColliderPlayer.y);
-		//printf("SIZE_COLIDER_ENEMY:%d %d\n\n", sizeColliderEnemy.x, sizeColliderEnemy.y);
+	//Per gestionara atac, els colliders aquests seran diferents en gunció de si el player ataca (gestio es fa a player.cpp)
+	glm::ivec2 posColliderPlayer = player->getColliderPosition();
+	glm::ivec2 sizeColliderPlayer = player->getColliderSize();
+
+	//printf("POS_COLIDER_PLAYER:%d %d\n", posColliderPlayer.x, posColliderPlayer.y);
+	//printf("POS_COLIDER_ENEMY:%d %d\n", posColliderEnemy.x, posColliderEnemy.y);
+	//printf("SIZE_COLIDER_PLAYER:%d %d\n", sizeColliderPlayer.x, sizeColliderPlayer.y);
+	//printf("SIZE_COLIDER_ENEMY:%d %d\n\n", sizeColliderEnemy.x, sizeColliderEnemy.y);
 
 
-		bool overlapX = (posColliderEnemy.x < posColliderPlayer.x + sizeColliderPlayer.x) &&
-			(posColliderEnemy.x + sizeColliderEnemy.x > posColliderPlayer.x);
+	bool overlapX = (posColliderEnemy.x < posColliderPlayer.x + sizeColliderPlayer.x) &&
+		(posColliderEnemy.x + sizeColliderEnemy.x > posColliderPlayer.x);
 
-		bool overlapY = (posColliderEnemy.y < posColliderPlayer.y + sizeColliderPlayer.y) &&
-			(posColliderEnemy.y + sizeColliderEnemy.y > posColliderPlayer.y);
+	bool overlapY = (posColliderEnemy.y < posColliderPlayer.y + sizeColliderPlayer.y) &&
+		(posColliderEnemy.y + sizeColliderEnemy.y > posColliderPlayer.y);
 
-		return overlapX && overlapY;
-	}
-	return false;
+	return overlapX && overlapY;
 }
 
 void GameScene::updateEnemy(int deltaTime, Enemy* enemy) {
 	enemy->update(deltaTime);
-	if (collidesWithPlayer(enemy->getColliderPosition(), enemy->getColliderSize())) {
+	//if (enemy == enemyElephant[0])cout << "I'm elephant 0" << endl;
+	//static int a = 0;
+	if (player->getIsAttacking2() && !enemy->isInvencible() && collidesWithPlayer(enemy->getColliderPosition(), enemy->getColliderSize())) {
+		cout << "I got Damaged on iteration " << endl;
+		enemy->getHurt(player->getDamage());
+	}
+	else if (!enemy->isInvencible() && !player->isInvencible() && collidesWithPlayer(enemy->getColliderPosition(), enemy->getColliderSize())) {
 		player->getHurt(enemy->getDamage());
 	}
-	else if (enemy->getHasBullet() && collidesWithPlayer(enemy->getBullet()->getColliderPosition(), enemy->getBullet()->getColliderSize())) {
+	else if (enemy->getHasBullet() && !player->isInvencible() && collidesWithPlayer(enemy->getBullet()->getColliderPosition(), enemy->getBullet()->getColliderSize())) {
 		player->getHurt(enemy->getDamage());
 		enemy->getBullet()->deactivate();
 		//cout << "HURT BY BULLET" << endl;
 	}
+	//++a;
 }
 
 void GameScene::updateEnemiesOnScreen(int deltaTime) {
@@ -199,41 +245,7 @@ void GameScene::update(int deltaTime)
 	player->update(deltaTime);
 	updateEnemiesOnScreen(deltaTime);
 
-	glm::ivec2 posPlayer = player->getPosition();
-
-	if (!verticalScroll) {
-		leftCam = posPlayer.x - 8 * 16;
-		//Limit esquerra de Middle
-		if (topCam == TOP_HORIZONTAL_MIDDLE && leftCam < 32 * 16) leftCam = 32 * 16;
-		//controlen Segons la posicio del jugador si s'ha entrat en zona vertical
-		else if (posPlayer.x >= LEFT_VERTICAL_RIGHT - 12) {
-			verticalScroll = true;
-			leftCam = LEFT_VERTICAL_RIGHT;
-		}
-		else if (posPlayer.x <= LEFT_VERTICAL_LEFT + 16 * 16 - 12) {
-			verticalScroll = true;
-			leftCam = LEFT_VERTICAL_LEFT;
-		}
-		//Es bloqueja camara en limit zona horitzontal
-		else if (leftCam >= 112 * 16) leftCam = 112 * 16;
-		else if (leftCam <= 16 * 16) leftCam = 16 * 16;
-
-	}
-
-	else {
-		topCam = posPlayer.y - 7 * 16;
-		//Bloqueig camara al entrar en zona vertical
-		if (leftCam == LEFT_VERTICAL_RIGHT && topCam < TOP_HORIZONTAL_MIDDLE) topCam = TOP_HORIZONTAL_MIDDLE;
-		else if (topCam <= 0) topCam = 0;
-		if (posPlayer.x < LEFT_VERTICAL_RIGHT - 12 && posPlayer.x > LEFT_VERTICAL_LEFT + 16*16 - 12) {
-			verticalScroll = false;
-			leftCam = posPlayer.x;
-		}
-		if (topCam >= TOP_IN_BOTTOM_OF_MAP) topCam = TOP_IN_BOTTOM_OF_MAP;
-		else if (topCam <= TOP_IN_TOP_OF_MAP) topCam = TOP_IN_TOP_OF_MAP;
-	}
-
-	projection = glm::ortho(leftCam, leftCam + 16*16, topCam + 15*16, topCam);
+	if (!player->isOnBossfight()) handleCamera();
 	updateScreen();
 
 }
@@ -296,6 +308,53 @@ void GameScene::initShaders()
 	texProgram.bindFragmentOutput("outColor");
 	vShader.free();
 	fShader.free();
+}
+
+void GameScene::handleCamera()
+{
+	glm::ivec2 posPlayer = player->getPosition();
+
+	if (!verticalScroll) {
+		leftCam = posPlayer.x - 8 * 16;
+		//Limit esquerra de Middle
+		if (topCam == TOP_HORIZONTAL_MIDDLE && leftCam < 32 * 16) leftCam = 32 * 16;
+		//controlen Segons la posicio del jugador si s'ha entrat en zona vertical
+		else if (posPlayer.x >= LEFT_VERTICAL_RIGHT - 12) {
+			verticalScroll = true;
+			leftCam = LEFT_VERTICAL_RIGHT;
+		}
+		else if (posPlayer.x <= LEFT_VERTICAL_LEFT + 16 * 16 - 12) {
+			verticalScroll = true;
+			leftCam = LEFT_VERTICAL_LEFT;
+		}
+
+		else if (topCam == TOP_IN_TOP_OF_MAP && posPlayer.x > LEFT_BOSSFIGHT) {
+			leftCam = LEFT_BOSSFIGHT;
+			player->setOnBossfight(true);
+		}
+
+		else if (topCam == TOP_IN_TOP_OF_MAP && leftCam >= LEFT_BOSSFIGHT - 16 * 16) 
+			leftCam = LEFT_BOSSFIGHT - 16 * 16;
+
+		//Es bloqueja camara en limit zona horitzontal
+		else if (leftCam >= 112 * 16) leftCam = 112 * 16;
+		else if (leftCam <= 16 * 16) leftCam = 16 * 16;
+	}
+
+	else {
+		topCam = posPlayer.y - 7 * 16;
+		//Bloqueig camara al entrar en zona vertical
+		if (leftCam == LEFT_VERTICAL_RIGHT && topCam < TOP_HORIZONTAL_MIDDLE) topCam = TOP_HORIZONTAL_MIDDLE;
+		else if (topCam <= 0) topCam = 0;
+		if (posPlayer.x < LEFT_VERTICAL_RIGHT - 12 && posPlayer.x > LEFT_VERTICAL_LEFT + 16 * 16 - 12) {
+			verticalScroll = false;
+			leftCam = posPlayer.x;
+		}
+		if (topCam >= TOP_IN_BOTTOM_OF_MAP) topCam = TOP_IN_BOTTOM_OF_MAP;
+		else if (topCam <= TOP_IN_TOP_OF_MAP) topCam = TOP_IN_TOP_OF_MAP;
+	}
+
+	projection = glm::ortho(leftCam, leftCam + 16 * 16, topCam + 15 * 16, topCam);
 }
 
 

@@ -6,7 +6,7 @@
 class EnemySnail : public Enemy
 {
 public:
-	void init(const glm::ivec2& enemyPos, ShaderProgram& shaderProgram);
+	void init(const glm::ivec2& enemyPos, ShaderProgram& shaderProgram, int dir);
 	void update(int deltaTime);
 	void render();
 
@@ -16,9 +16,19 @@ private:
 	void moveH(int deltaTime);
 	void handleHiding(int deltaTime);
 	void hide();
+	void unhide();
+	void handleHideAnimation(int deltaTime);
+
+	void selectAnim();
 
 	bool hiding;
 	bool movingVertical;
+	
+	int hideTimeRemaining;	//Controla temps de hide
+	int timeToHide;			//Controla cada quant temps es comprova si s'amaga
+	int hideAnimationDuration;
+
+	int auxSlowSpeed;
 
 	glm::ivec2 sizeHorizontal;
 	glm::ivec2 sizeVertical;

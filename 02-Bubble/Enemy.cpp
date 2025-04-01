@@ -4,11 +4,18 @@
 #include "Enemy.h"
 #include "Game.h"
 
+#define TIME_INVENCIBILITY 1000
+#define FRAMES_AUX_HURT_ANIMATION 5
+
+
 void Enemy::init(const glm::ivec2& enemyPos, ShaderProgram& shaderProgram) {
     posEnemy = enemyPos;
 
     onScreen = false;
     hasBullet = false;
+
+    invencible = false;
+    auxAnimationHurt = FRAMES_AUX_HURT_ANIMATION;
 
     spritesheet.loadFromFile("images/enemiesSprites.png", TEXTURE_PIXEL_FORMAT_RGBA);
     spritesheet.setMinFilter(GL_NEAREST);
@@ -19,11 +26,27 @@ void Enemy::init(const glm::ivec2& enemyPos, ShaderProgram& shaderProgram) {
 
 void Enemy::update(int deltaTime) {
     sprite->update(deltaTime);
+    if (invencible) {
+        timeInvencibility -= deltaTime;
+        if (timeInvencibility < 0) {
+            invencible = false;
+            timeInvencibility = TIME_INVENCIBILITY;
+        }
+    }
     sprite->setPosition(posEnemy);
 }
 
 void Enemy::render() {
-    sprite->render();
+    if (invencible && timeInvencibility > 0) {
+        if (auxAnimationHurt <= FRAMES_AUX_HURT_ANIMATION / 2) sprite->render();
+        if (auxAnimationHurt <= 0) {
+            auxAnimationHurt = FRAMES_AUX_HURT_ANIMATION;
+        }
+        --auxAnimationHurt;
+    }
+    else {
+        sprite->render();
+    }
 }
 
 void Enemy::setPosition(const glm::vec2& pos) {
@@ -62,6 +85,7 @@ bool Enemy::getHasBullet()
 
 void Enemy::getHurt(int damage) {
     health -= damage;
+    invencible = true;
     if (health <= 0) delete this;
 }
 
@@ -77,6 +101,11 @@ void Enemy::setMap(TileMap* tileMap)
 Bullet* Enemy::getBullet()
 {
     return nullptr;
+}
+
+bool Enemy::isInvencible()
+{
+    return invencible;
 }
 
 
