@@ -3,13 +3,12 @@
 #include "MenuScene.h"
 #include "Game.h"
 
-MenuScene::MenuScene() : startGame(false), transitioning(false), transitionAlpha(0.0f)
+MenuScene::MenuScene() : startGame(false), transitioning(false), transitionAlpha(0.0f), initTransition(true)
 {
 }
 
 MenuScene::~MenuScene()
 {
-    glDeleteFramebuffers(1, &framebuffer);
     glDeleteTextures(1, &textureColorbuffer);
     glDeleteRenderbuffers(1, &rbo);
 }
@@ -44,11 +43,14 @@ void MenuScene::update(int deltaTime)
         if (sprite->animation() == 0) sprite->changeAnimation(1);
         else if (sprite->animation() == 1) sprite->changeAnimation(2);
         else if (sprite->animation() == 2) sprite->changeAnimation(3);
-        else if (sprite->animation() == 3) sprite->changeAnimation(4);
+        else if (sprite->animation() == 3) {
+            sprite->changeAnimation(4);
+			initTransition = false;
+        }
 		animationTime = 20;
 	}
 
-    if (startGame && !transitioning) {
+    if (startGame && !transitioning && !initTransition) {
         transitioning = true;
         transitionAlpha = 0.0f;
     }
@@ -78,7 +80,7 @@ void MenuScene::render()
 
 void MenuScene::handleKeyPress(int key)
 {
-    startGame = true;
+    if (!initTransition) startGame = true;
 }
 
 void MenuScene::initShaders()

@@ -31,8 +31,8 @@ private:
     bool startGame;
     bool transitioning;
     float transitionAlpha;
+	bool initTransition;
 
-    GLuint framebuffer;
     GLuint textureColorbuffer;
     GLuint rbo;
 };

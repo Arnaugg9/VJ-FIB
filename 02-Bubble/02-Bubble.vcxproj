@@ -12,39 +12,49 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimKeyframes.h" />
+    <ClInclude Include="Armor.h" />
+    <ClInclude Include="BigHeart.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyElephant.h" />
     <ClInclude Include="EnemyFlower.h" />
     <ClInclude Include="EnemySnail.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Gourd.h" />
+    <ClInclude Include="Helmet.h" />
     <ClInclude Include="MenuScene.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="GameScene.h" />
-    <ClInclude Include="PowerUp.h" />
+    <ClInclude Include="SmallHeart.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TileMap.h" />
+    <ClInclude Include="UI.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Armor.cpp" />
+    <ClCompile Include="BigHeart.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyElephant.cpp" />
     <ClCompile Include="EnemyFlower.cpp" />
     <ClCompile Include="EnemySnail.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Gourd.cpp" />
+    <ClCompile Include="Helmet.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuScene.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="GameScene.cpp" />
-    <ClCompile Include="PowerUp.cpp" />
+    <ClCompile Include="SmallHeart.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TileMap.cpp" />
+    <ClCompile Include="UI.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{5BE6CA2A-E5A8-40CC-9015-047CE0C78036}</ProjectGuid>

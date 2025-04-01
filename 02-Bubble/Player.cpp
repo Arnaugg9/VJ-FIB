@@ -7,6 +7,7 @@
 
 #define JUMP_ANGLE_STEP 4
 #define JUMP_HEIGHT 64
+#define EXTRA_JUMP_HEIGHT 16
 #define FALL_STEP 4
 
 #define MAX_INVENCIBILITY_TIME 1500
@@ -39,9 +40,12 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 	isCrouching = false;
 	previousJumpState = false;
 
+	defensiveHits = 0;
+	attackingHits = 0;
+
 	attackTime = 500;
 
-	health = 16;	//Al principi té 4 cors, cada unitat es 1 quart de cor
+	maxHealth = health = 12;	//Al principi té 4 cors, cada unitat es 1 terç de cor
 	invencibilityTime = 0;
 	auxAnimationHurt = FRAMES_AUX_HURT_ANIMATION;
 
@@ -157,6 +161,10 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 void Player::update(int deltaTime)
 {
 	sprite->update(deltaTime);
+	
+	int tileID = map->collisionSpecialTile(posPlayerCollision, playerColliderSize);
+	if (invencibilityTime <= 0 && timeHurtAnimation <= 0 && tileID == 43) this->getHurt(1);
+
 	handleInvincibility(deltaTime);
 	handleMovement();
 	if (timeHurtAnimation <= 0) handleJump();
@@ -257,7 +265,10 @@ void Player::handleJump()
 			posPlayer.y = startY;
 		}
 		else {
-			posPlayer.y = int(startY - JUMP_HEIGHT * sin(3.14159f * jumpAngle / 180.f));
+			int currentJumpHeight = JUMP_HEIGHT;
+			if (extraJump) currentJumpHeight += EXTRA_JUMP_HEIGHT;
+			posPlayer.y = int(startY - currentJumpHeight * sin(3.14159f * jumpAngle / 180.f));
+			cout << currentJumpHeight << endl;
 			if (jumpAngle > 90) {
 				posPlayerCollision.y = posPlayer.y;
 				bJumping = !map->collisionMoveDown(posPlayerCollision, playerColliderSize, &posPlayer.y);
@@ -271,6 +282,9 @@ void Player::handleJump()
 		isGrounded = map->collisionMoveDown(posPlayerCollision, playerColliderSize, &posPlayer.y);
 		posPlayerCollision.y = posPlayer.y;
 		if (isGrounded) {
+			int tileID = map->collisionSpecialTile(posPlayerCollision, playerColliderSize);
+			extraJump = (tileID == 47 || tileID == 48 || tileID == 57 || tileID == 58);
+
 			if (jumpKeyPressed && !previousJumpState) {
 				bJumping = true;
 				jumpAngle = 0;
@@ -298,12 +312,16 @@ void Player::handleAttack(int deltaTime)
 }
 
 void Player::getHurt(int damage) {
-	health -= damage;
+	if (defensiveHits > 0) {
+		--defensiveHits;
+		health -= damage / 2;
+	}  
+	else health -= damage;
 	invencibilityTime = MAX_INVENCIBILITY_TIME;
 	timeHurtAnimation = TIME_HURT_ANIMATION;
 	sprite->changeAnimation(dirPlayer == LEFT ? HURT_LEFT : HURT_RIGHT);
 	sprite->setPosition(glm::vec2(posPlayer.x, posPlayer.y - (timeHurtAnimation * 0.125)/2.f));
-	//cout << "HEALTH: " << health << endl;
+	cout << "HEALTH: " << health << endl;
 }
 
 void Player::handleInvincibility(int deltaTime) {
@@ -361,3 +379,56 @@ bool Player::isInvencible() {
 	return invencibilityTime > 0;
 }
 
+void Player::updateHealth(int health) {
+	if (health == -1) this->health = maxHealth;
+	else if (this->health + health <= maxHealth) this->health += health;
+	else this->health = maxHealth;
+}
+
+void Player::updateGourds() {
+	++gourds;
+	if (gourds == 9) {
+		maxHealth += 3;
+		health += 3;
+	}
+	else if (gourds == 12) {
+		maxHealth += 3;
+		health += 3;
+	}
+	else if (gourds == 16) {
+		maxHealth += 3;
+		health += 3;
+	}
+	else if (gourds == 22) {
+		maxHealth += 3;
+		health += 3;
+	}
+	else if (gourds == 30) {
+		maxHealth += 3;
+		health += 3;
+	}
+	else if (gourds == 42) {
+		maxHealth += 3;
+		health += 3;
+	}
+	else if (gourds == 62) {
+		maxHealth += 3;
+		health += 3;
+	}
+	else if (gourds == 99) {
+		maxHealth += 3;
+		health += 3;
+	}
+}
+
+void Player::setInvencible() {
+	invencibilityTime = 5000;
+}
+
+void Player::setDefensiveHits(int hits) {
+	defensiveHits = hits;
+}
+
+void Player::setAttackingHits(int hits) {
+	attackingHits = hits;
+}

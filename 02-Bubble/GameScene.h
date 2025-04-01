@@ -9,6 +9,12 @@
 #include "EnemyFlower.h"
 #include "EnemyElephant.h"
 #include "EnemySnail.h"
+#include "SmallHeart.h"
+#include "BigHeart.h"
+#include "Gourd.h"
+#include "Armor.h"
+#include "Helmet.h"
+#include "UI.h"
 
 
 // Scene contains all the entities of our game.
@@ -25,13 +31,17 @@ public:
 	void update(int deltaTime);
 	void render();
 
+	void handleKeyPress(int key);
+
 	//Player* getPlayer() { return player; };
 
 private:
 	void initShaders();
 	void updateEnemiesOnScreen(int deltaTime);
+	void updateItems(int deltaTime);
 	void updateEnemy(int deltaTime, Enemy* enemy);
 	void renderEnemiesOnScreen();
+	void renderItems();
 	bool checkIfOnScreen(glm::ivec2 pos, glm::ivec2 size);
 	bool collidesWithPlayer(glm::ivec2 posColliderEnemy, glm::ivec2 sizeColliderEnemy);
 	void updateScreen();
@@ -48,7 +58,16 @@ private:
 	float leftCam;
 	float topCam;
 	bool verticalScroll;
-	
+	bool spear;
+
+	UI* ui;
+
+	//Llistat d'objectes
+	SmallHeart* smallHeart;
+	BigHeart* bigHeart;
+	Gourd* gourd[2];
+	Armor* armor;
+	Helmet* helmet;
 
 	//Llistat d'enemics
 	EnemyFlower *enemyFlower[5];

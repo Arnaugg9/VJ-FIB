@@ -27,6 +27,11 @@ public:
 
 	void getHurt(int damage);
 	bool isInvencible();
+	void updateHealth(int health);
+	void updateGourds();
+	void setInvencible();
+	void setDefensiveHits(int hits);
+	void setAttackingHits(int hits);
 	
 private:
 	//Controladors de moviment
@@ -56,17 +61,22 @@ private:
 
 	//Caracterisitiques personatge
 	int health;
+	int maxHealth;
+	int gourds;
 	int invencibilityTime; //Controla la inmortalitat del personatge --> Està en ms (per evitar problemes de diferents fps...)
 	int auxAnimationHurt;
 	int timeHurtAnimation;
+
+	bool extraJump;
+
+	int defensiveHits;
+	int attackingHits;
 
 	void handleMovement();
 	void handleIdle();
 	void handleJump();
 	void handleInvincibility(int deltaTime);
 	void handleAttack(int deltaTime);
-
-
 };
 
 

@@ -37,7 +37,7 @@ void EnemySnail::init(const glm::ivec2& enemyPos, ShaderProgram& shaderProgram)
 	sizeColliderVertical = glm::ivec2(14, 17);
 	sizeCollider = sizeColliderHorizontal;
 
-	damage = 1;
+	damage = 2;
 	health = 1;
 
 	direction = LEFT;
