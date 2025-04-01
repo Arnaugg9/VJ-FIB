@@ -3,16 +3,25 @@
 #include "Game.h"
 
 
+enum Escenas
+{
+	MENU_SCENE, GAME_SCENE
+};
+
 void Game::init()
 {
 	bPlay = true;
 	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
-	scene.init();
+	gameScene.init();
+	menuScene.init();
+
+	currentScene = MENU_SCENE;
 }
 
 bool Game::update(int deltaTime)
 {
-	scene.update(deltaTime);
+	if (currentScene == MENU_SCENE) menuScene.update(deltaTime);
+	else if (currentScene == GAME_SCENE) gameScene.update(deltaTime);
 
 	return bPlay;
 }
@@ -20,7 +29,12 @@ bool Game::update(int deltaTime)
 void Game::render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	scene.render();
+	if (currentScene == MENU_SCENE)menuScene.render();
+	else if (currentScene == GAME_SCENE) gameScene.render();
+}
+
+void Game::changeScene(int scene) {
+	currentScene = scene;
 }
 
 void Game::keyPressed(int key)
@@ -33,6 +47,9 @@ void Game::keyPressed(int key)
 		scene.getPlayer()->test();
 	*/
 
+	if (currentScene == MENU_SCENE) menuScene.handleKeyPress(key);
+
+	if (currentScene == GAME_SCENE) gameScene.handleKeyPress(key);
 
 	keys[key] = true;
 }

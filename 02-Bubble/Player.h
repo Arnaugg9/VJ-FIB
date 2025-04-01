@@ -20,6 +20,7 @@ public:
 	
 	void setTileMap(TileMap *tileMap);
 	void setPosition(const glm::vec2 &pos);
+	void setOnBossfight(bool value);
 
 	glm::ivec2 getPosition();
 	glm::ivec2 getColliderPosition();
@@ -27,6 +28,16 @@ public:
 
 	void getHurt(int damage);
 	bool isInvencible();
+	bool isOnBossfight();
+
+	bool getIsAttacking2();
+	int getDamage();
+	
+	void updateHealth(int health);
+	void updateGourds();
+	void setInvencible();
+	void setDefensiveHits(int hits);
+	void setAttackingHits(int hits);
 	
 private:
 	//Controladors de moviment
@@ -37,34 +48,48 @@ private:
 	//Triggers per comprovacions
 	bool isGrounded;
 	bool isAttacking;
+	bool isAttacking2;			//Es un apaño per controlar el atac
 	bool isCovering;
 	bool isCrouching;
+	bool onBossfight;
 
 	bool previousJumpState;		//Control de que només conti apretar la tecla i no mantenir apretat
 	bool previousAttackState;
 
 	//Temps que dura l'animacio d'atac (en ms i no frames per evitar problemes de fps)
 	int attackTime;
+	int playerDamage;
 
 	//Posicions i colisions
-	glm::ivec2 tileMapDispl, posPlayer;
+	glm::ivec2 tileMapDispl, posPlayer, sizePlayer;
 	glm::ivec2 posPlayerCollision;
 	int jumpAngle, startY;
 	Texture spritesheet;
 	Sprite *sprite;
 	TileMap *map;
 
+	Sprite *swordSprite;
+
 	//Caracterisitiques personatge
 	int health;
+	int maxHealth;
+	int gourds;
 	int invencibilityTime; //Controla la inmortalitat del personatge --> Està en ms (per evitar problemes de diferents fps...)
 	int auxAnimationHurt;
 	int timeHurtAnimation;
+
+	bool extraJump;
+
+	int defensiveHits;
+	int attackingHits;
 
 	void handleMovement();
 	void handleIdle();
 	void handleJump();
 	void handleInvincibility(int deltaTime);
 	void handleAttack(int deltaTime);
+
+	void handleSwordSprite();
 
 
 };

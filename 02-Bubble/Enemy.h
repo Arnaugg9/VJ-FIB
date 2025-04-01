@@ -29,13 +29,15 @@ public:
 
     bool getHasBullet();
 
-    void getHurt(int damage);
+    virtual void getHurt(int damage);
 
     int getDamage();
 
     void setMap(TileMap* tileMap);
 
     virtual Bullet* getBullet();
+
+    bool isInvencible();
 
 protected:
     //Data enemy position / collider
@@ -45,6 +47,10 @@ protected:
     //Data enemy properties
     int damage;
     int health;
+
+    bool invencible;
+    int timeInvencibility;
+    int auxAnimationHurt;
 
     bool hasBullet;
 
