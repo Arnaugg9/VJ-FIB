@@ -30,7 +30,7 @@ void EnemyFlower::init(const glm::ivec2& enemyPos, ShaderProgram& shaderProgram)
 	posBullet = initialBulletPos;
 
 	//La flor no té colisions així que per "aprofitar codi" utilitzarem el collider per la bullet (enlloc de fer la bala una entitat separada)
-	damage = 2;
+	damage = 1;
 
 	posCollider = glm::ivec2(0, 0);			//Quan no esta disparant no volem "colisionar" --> Aprofitem les colisions de Enemy
 	sizeCollider = glm::ivec2(6, 11);

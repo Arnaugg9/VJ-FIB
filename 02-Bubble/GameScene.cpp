@@ -65,6 +65,11 @@ void GameScene::init()
 	//init time system
 	currentTime = 0.0f;
 
+	spear = true;
+
+	//Init UI
+	ui = new UI();
+	ui->init(glm::vec2(32 * 16, 30 * 16), texProgram);
 
 	//Init enemics
 		//Flowers
@@ -150,6 +155,41 @@ void GameScene::init()
 		enemySnail[8] = new EnemySnail();
 		enemySnail[8]->init(glm::ivec2(137 * 16, 63 * 16), texProgram, RIGHT_UPSIDE);
 		enemySnail[8]->setMap(map);
+
+		//Small heart
+		smallHeart = new SmallHeart();
+		smallHeart->init(glm::vec2(37 * 16, 41 * 16), texProgram);
+		//smallHeart->setPosition(glm::vec2(37 * 16, 41 * 16));
+		smallHeart->setTileMap(map);
+
+		//Big heart
+		bigHeart = new BigHeart();
+		bigHeart->init(glm::vec2(37 * 16, 41 * 16), texProgram);
+		//bigHeart->setPosition(glm::vec2(37 * 16, 41 * 16));
+		bigHeart->setTileMap(map);
+
+		//Gourds
+		gourd[0] = new Gourd();
+		gourd[0]->init(glm::vec2(37 * 16, 41 * 16), texProgram);
+		//gourd[0]->setPosition(glm::vec2(37 * 16, 41 * 16));
+		gourd[0]->setTileMap(map);
+
+		gourd[1] = new Gourd();
+		gourd[1]->init(glm::vec2(38 * 16, 41 * 16), texProgram);
+		//gourd[1]->setPosition(glm::vec2(38 * 16, 41 * 16));
+		gourd[1]->setTileMap(map);
+
+		//Armor
+		armor = new Armor();
+		armor->init(glm::vec2(37 * 16, 41 * 16), texProgram);
+		//armor->setPosition(glm::vec2(37 * 16, 41 * 16));
+		armor->setTileMap(map);
+
+		//Helmet
+		helmet = new Helmet();
+		helmet->init(glm::vec2(37 * 16, 41 * 16), texProgram);
+		//helmet->setPosition(glm::vec2(37 * 16, 41 * 16));
+		helmet->setTileMap(map);
 
 	updateScreen();
 }
@@ -239,14 +279,46 @@ void GameScene::updateEnemiesOnScreen(int deltaTime) {
 	}
 }
 
+void GameScene::updateItems(int deltaTime) {
+	smallHeart->update(deltaTime);
+	bigHeart->update(deltaTime);
+	if (collidesWithPlayer(smallHeart->getColliderPosition(), smallHeart->getColliderSize())) {
+		player->updateHealth(3);
+		smallHeart->setPosition(glm::vec2(-100, -100));
+	}
+	if (collidesWithPlayer(bigHeart->getColliderPosition(), bigHeart->getColliderSize())) {
+		player->updateHealth(-1);
+		bigHeart->setPosition(glm::vec2(-100, -100));
+	}
+	for (Gourd* g : gourd) {
+		g->update(deltaTime);
+		if (collidesWithPlayer(g->getColliderPosition(), g->getColliderSize())) {
+			player->updateGourds();
+			g->setPosition(glm::vec2(-100, -100));
+		}
+	}
+	if (collidesWithPlayer(armor->getColliderPosition(), armor->getColliderSize())) {
+		player->setInvencible();
+		armor->setPosition(glm::vec2(-100, -100));
+	}
+	if (collidesWithPlayer(helmet->getColliderPosition(), helmet->getColliderSize())) {
+		player->setDefensiveHits(4);
+		helmet->setPosition(glm::vec2(-100, -100));
+	}
+}
+
 void GameScene::update(int deltaTime)
 {
 	currentTime += deltaTime;
 	player->update(deltaTime);
 	updateEnemiesOnScreen(deltaTime);
+	updateItems(deltaTime);
 
 	if (!player->isOnBossfight()) handleCamera();
 	updateScreen();
+
+	glm::vec2 cameraPos = glm::vec2(leftCam, topCam);
+	ui->update(deltaTime, cameraPos, spear);
 
 }
 
@@ -264,6 +336,14 @@ void GameScene::renderEnemiesOnScreen() {
 	}
 }
 
+void GameScene::renderItems() {
+	smallHeart->render();
+	bigHeart->render();
+	for (Gourd* g : gourd) g->render();
+	armor->render();
+	helmet->render();
+}
+
 void GameScene::render()
 {
 	glm::mat4 modelview;
@@ -277,7 +357,14 @@ void GameScene::render()
 	background->render();
 	map->render();
 	renderEnemiesOnScreen();
+	renderItems();
 	player->render();
+	ui->render();
+}
+
+void GameScene::handleKeyPress(int key)
+{
+	if (key == GLFW_KEY_C) spear = !spear;
 }
 
 void GameScene::initShaders()

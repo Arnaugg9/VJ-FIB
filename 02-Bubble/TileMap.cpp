@@ -223,3 +223,23 @@ bool TileMap::collisionMoveUp(const glm::ivec2& pos, const glm::ivec2& size, int
 
 	return false;
 }
+
+int TileMap::collisionSpecialTile(const glm::ivec2& pos, const glm::ivec2& size) const
+{
+	int x0, x1, y;
+
+	x0 = pos.x / tileSize;
+	x1 = (pos.x + size.x - 1) / tileSize;
+	y = (pos.y + size.y) / tileSize;
+
+	if (x0 < 0 || x1 >= mapSize.x || y < 0 || y >= mapSize.y)
+		return 0;
+
+	for (int x = x0; x <= x1; x++)
+	{
+		int tile = map[y * mapSize.x + x];
+		if (tile == 43 || tile == 47 || tile == 48 || tile == 57 || tile == 58) return tile;
+	}
+
+	return 0;
+}

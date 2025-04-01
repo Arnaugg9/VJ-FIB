@@ -3,7 +3,7 @@
 #include "Game.h"
 
 
-enum MyEnum
+enum Escenas
 {
 	MENU_SCENE, GAME_SCENE
 };
@@ -49,6 +49,7 @@ void Game::keyPressed(int key)
 
 	if (currentScene == MENU_SCENE) menuScene.handleKeyPress(key);
 
+	if (currentScene == GAME_SCENE) gameScene.handleKeyPress(key);
 
 	keys[key] = true;
 }
