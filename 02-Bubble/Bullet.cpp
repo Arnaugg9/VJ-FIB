@@ -3,7 +3,7 @@
 #include <GL/glew.h>
 #include "Bullet.h"
 #include "Game.h"
-
+//hola
 enum anims {
 	MOVING_LEFT, MOVING_RIGHT
 };
