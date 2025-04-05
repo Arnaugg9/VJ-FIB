@@ -16,6 +16,10 @@ public:
     void render();
     void setTileMap(TileMap* tileMap);
     void setPosition(const glm::vec2& pos);
+	void setPlayerHealth(int health);
+	void setPlayerMaxHealth(int health);
+	void setPlayerDefensiveHits(int hits);
+    void setPlayerAttackingHits(int hits);
 
 private:
     glm::ivec2 posUI;
@@ -24,6 +28,13 @@ private:
     Sprite* spear;
 	Sprite* fire;
 	bool spearActive;
+	int playerHealth;
+	int playerMaxHealth;
+	int playerDefensiveHits;
+	int playerAttackingHits;
+	int num_hearts;
+	int full_hearts;
+	int last_heart;
     Sprite* hearts[12];
     Sprite* helmet;
     Sprite* rock;
