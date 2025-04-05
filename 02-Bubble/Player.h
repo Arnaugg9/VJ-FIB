@@ -38,6 +38,10 @@ public:
 	void setInvencible();
 	void setDefensiveHits(int hits);
 	void setAttackingHits(int hits);
+	int getDefensiveHits() { return defensiveHits; }
+	int getAttackingHits() { return attackingHits; }
+	int getHealth() { return health; }
+	int getMaxHealth() { return maxHealth; }
 	
 private:
 	//Controladors de moviment

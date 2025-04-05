@@ -41,6 +41,7 @@ private:
 	void updateEnemiesOnScreen(int deltaTime);
 	void updateItems(int deltaTime);
 	void updateEnemy(int deltaTime, Enemy* enemy);
+	void updateUI(int deltaTime);
 	void renderEnemiesOnScreen();
 	void renderItems();
 	bool checkIfOnScreen(glm::ivec2 pos, glm::ivec2 size);

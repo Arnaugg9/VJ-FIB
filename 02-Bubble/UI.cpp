@@ -33,6 +33,8 @@ void UI::init(const glm::ivec2& uiPos, ShaderProgram& shaderProgram)
     fire->changeAnimation(0);
     fire->setPosition(uiPos);
 
+    num_hearts = 4;
+
 	for (int i = 0; i < 12; ++i) {
 		hearts[i] = Sprite::createSprite(glm::ivec2(16, 16), glm::vec2(0.33, 0.33), &spritesheet, &shaderProgram);
 		hearts[i]->setNumberAnimations(4);
@@ -55,6 +57,10 @@ void UI::init(const glm::ivec2& uiPos, ShaderProgram& shaderProgram)
 
 void UI::update(int deltaTime, const glm::vec2& cameraPos, bool spear)
 {
+	num_hearts = playerMaxHealth / 3;
+	full_hearts = playerHealth / 3;
+	last_heart = playerHealth % 3;
+
     if (spear) {
 		spearActive = true;
         this->spear->setPosition(glm::vec2(cameraPos.x + 10, cameraPos.y + 10));
@@ -65,9 +71,18 @@ void UI::update(int deltaTime, const glm::vec2& cameraPos, bool spear)
         fire->setPosition(glm::vec2(cameraPos.x + 10, cameraPos.y + 10));
         fire->update(deltaTime);
     }
-	for (int i = 0; i < 12; ++i) {
+	for (int i = 0; i < num_hearts; ++i) {
 		if (i < 6) hearts[i]->setPosition(glm::vec2(cameraPos.x + 10, cameraPos.y + 21 + 8 * (i + 1)));
 		else hearts[i]->setPosition(glm::vec2(cameraPos.x + 10 + 8, cameraPos.y + 21 + 8 * (i - 6 + 1)));
+
+		if (i < full_hearts) hearts[i]->changeAnimation(0);
+		else if (i == full_hearts) {
+			if (last_heart == 1) hearts[i]->changeAnimation(2);
+			else if (last_heart == 2) hearts[i]->changeAnimation(1);
+			else hearts[i]->changeAnimation(3);
+		}
+		else hearts[i]->changeAnimation(3);
+
 		hearts[i]->update(deltaTime);
 	}
 }
@@ -76,7 +91,7 @@ void UI::render()
 {
     if (spearActive) spear->render();
 	else fire->render();
-	for (int i = 0; i < 12; ++i) {
+	for (int i = 0; i < num_hearts; ++i) {
 		hearts[i]->render();
 	}
 }
@@ -91,4 +106,24 @@ void UI::setPosition(const glm::vec2& pos)
     posUI = pos;
     if (spearActive) spear->setPosition(posUI);
 	else fire->setPosition(posUI);
+}
+
+void UI::setPlayerHealth(int health)
+{
+	playerHealth = health;
+}
+
+void UI::setPlayerMaxHealth(int health)
+{
+	playerMaxHealth = health;
+}
+
+void UI::setPlayerDefensiveHits(int hits)
+{
+	playerDefensiveHits = hits;
+}
+
+void UI::setPlayerAttackingHits(int hits)
+{
+	playerAttackingHits = hits;
 }

@@ -313,10 +313,14 @@ void Player::handleJump()
 			int currentJumpHeight = JUMP_HEIGHT;
 			if (extraJump) currentJumpHeight += EXTRA_JUMP_HEIGHT;
 			posPlayer.y = int(startY - currentJumpHeight * sin(3.14159f * jumpAngle / 180.f));
-			cout << currentJumpHeight << endl;
 			if (jumpAngle > 90) {
 				posPlayerCollision.y = posPlayer.y;
 				bJumping = !map->collisionMoveDown(posPlayerCollision, playerColliderSize, &posPlayer.y);
+				posPlayerCollision.y = posPlayer.y;
+			}
+			else {
+				posPlayerCollision.y = posPlayer.y;
+				bJumping = !map->collisionMoveUp(posPlayerCollision, playerColliderSize, &posPlayer.y);
 				posPlayerCollision.y = posPlayer.y;
 			}
 		}

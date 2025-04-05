@@ -307,12 +307,22 @@ void GameScene::updateItems(int deltaTime) {
 	}
 }
 
+void GameScene::updateUI(int deltaTime) {
+	ui->update(deltaTime, glm::vec2(leftCam, topCam), spear);
+	//if (player->isOnBossfight()) ui->setBossfight();
+	ui->setPlayerHealth(player->getHealth());
+	ui->setPlayerMaxHealth(player->getMaxHealth());
+	ui->setPlayerDefensiveHits(player->getDefensiveHits());
+	ui->setPlayerAttackingHits(player->getAttackingHits());
+}
+
 void GameScene::update(int deltaTime)
 {
 	currentTime += deltaTime;
 	player->update(deltaTime);
 	updateEnemiesOnScreen(deltaTime);
 	updateItems(deltaTime);
+	updateUI(deltaTime);
 
 	if (!player->isOnBossfight()) handleCamera();
 	updateScreen();
