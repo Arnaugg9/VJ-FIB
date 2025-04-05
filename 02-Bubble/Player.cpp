@@ -10,9 +10,14 @@
 #define EXTRA_JUMP_HEIGHT 16
 #define FALL_STEP 4
 
+#define ATTACK_TIME 400
+
+#define INITIAL_MAX_HEALTH 12
+#define INITIAL_LIVES 1
+
 #define MAX_INVENCIBILITY_TIME 1500
 #define FRAMES_AUX_HURT_ANIMATION 5
-#define TIME_HURT_ANIMATION 400
+#define TIME_HURT_ANIMATION 500
 #define PLAYER_DAMAGE 1;
 
 #define LEFT_BOSSFIGHT 48*16
@@ -54,11 +59,11 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 	defensiveHits = 0;
 	attackingHits = 0;
 
-	attackTime = 500;
-	attackTime = 500; 
+	attackTime = ATTACK_TIME;
 	playerDamage = PLAYER_DAMAGE;
 
-	maxHealth = health = 12;	//Al principi té 4 cors, cada unitat es 1 terç de cor
+	maxHealth = health = INITIAL_MAX_HEALTH;	//Al principi té 4 cors, cada unitat es 1 terç de cor
+	lives = INITIAL_LIVES;
 	invencibilityTime = 0;
 	auxAnimationHurt = FRAMES_AUX_HURT_ANIMATION;
 
@@ -174,7 +179,7 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 	swordSprite->setNumberAnimations(2);
 
 		//SWORD_LEFT
-		swordSprite->setAnimationSpeed(SWORD_LEFT, 13);
+		swordSprite->setAnimationSpeed(SWORD_LEFT, 18);
 		swordSprite->addKeyframe(SWORD_LEFT, glm::vec2(0.f, 0.6875f));
 		swordSprite->addKeyframe(SWORD_LEFT, glm::vec2(0.25f, 0.6875f));
 		swordSprite->addKeyframe(SWORD_LEFT, glm::vec2(0.5f, 0.6875f));
@@ -184,7 +189,7 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 
 
 		//SWORD_RIGHT
-		swordSprite->setAnimationSpeed(SWORD_RIGHT, 13);
+		swordSprite->setAnimationSpeed(SWORD_RIGHT, 18);
 		swordSprite->addKeyframe(SWORD_RIGHT, glm::vec2(0.f, 0.625f));
 		swordSprite->addKeyframe(SWORD_RIGHT, glm::vec2(0.25f, 0.625f));
 		swordSprite->addKeyframe(SWORD_RIGHT, glm::vec2(0.5f, 0.625f));
@@ -313,7 +318,7 @@ void Player::handleJump()
 			int currentJumpHeight = JUMP_HEIGHT;
 			if (extraJump) currentJumpHeight += EXTRA_JUMP_HEIGHT;
 			posPlayer.y = int(startY - currentJumpHeight * sin(3.14159f * jumpAngle / 180.f));
-			cout << currentJumpHeight << endl;
+			//cout << currentJumpHeight << endl;
 			if (jumpAngle > 90) {
 				posPlayerCollision.y = posPlayer.y;
 				bJumping = !map->collisionMoveDown(posPlayerCollision, playerColliderSize, &posPlayer.y);
@@ -347,7 +352,8 @@ void Player::handleAttack(int deltaTime)
 		attackTime -= deltaTime;
 		if (attackTime <= 0) {
 			isAttacking = false;
-			attackTime = 500;
+			attackTime = ATTACK_TIME;
+			swordSprite->changeAnimation(swordSprite->animation());
 		}
 	}
 	else if (attackKeyPressed && !previousAttackState && (isGrounded || (!isCovering && !isCrouching))) {
@@ -471,6 +477,16 @@ glm::ivec2 Player::getColliderSize() {
 	return playerColliderSize;
 }
 
+glm::ivec2 Player::getColliderPositionNeutral()
+{
+	return posPlayerCollision;
+}
+
+glm::ivec2 Player::getColliderSizeNeutral()
+{
+	return playerColliderSize;
+}
+
 bool Player::isInvencible() {
 	return invencibilityTime > 0;
 }
@@ -527,6 +543,11 @@ void Player::setDefensiveHits(int hits) {
 
 void Player::setAttackingHits(int hits) {
 	attackingHits = hits;
+}
+void Player::healCheat()
+{
+	health = maxHealth;
+	lives = 2;
 }
 bool Player::isOnBossfight()
 {

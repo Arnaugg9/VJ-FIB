@@ -13,6 +13,9 @@ Gourd::~Gourd()
 
 void Gourd::init(const glm::ivec2& gourdPos, ShaderProgram& shaderProgram)
 {
+    active = true;
+    onScreen = false;
+
     gourdColliderSize = glm::ivec2(8, 15);
 
     spritesheet.loadFromFile("images/item_spritesheet.png", TEXTURE_PIXEL_FORMAT_RGBA);
@@ -25,11 +28,14 @@ void Gourd::init(const glm::ivec2& gourdPos, ShaderProgram& shaderProgram)
     sprite->addKeyframe(0, glm::vec2(0.66f, 0.0f));
     sprite->changeAnimation(0);
 
-    //sprite->setPosition(gourdPos);
+    setPosition(gourdPos);
 }
 
 void Gourd::update(int deltaTime)
 {
+    setPosition(glm::ivec2(posGourd.x, posGourd.y + 1));
+    map->collisionMoveDown(posGourdCollision, gourdColliderSize, &posGourd.y);
+    setPosition(posGourd);
     sprite->update(deltaTime);
 }
 
@@ -63,4 +69,14 @@ glm::ivec2 Gourd::getColliderPosition()
 glm::ivec2 Gourd::getColliderSize()
 {
     return gourdColliderSize;
+}
+
+bool Gourd::isOnScreen()
+{
+    return active && onScreen;
+}
+
+void Gourd::setOnScreen(bool value)
+{
+    onScreen = value;
 }

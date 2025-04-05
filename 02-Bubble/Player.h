@@ -25,6 +25,8 @@ public:
 	glm::ivec2 getPosition();
 	glm::ivec2 getColliderPosition();
 	glm::ivec2 getColliderSize();
+	glm::ivec2 getColliderPositionNeutral();
+	glm::ivec2 getColliderSizeNeutral();
 
 	void getHurt(int damage);
 	bool isInvencible();
@@ -39,6 +41,7 @@ public:
 	void setDefensiveHits(int hits);
 	void setAttackingHits(int hits);
 	
+	void healCheat();
 private:
 	//Controladors de moviment
 	int dirPlayer;
@@ -73,6 +76,7 @@ private:
 	//Caracterisitiques personatge
 	int health;
 	int maxHealth;
+	int lives;
 	int gourds;
 	int invencibilityTime; //Controla la inmortalitat del personatge --> Està en ms (per evitar problemes de diferents fps...)
 	int auxAnimationHurt;
@@ -90,7 +94,6 @@ private:
 	void handleAttack(int deltaTime);
 
 	void handleSwordSprite();
-
 
 };
 

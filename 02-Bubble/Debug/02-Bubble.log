@@ -1,2 +1,11 @@
-﻿  EnemySnail.cpp
+﻿  GameScene.cpp
+C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\GameScene.cpp(192,12): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\GameScene.cpp(193,13): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\GameScene.cpp(531,25): warning C4244: '=': conversión de 'int' a 'float'; posible pérdida de datos
+C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\GameScene.cpp(558,24): warning C4244: '=': conversión de 'int' a 'float'; posible pérdida de datos
+C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\GameScene.cpp(564,23): warning C4244: '=': conversión de 'T' a 'float'; posible pérdida de datos
+C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\GameScene.cpp(564,23): warning C4244:         with
+C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\GameScene.cpp(564,23): warning C4244:         [
+C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\GameScene.cpp(564,23): warning C4244:             T=int
+C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\GameScene.cpp(564,23): warning C4244:         ]
   02-Bubble.vcxproj -> C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\Debug\02-Bubble.exe

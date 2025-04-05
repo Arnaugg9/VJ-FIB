@@ -20,6 +20,10 @@ public:
     glm::ivec2 getColliderPosition();
     glm::ivec2 getColliderSize();
 
+    bool isOnScreen();
+    void setOnScreen(bool value);
+    bool active;
+
 private:
     glm::ivec2 armorColliderSize;
     glm::ivec2 posArmor;
@@ -27,6 +31,8 @@ private:
     Texture spritesheet;
     Sprite* sprite;
     TileMap* map;
+
+    bool onScreen;
 };
 
 #endif // _ARMOR_INCLUDE

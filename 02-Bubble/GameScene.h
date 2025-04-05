@@ -45,7 +45,10 @@ private:
 	void renderItems();
 	bool checkIfOnScreen(glm::ivec2 pos, glm::ivec2 size);
 	bool collidesWithPlayer(glm::ivec2 posColliderEnemy, glm::ivec2 sizeColliderEnemy);
+	bool collidesWithPlayerItem(glm::ivec2 posColliderEnemy, glm::ivec2 sizeColliderEnemy);
 	void updateScreen();
+
+	void spawnItem(glm::ivec2 pos, glm::ivec2 sizeEnemy);
 
 
 private:
@@ -61,14 +64,20 @@ private:
 	bool verticalScroll;
 	bool spear;
 
+	bool godModeOn;
+
+	bool paused;
+	Texture pauseSpritesheet;
+	Sprite* pauseScreenSprite;
+
 	UI* ui;
 
 	//Llistat d'objectes
-	SmallHeart* smallHeart;
-	BigHeart* bigHeart;
-	Gourd* gourd[2];
-	Armor* armor;
-	Helmet* helmet;
+	std::vector<SmallHeart*> smallHeart;
+	std::vector<BigHeart*> bigHeart;
+	std::vector<Gourd*> gourd;
+	std::vector<Armor*> armor;
+	std::vector<Helmet*> helmet;
 
 	//Llistat d'enemics
 	EnemyFlower *enemyFlower[5];

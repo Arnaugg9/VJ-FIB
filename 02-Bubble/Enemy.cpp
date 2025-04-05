@@ -83,10 +83,11 @@ bool Enemy::getHasBullet()
     return hasBullet;
 }
 
-void Enemy::getHurt(int damage) {
+bool Enemy::getHurt(int damage) {
     health -= damage;
     invencible = true;
-    if (health <= 0) delete this;
+    if (health <= 0) return true;
+    return false;
 }
 
 int Enemy::getDamage() {

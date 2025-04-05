@@ -13,6 +13,9 @@ BigHeart::~BigHeart()
 
 void BigHeart::init(const glm::ivec2& heartPos, ShaderProgram& shaderProgram)
 {
+    active = true;
+    onScreen = false;
+
     heartColliderSize = glm::ivec2(16, 16);
 
     spritesheet.loadFromFile("images/item_spritesheet.png", TEXTURE_PIXEL_FORMAT_RGBA);
@@ -25,11 +28,14 @@ void BigHeart::init(const glm::ivec2& heartPos, ShaderProgram& shaderProgram)
     sprite->addKeyframe(0, glm::vec2(0.333333333333f, 0.0f));
     sprite->changeAnimation(0);
 
-    //sprite->setPosition(heartPos);
+    setPosition(heartPos);
 }
 
 void BigHeart::update(int deltaTime)
 {
+    setPosition(glm::ivec2(posHeart.x, posHeart.y + 1));
+    map->collisionMoveDown(posHeartCollision, heartColliderSize, &posHeart.y);
+    setPosition(posHeart);
     sprite->update(deltaTime);
 }
 
@@ -63,4 +69,14 @@ glm::ivec2 BigHeart::getColliderPosition()
 glm::ivec2 BigHeart::getColliderSize()
 {
     return heartColliderSize;
+}
+
+bool BigHeart::isOnScreen()
+{
+    return active && onScreen;
+}
+
+void BigHeart::setOnScreen(bool value)
+{
+    onScreen = value;
 }

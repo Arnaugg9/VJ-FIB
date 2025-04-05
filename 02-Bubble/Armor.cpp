@@ -13,6 +13,9 @@ Armor::~Armor()
 
 void Armor::init(const glm::ivec2& armorPos, ShaderProgram& shaderProgram)
 {
+    active = true;
+    onScreen = false;
+
     armorColliderSize = glm::ivec2(16, 16);
 
     spritesheet.loadFromFile("images/item_spritesheet.png", TEXTURE_PIXEL_FORMAT_RGBA);
@@ -25,11 +28,14 @@ void Armor::init(const glm::ivec2& armorPos, ShaderProgram& shaderProgram)
     sprite->addKeyframe(0, glm::vec2(0.333333333333f, 0.33333333333f));
     sprite->changeAnimation(0);
 
-    //sprite->setPosition(armorPos);
+    setPosition(armorPos);
 }
 
 void Armor::update(int deltaTime)
 {
+    setPosition(glm::ivec2(posArmor.x, posArmor.y + 1));
+    map->collisionMoveDown(posArmorCollision, armorColliderSize, &posArmor.y);
+    setPosition(posArmor);
     sprite->update(deltaTime);
 }
 
@@ -63,4 +69,14 @@ glm::ivec2 Armor::getColliderPosition()
 glm::ivec2 Armor::getColliderSize()
 {
     return armorColliderSize;
+}
+
+bool Armor::isOnScreen()
+{
+    return active && onScreen;
+}
+
+void Armor::setOnScreen(bool value)
+{
+    onScreen = value;
 }
