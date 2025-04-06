@@ -9,6 +9,7 @@
 #include "EnemyFlower.h"
 #include "EnemyElephant.h"
 #include "EnemySnail.h"
+#include "Boss.h"
 #include "SmallHeart.h"
 #include "BigHeart.h"
 #include "Gourd.h"
@@ -84,6 +85,7 @@ private:
 	EnemyFlower *enemyFlower[5];
 	EnemyElephant* enemyElephant[7];
 	EnemySnail* enemySnail[9];
+	Boss* boss;
 
 };
 

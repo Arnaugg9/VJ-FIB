@@ -10,7 +10,7 @@ enum anims {
 
 enum Directions
 {
-	LEFT, RIGHT
+	LEFT, RIGHT, LEFT_UP, LEFT_DOWN, RIGHT_UP, RIGHT_DOWN
 };
 
 void Bullet::init(const glm::ivec2 size, int dir, Sprite* bulletSprite, int speed, int timeToLive)
@@ -21,6 +21,21 @@ void Bullet::init(const glm::ivec2 size, int dir, Sprite* bulletSprite, int spee
 	sizeCollider.y -= 4;
 
 	direction = dir;
+	sprite = bulletSprite;
+	this->speed = speed;
+
+	this->timeToLive = timeToLive;
+	active = false;
+}
+
+void Bullet::initBoss(const glm::ivec2 size, int dir, Sprite* bulletSprite, int speed, int timeToLive)
+{
+	this->size = size;
+	sizeCollider = size;
+	sizeCollider.x -= 2;
+	sizeCollider.y -= 4;
+
+	direction = dir + LEFT_UP;
 	sprite = bulletSprite;
 	this->speed = speed;
 

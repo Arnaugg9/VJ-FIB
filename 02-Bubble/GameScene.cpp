@@ -8,11 +8,11 @@
 #define SCREEN_X 0
 #define SCREEN_Y 0
 
-#define INIT_PLAYER_X_TILES 33
-#define INIT_PLAYER_Y_TILES 39
+#define INIT_PLAYER_X_TILES 39			//Original 33
+#define INIT_PLAYER_Y_TILES 7			//Original 39
 
-#define INIT_CAMERA_X 640
-#define INIT_CAMERA_Y 736
+#define INIT_CAMERA_X 32*16				//Original 32*16
+#define INIT_CAMERA_Y 0					//Original 30*16
 
 #define TOP_HORIZONTAL_MIDDLE 30*16
 #define LEFT_VERTICAL_RIGHT 128*16
@@ -34,6 +34,10 @@ enum Directions
 enum ItemsList
 {
 	SMALL_HEART, BIG_HEART, ARMOR, GOURD, HELMET, 
+};
+
+enum Weapons{
+	SPEAR, FIRE
 };
 
 GameScene::GameScene()
@@ -68,8 +72,8 @@ void GameScene::init()
 	player->setTileMap(map);
 
 	//init camara
-	leftCam = 32 * 16;
-	topCam = 30 * 16;
+	leftCam = INIT_CAMERA_X;
+	topCam = INIT_CAMERA_Y;
 	verticalScroll = false;
 	projection = glm::ortho(leftCam, leftCam + 16*16, topCam + 15*16, topCam);
 
@@ -183,6 +187,12 @@ void GameScene::init()
 		enemySnail[8]->setMap(map);
 
 
+		//Boss
+		boss = new Boss();
+		boss->init(glm::ivec2(55 * 16, 7 * 16), texProgram);
+		boss->setMap(map);
+
+
 	updateScreen();
 }
 
@@ -215,6 +225,8 @@ void GameScene::updateScreen() {
 	for (EnemySnail* s : enemySnail) {
 		s->setOnScreen(checkIfOnScreen(s->getPosition(), s->getSize()));
 	}
+
+	boss->setOnScreen(player->isOnBossfight());
 
 	//Check if items are on screen
 	for (SmallHeart* sh : smallHeart) {
@@ -335,9 +347,18 @@ void GameScene::updateEnemy(int deltaTime, Enemy* enemy) {
 	else if (!godModeOn && !enemy->isInvencible() && !player->isInvencible() && collidesWithPlayer(enemy->getColliderPosition(), enemy->getColliderSize())) {
 		player->getHurt(enemy->getDamage());
 	}
-	else if (!godModeOn && enemy->getHasBullet() && !player->isInvencible() && collidesWithPlayer(enemy->getBullet()->getColliderPosition(), enemy->getBullet()->getColliderSize())) {
+	else if (!godModeOn && enemy->getHasBullet() && enemy != boss && !player->isInvencible() && collidesWithPlayer(enemy->getBullet()->getColliderPosition(), enemy->getBullet()->getColliderSize())) {
 		player->getHurt(enemy->getDamage());
 		enemy->getBullet()->deactivate();
+		//cout << "HURT BY BULLET" << endl;
+	}
+	else if (!godModeOn && enemy->getHasBullet() && enemy == boss && !player->isInvencible()) {
+		for (int i = 0; i < 4; ++i) {
+			if (collidesWithPlayer(boss->getBullet(i)->getColliderPosition(), boss->getBullet(i)->getColliderSize())) {
+				player->getHurt(enemy->getDamage());
+				boss->getBullet(i)->deactivate();
+			}
+		}
 		//cout << "HURT BY BULLET" << endl;
 	}
 	//++a;
@@ -356,6 +377,8 @@ void GameScene::updateEnemiesOnScreen(int deltaTime) {
 	for (EnemySnail* s : enemySnail) {
 		if (s->isOnScreen()) updateEnemy(deltaTime, s);
 	}
+
+	if (boss->isOnScreen()) updateEnemy(deltaTime, boss);
 }
 
 void GameScene::updateItems(int deltaTime) {
@@ -448,6 +471,8 @@ void GameScene::renderEnemiesOnScreen() {
 	for (EnemySnail* s : enemySnail) {
 		if (s->isOnScreen()) s->render();
 	}
+
+	if (boss->isOnScreen()) boss->render();
 }
 
 void GameScene::renderItems() {
@@ -496,7 +521,11 @@ void GameScene::render()
 void GameScene::handleKeyPress(int key)
 {
 	if (!paused) {
-		if (key == GLFW_KEY_C) spear = !spear;
+		if (key == GLFW_KEY_C) {
+			spear = !spear;
+			if (spear) player->setWeapon(SPEAR);
+			else player->setWeapon(FIRE);
+		}
 		if (key == GLFW_KEY_G) godModeOn = !godModeOn;
 		if (key == GLFW_KEY_H) player->healCheat();
 	}

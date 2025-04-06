@@ -31,12 +31,16 @@ enum PlayerAnims
 
 enum SwordAnims
 {
-	SWORD_LEFT, SWORD_RIGHT
+	SWORD_LEFT, SWORD_RIGHT, FIRE_LEFT, FIRE_RIGHT
 };
 
 enum Directions
 {
 	LEFT, RIGHT
+};
+
+enum Weapons {
+	SPEAR, FIRE
 };
 
 void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
@@ -61,6 +65,7 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 
 	attackTime = ATTACK_TIME;
 	playerDamage = PLAYER_DAMAGE;
+	weaponType = SPEAR;
 
 	maxHealth = health = INITIAL_MAX_HEALTH;	//Al principi té 4 cors, cada unitat es 1 terç de cor
 	lives = INITIAL_LIVES;
@@ -176,7 +181,7 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 
 	
 	swordSprite = Sprite::createSprite(glm::ivec2(32, 64), glm::vec2(0.25, 0.0625), &spritesheet, &shaderProgram);
-	swordSprite->setNumberAnimations(2);
+	swordSprite->setNumberAnimations(4);
 
 		//SWORD_LEFT
 		swordSprite->setAnimationSpeed(SWORD_LEFT, 18);
@@ -197,10 +202,19 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 		swordSprite->addKeyframe(SWORD_RIGHT, glm::vec2(0.5f, 0.625f));
 		swordSprite->addKeyframe(SWORD_RIGHT, glm::vec2(0.25f, 0.625f));
 
+		//FIRE_LEFT
+		swordSprite->setAnimationSpeed(FIRE_LEFT, 18);
+		swordSprite->addKeyframe(FIRE_LEFT, glm::vec2(0.5f, 0.75f));
+		swordSprite->addKeyframe(FIRE_LEFT, glm::vec2(0.75f, 0.75f));
+
+		//FIRE_RIGHT
+		swordSprite->setAnimationSpeed(FIRE_RIGHT, 18);
+		swordSprite->addKeyframe(FIRE_RIGHT, glm::vec2(0.f, 0.75f));
+		swordSprite->addKeyframe(FIRE_RIGHT, glm::vec2(0.25f, 0.75f));
 
 
-		swordSprite->changeAnimation(SWORD_RIGHT);
-		swordSprite->setPosition(glm::ivec2(posPlayer.x + 28, posPlayer.y));
+	swordSprite->changeAnimation(SWORD_RIGHT);
+	swordSprite->setPosition(glm::ivec2(posPlayer.x + 28, posPlayer.y));
 }
 
 void Player::update(int deltaTime)
@@ -352,23 +366,31 @@ void Player::handleJump()
 void Player::handleAttack(int deltaTime)
 {
 	bool attackKeyPressed = Game::instance().getKey(GLFW_KEY_X);
-	if (isAttacking) {
-		attackTime -= deltaTime;
-		if (attackTime <= 0) {
-			isAttacking = false;
-			attackTime = ATTACK_TIME;
-			swordSprite->changeAnimation(swordSprite->animation());
+	if (weaponType == SPEAR) {
+		if (isAttacking) {
+			attackTime -= deltaTime;
+			if (attackTime <= 0) {
+				isAttacking = false;
+				attackTime = ATTACK_TIME;
+				swordSprite->changeAnimation(swordSprite->animation());
+			}
 		}
+		else if (attackKeyPressed && !previousAttackState && (isGrounded || (!isCovering && !isCrouching))) {
+			isAttacking = true;
+		}
+		previousAttackState = attackKeyPressed;
 	}
-	else if (attackKeyPressed && !previousAttackState && (isGrounded || (!isCovering && !isCrouching))) {
-		isAttacking = true;
+	else if (weaponType == FIRE) {
+		if (attackKeyPressed && (isGrounded || (!isCovering && !isCrouching))) isAttacking = true;
+		else isAttacking = false;
 	}
-	previousAttackState = attackKeyPressed;
 }
 
 void Player::handleSwordSprite()
 {
-	int new_anim = dirPlayer == LEFT ? SWORD_LEFT : SWORD_RIGHT;
+	int new_anim = swordSprite->animation();
+	if (weaponType == SPEAR) new_anim = dirPlayer == LEFT ? SWORD_LEFT : SWORD_RIGHT;
+	else if (weaponType == FIRE) new_anim = dirPlayer == LEFT ? FIRE_LEFT : FIRE_RIGHT;
 
 	if (new_anim != swordSprite->animation()) swordSprite->changeAnimation(new_anim);
 
@@ -453,11 +475,13 @@ glm::ivec2 Player::getColliderPosition() {
 	else if (!isGrounded && isCrouching)
 		return glm::ivec2(posPlayerCollision.x, posPlayerCollision.y + 19);
 
-	else if (dirPlayer == LEFT)
-		return glm::ivec2(posPlayerCollision.x - 32, posPlayerCollision.y);
+	else if (dirPlayer == LEFT) {
+		if (weaponType == SPEAR) return glm::ivec2(posPlayerCollision.x - 32, posPlayerCollision.y);
+		if (weaponType == FIRE) return glm::ivec2(posPlayerCollision.x - 24, posPlayerCollision.y);
+	}
 
 	else if (dirPlayer == RIGHT)
-		return glm::ivec2(posPlayerCollision.x + playerColliderSize.x, posPlayerCollision.y);
+		return glm::ivec2(posPlayerCollision.x + sizePlayer.x, posPlayerCollision.y);
 
 	return posPlayerCollision;
 }
@@ -472,11 +496,10 @@ glm::ivec2 Player::getColliderSize() {
 	else if (!isGrounded && isCrouching)
 		return glm::ivec2(playerColliderSize.x, 17);
 
-	else if (dirPlayer == LEFT)
-		return glm::ivec2(32, playerColliderSize.y);
-
-	else if (dirPlayer == RIGHT)
-		return glm::ivec2(34, playerColliderSize.y);
+	else if (dirPlayer == LEFT || dirPlayer == RIGHT) {
+		if (weaponType == SPEAR) return glm::ivec2(32, playerColliderSize.y);
+		if (weaponType == FIRE) return glm::ivec2(24, playerColliderSize.y);
+	}
 
 	return playerColliderSize;
 }
@@ -547,6 +570,10 @@ void Player::setDefensiveHits(int hits) {
 
 void Player::setAttackingHits(int hits) {
 	attackingHits = hits;
+}
+void Player::setWeapon(int type)
+{
+	weaponType = type;
 }
 void Player::healCheat()
 {

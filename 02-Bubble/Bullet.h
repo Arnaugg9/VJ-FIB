@@ -9,7 +9,9 @@
 class Bullet {
 public:
     void init(const glm::ivec2 size, int dir, Sprite* bulletSprite, int speed, int timeToLive);
+    void initBoss(const glm::ivec2 size, int dir, Sprite* bulletSprite, int speed, int timeToLive);
     void update(int deltaTime);
+    void updateBoss(int deltaTime);
     void render();
 
     glm::ivec2 getPosition();
@@ -18,13 +20,14 @@ public:
     glm::ivec2 getColliderSize();
     bool isActive();
     void activate(glm::ivec2& posBullet, int dir);
+    void activateBoss(glm::ivec2& posBullet, int dir);
     void deactivate();
 
 private:
     glm::ivec2 pos, size;
     glm::ivec2 posCollider, sizeCollider;
     int speed;
-    int direction; // LEFT o RIGHT
+    int direction; 
     Sprite* sprite;
 
     int timeToLive;

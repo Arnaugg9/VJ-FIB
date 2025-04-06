@@ -40,6 +40,7 @@ public:
 	void setInvencible();
 	void setDefensiveHits(int hits);
 	void setAttackingHits(int hits);
+	void setWeapon(int type);
 	int getDefensiveHits() { return defensiveHits; }
 	int getAttackingHits() { return attackingHits; }
 	int getHealth() { return health; }
@@ -76,6 +77,7 @@ private:
 	TileMap *map;
 
 	Sprite *swordSprite;
+	int weaponType;
 
 	//Caracterisitiques personatge
 	int health;
