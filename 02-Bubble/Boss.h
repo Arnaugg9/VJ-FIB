@@ -18,7 +18,13 @@ private:
 	void changePhase(int deltaTime);
 	void phase1Control(int deltaTime);
 
+	void moveTo(int deltaTime, glm::ivec2 dest);
+	void handleAttack(int deltaTime);
+
+	void die(int deltaTime);
+
 	Bullet* bullets[4];
+	glm::ivec2 posInitBullets[4];
 	Sprite* bulletsSprites[4];
 
 	Sprite* stringSprites[10];
@@ -40,6 +46,10 @@ private:
 	//Parametres fase 1
 	bool inDestination;
 	int timerAttackDuration;
+	glm::ivec2 destination;
+	bool attacked;
+
+	//Parametres animacio mort
 };
 
 #endif // _BOSS_INCLUDE

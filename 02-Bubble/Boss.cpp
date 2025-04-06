@@ -10,12 +10,13 @@
 #define TOP_IN_TOP_OF_MAP 0
 #define LEFT_BOSSFIGHT 48*16
 
-#define FALL_SPEED 3
+#define FALL_SPEED 4
 #define RISE_SPEED 2
 
-#define HEALTH_CHANGE_PHASE_1 18
+#define HEALTH_CHANGE_PHASE_1 8
 #define PHASE_CHANGE_TIMER 3500
-#define HEALTH_CHANGE_PHASE_2 8 
+#define HEALTH_CHANGE_PHASE_2 6 
+#define HEALTH_RECOVER 14
 
 #define ATTACK_DURATION 1500
 
@@ -50,7 +51,7 @@ void Boss::init(const glm::ivec2& enemyPos, ShaderProgram& shaderProgram)
 	sizeEnemy = glm::ivec2(30, 48);
 	sizePhase1 = glm::ivec2(32, 44);
 
-	damage = 4;
+	damage = 2;
 	health = 20;
 
 	posCollider = posEnemy;
@@ -86,7 +87,7 @@ void Boss::init(const glm::ivec2& enemyPos, ShaderProgram& shaderProgram)
 		//IDLE_AND_MOVE_2
 		sprite->setAnimationSpeed(IDLE_MOVE_2, 5);
 		sprite->addKeyframe(IDLE_MOVE_2, glm::vec2(0.625f, 0.125f));
-		sprite->addKeyframe(IDLE_MOVE_2, glm::vec2(0.75f, 0.5f));
+		sprite->addKeyframe(IDLE_MOVE_2, glm::vec2(0.75f, 0.125f));
 
 		//ATTACK_2
 		sprite->setAnimationSpeed(ATTACK_2, 5);
@@ -116,8 +117,8 @@ void Boss::init(const glm::ivec2& enemyPos, ShaderProgram& shaderProgram)
 	for (int i = 0; i < 4; ++i) {
 		bulletsSprites[i] = Sprite::createSprite(glm::ivec2(64, 64), glm::vec2(0.125, 0.125), &spritesheet, &shaderProgram);
 		bulletsSprites[i]->setNumberAnimations(2);
-		bulletsSprites[i]->setAnimationSpeed(NORMAL_ATTACK, 6);
-		bulletsSprites[i]->setAnimationSpeed(BLUE_FIRE, 6);
+		bulletsSprites[i]->setAnimationSpeed(NORMAL_ATTACK, 18);
+		bulletsSprites[i]->setAnimationSpeed(BLUE_FIRE, 8);
 
 		if (i == LEFT_UP) {
 			bulletsSprites[i]->addKeyframe(NORMAL_ATTACK, glm::vec2(0.625f, 0.25f));
@@ -151,15 +152,21 @@ void Boss::init(const glm::ivec2& enemyPos, ShaderProgram& shaderProgram)
 			bulletsSprites[i]->addKeyframe(BLUE_FIRE, glm::vec2(0.125f, 0.5f));
 			bulletsSprites[i]->addKeyframe(BLUE_FIRE, glm::vec2(0.625f, 0.375f));
 		}
-		bulletsSprites[i]->addKeyframe(NORMAL_ATTACK, glm::vec2(0.125f, 0.25f));
+		//bulletsSprites[i]->addKeyframe(NORMAL_ATTACK, glm::vec2(0.125f, 0.25f));
 
 		bulletsSprites[i]->changeAnimation(NORMAL_ATTACK);
 	}
 
 	for (int i = 0; i < 4; ++i) {
 		bullets[i] = new Bullet();
-		bullets[i]->initBoss(glm::ivec2(11, 10), i, bulletsSprites[i], 2, 500);
+		bullets[i]->initBoss(glm::ivec2(11, 10), i, bulletsSprites[i], 2, 700);
 	}
+
+	glm::ivec2 centerBoss = (posEnemy) + sizeEnemy/ 2;
+	posInitBullets[LEFT_UP] = glm::ivec2(centerBoss.x - 11, centerBoss.y - 10);
+	posInitBullets[LEFT_DOWN] = glm::ivec2(centerBoss.x - 11, centerBoss.y);
+	posInitBullets[RIGHT_UP] = glm::ivec2(centerBoss.x, centerBoss.y - 10);
+	posInitBullets[RIGHT_DOWN] = glm::ivec2(centerBoss.x, centerBoss.y);
 
 	//Init de les carasteristiqeus propies
 	phaseNumber = 0;
@@ -170,8 +177,18 @@ void Boss::init(const glm::ivec2& enemyPos, ShaderProgram& shaderProgram)
 	rising = false;
 	falling = true;
 
+	//Init caracteristiques canvi fase
 	changingPhase = false;
 	phaseChangeTimer = PHASE_CHANGE_TIMER;
+
+	//Init caracteristiques Fase 1
+	inDestination = false;
+	timerAttackDuration = ATTACK_DURATION;
+	destination = glm::ivec2(LEFT_BOSSFIGHT + 7 * 16, 0 + 6 * 16);
+	attacked = false;
+
+	//Init caracteritiques animacio mort
+
 }
 
 void Boss::update(int deltaTime)
@@ -179,18 +196,20 @@ void Boss::update(int deltaTime)
 	Enemy::update(deltaTime);
 
 	if (phaseNumber == 0) {
-		changingPhase = health <= HEALTH_CHANGE_PHASE_1;
+		if (!changingPhase) changingPhase = health <= HEALTH_CHANGE_PHASE_1;
 		if (!changingPhase) phase0Control(deltaTime);
 		else changePhase(deltaTime);
 	}
 	else if (phaseNumber == 1) {
 		changingPhase = health <= HEALTH_CHANGE_PHASE_2;
 		if (!changingPhase) phase1Control(deltaTime);
+		else phaseNumber = 2;
 	}
 	else if (phaseNumber == 2) {
-
+		changingPhase = health <= 0;
+		if (!changingPhase) phase1Control(deltaTime);
+		else die(deltaTime);
 	}
-
 
 }
 
@@ -245,10 +264,12 @@ void Boss::changePhase(int deltaTime)
 			phaseNumber++;
 			sizeEnemy = sizePhase1;
 			sizeCollider = sizeColliderPhase1;
+			health = HEALTH_RECOVER;
 			sprite->changeAnimation(IDLE_MOVE);
 		}
 		else {
 			if (sprite->animation() != CHANGE_PHASE) sprite->changeAnimation(CHANGE_PHASE);
+			if (health < HEALTH_RECOVER) health += 1;
 		}
 	}
 }
@@ -257,9 +278,80 @@ void Boss::phase1Control(int deltaTime)
 {
 	if (inDestination) {
 		timerAttackDuration -= deltaTime;
-		attack();
+		handleAttack(deltaTime);
 	}
-	else 
+	else {
+		moveTo(deltaTime, destination); 
+	}
+} 
+
+void Boss::moveTo(int deltaTime, glm::ivec2 dest)
+{
+	if (phaseNumber == 1 && sprite->animation() != IDLE_MOVE) sprite->changeAnimation(IDLE_MOVE);
+	if (phaseNumber == 2 && sprite->animation() != IDLE_MOVE_2) sprite->changeAnimation(IDLE_MOVE_2);
+
+	if (posEnemy == dest) {
+		inDestination = true;
+		destination = glm::ivec2(LEFT_BOSSFIGHT, 0);
+		destination.x += rand() % (13 * 16);
+		destination.y += rand() % (13 * 16);
+	}
+
+	glm::ivec2 move(0);
+
+	if (posEnemy.x < destination.x) move.x = 2;
+	else if (posEnemy.x > destination.x) move.x = -2;
+
+	if (posEnemy.y < destination.y) move.y = 2;
+	else if (posEnemy.y > destination.y) move.y = -2;
+
+	if (abs(destination.x - posEnemy.x) < abs(move.x))
+		move.x = destination.x - posEnemy.x;
+
+	if (abs(destination.y - posEnemy.y) < abs(move.y))
+		move.y = destination.y - posEnemy.y;
+
+
+	posEnemy += move;
+	posCollider = posEnemy;
+	posCollider.x += 4;
+	posCollider.y += 3;
+}
+
+void Boss::handleAttack(int deltaTime)
+{
+	if (!attacked) {
+		attacked = true;
+		if (phaseNumber == 1) sprite->changeAnimation(ATTACK);
+		else if (phaseNumber == 2) sprite->changeAnimation(ATTACK_2);
+
+		glm::ivec2 centerBoss = posEnemy + sizeEnemy/2;
+		posInitBullets[LEFT_UP] = glm::ivec2(centerBoss.x - 11, centerBoss.y - 10);
+		posInitBullets[LEFT_DOWN] = glm::ivec2(centerBoss.x - 11, centerBoss.y);
+		posInitBullets[RIGHT_UP] = glm::ivec2(centerBoss.x, centerBoss.y - 10);
+		posInitBullets[RIGHT_DOWN] = glm::ivec2(centerBoss.x, centerBoss.y);
+		for (int i = 0; i < 4; ++i) {
+			bullets[i]->activateBoss(posInitBullets[i], i);
+		}
+	}
+	if (timerAttackDuration < 0) {
+		attacked = false;
+		inDestination = false;
+		timerAttackDuration = ATTACK_DURATION;
+	}
+	else {
+		for (int i = 0; i < 4; ++i) {
+			bullets[i]->update(deltaTime);
+		}
+	}
+}
+
+void Boss::die(int deltaTime)
+{
+	//Passa un temps que no es mou i només hi ha shake pantalla
+	//es reprodueix explosio (poc temps)
+	//Surten disparos blueFire (que no fagin mal) -- Tambe hi ha uns brillos pero pereza,
+	//es fa spawn del totem (surt volant pero me da a mi que no)
 }
 
 void Boss::render()
@@ -287,5 +379,6 @@ bool Boss::getHurt(int damage)
 		invencible = true;
 		if (health <= 0) return true;
 	}
+	cout << "My health is: " << health << endl;
 	return false;
 }

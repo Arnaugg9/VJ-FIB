@@ -339,7 +339,7 @@ void GameScene::updateEnemy(int deltaTime, Enemy* enemy) {
 	if (player->getIsAttacking2() && !enemy->isInvencible() && collidesWithPlayer(enemy->getColliderPosition(), enemy->getColliderSize())) {
 		//cout << "I got Damaged on iteration " << endl;
 		bool dead = enemy->getHurt(player->getDamage());
-		if (dead) {
+		if (dead && enemy != boss) {
 			spawnItem(enemy->getPosition(), enemy->getSize());
 			delete enemy;
 		}
@@ -355,6 +355,7 @@ void GameScene::updateEnemy(int deltaTime, Enemy* enemy) {
 	else if (!godModeOn && enemy->getHasBullet() && enemy == boss && !player->isInvencible()) {
 		for (int i = 0; i < 4; ++i) {
 			if (collidesWithPlayer(boss->getBullet(i)->getColliderPosition(), boss->getBullet(i)->getColliderSize())) {
+				cout << "Hit by bullet" << endl;
 				player->getHurt(enemy->getDamage());
 				boss->getBullet(i)->deactivate();
 			}

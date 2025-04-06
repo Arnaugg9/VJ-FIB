@@ -11,7 +11,6 @@ public:
     void init(const glm::ivec2 size, int dir, Sprite* bulletSprite, int speed, int timeToLive);
     void initBoss(const glm::ivec2 size, int dir, Sprite* bulletSprite, int speed, int timeToLive);
     void update(int deltaTime);
-    void updateBoss(int deltaTime);
     void render();
 
     glm::ivec2 getPosition();
