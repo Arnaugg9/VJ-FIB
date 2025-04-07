@@ -25,7 +25,7 @@ void Gourd::init(const glm::ivec2& gourdPos, ShaderProgram& shaderProgram)
     sprite = Sprite::createSprite(glm::ivec2(16, 16), glm::vec2(0.33, 0.33), &spritesheet, &shaderProgram);
     sprite->setNumberAnimations(1);
     sprite->setAnimationSpeed(0, 8);
-    sprite->addKeyframe(0, glm::vec2(0.66f, 0.0f));
+    sprite->addKeyframe(0, glm::vec2(0.666666666666666f, 0.0f));
     sprite->changeAnimation(0);
 
     setPosition(gourdPos);

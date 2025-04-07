@@ -5,7 +5,7 @@
 
 enum Escenas
 {
-	MENU_SCENE, GAME_SCENE
+	MENU_SCENE, GAME_SCENE, CREDITS_SCENE
 };
 
 void Game::init()
@@ -14,14 +14,17 @@ void Game::init()
 	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 	gameScene.init();
 	menuScene.init();
-
-	currentScene = GAME_SCENE;
+	creditsScene.init();
+	
+	//currentScene = MENU_SCENE;
+	currentScene = CREDITS_SCENE;
 }
 
 bool Game::update(int deltaTime)
 {
 	if (currentScene == MENU_SCENE) menuScene.update(deltaTime);
 	else if (currentScene == GAME_SCENE) gameScene.update(deltaTime);
+	else if (currentScene == CREDITS_SCENE) creditsScene.update(deltaTime);
 
 	return bPlay;
 }
@@ -29,8 +32,9 @@ bool Game::update(int deltaTime)
 void Game::render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	if (currentScene == MENU_SCENE)menuScene.render();
+	if (currentScene == MENU_SCENE) menuScene.render();
 	else if (currentScene == GAME_SCENE) gameScene.render();
+	else if (currentScene == CREDITS_SCENE) creditsScene.render();
 }
 
 void Game::changeScene(int scene) {
@@ -50,6 +54,8 @@ void Game::keyPressed(int key)
 	if (currentScene == MENU_SCENE) menuScene.handleKeyPress(key);
 
 	if (currentScene == GAME_SCENE) gameScene.handleKeyPress(key);
+
+	if (currentScene == CREDITS_SCENE) creditsScene.handleKeyPress(key);
 
 	keys[key] = true;
 }

@@ -15,6 +15,7 @@
     <ClInclude Include="Armor.h" />
     <ClInclude Include="BigHeart.h" />
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="CreditsScene.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyElephant.h" />
     <ClInclude Include="EnemyFlower.h" />
@@ -37,6 +38,7 @@
     <ClCompile Include="Armor.cpp" />
     <ClCompile Include="BigHeart.cpp" />
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="CreditsScene.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyElephant.cpp" />
     <ClCompile Include="EnemyFlower.cpp" />

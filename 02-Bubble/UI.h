@@ -20,11 +20,13 @@ public:
 	void setPlayerMaxHealth(int health);
 	void setPlayerDefensiveHits(int hits);
     void setPlayerAttackingHits(int hits);
+	void setPlayerPotions(int potions);
 
 private:
     glm::ivec2 posUI;
     glm::vec2 uiOffset;
-    Texture spritesheet;
+    Texture spritesheetUI;
+    Texture spritesheetItem;
     Sprite* spear;
 	Sprite* fire;
 	bool spearActive;
@@ -35,9 +37,11 @@ private:
 	int num_hearts;
 	int full_hearts;
 	int last_heart;
+	int playerPotions;
     Sprite* hearts[12];
     Sprite* helmet;
     Sprite* rock;
+	Sprite* potion[3];
     TileMap* map;
 	ShaderProgram* shaderProgram;
 };

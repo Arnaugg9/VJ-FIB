@@ -15,18 +15,18 @@ void UI::init(const glm::ivec2& uiPos, ShaderProgram& shaderProgram)
 {
 	this->shaderProgram = &shaderProgram;
 
-    spritesheet.loadFromFile("images/UI_spritesheet.png", TEXTURE_PIXEL_FORMAT_RGBA);
-    spritesheet.setMinFilter(GL_NEAREST);
-    spritesheet.setMagFilter(GL_NEAREST);
+    spritesheetUI.loadFromFile("images/UI_spritesheet.png", TEXTURE_PIXEL_FORMAT_RGBA);
+    spritesheetUI.setMinFilter(GL_NEAREST);
+    spritesheetUI.setMagFilter(GL_NEAREST);
 
-    spear = Sprite::createSprite(glm::ivec2(16, 16), glm::vec2(0.33, 0.33), &spritesheet, &shaderProgram);
+    spear = Sprite::createSprite(glm::ivec2(16, 16), glm::vec2(0.33, 0.33), &spritesheetUI, &shaderProgram);
     spear->setNumberAnimations(1);
     spear->setAnimationSpeed(0, 8);
     spear->addKeyframe(0, glm::vec2(0.0f, 0.33333333333f));
     spear->changeAnimation(0);
     spear->setPosition(uiPos);
 
-    fire = Sprite::createSprite(glm::ivec2(16, 16), glm::vec2(0.33, 0.33), &spritesheet, &shaderProgram);
+    fire = Sprite::createSprite(glm::ivec2(16, 16), glm::vec2(0.33, 0.33), &spritesheetUI, &shaderProgram);
     fire->setNumberAnimations(1);
     fire->setAnimationSpeed(0, 8);
     fire->addKeyframe(0, glm::vec2(0.33333333333f, 0.33333333333f));
@@ -36,7 +36,7 @@ void UI::init(const glm::ivec2& uiPos, ShaderProgram& shaderProgram)
     num_hearts = 4;
 
 	for (int i = 0; i < 12; ++i) {
-		hearts[i] = Sprite::createSprite(glm::ivec2(16, 16), glm::vec2(0.33, 0.33), &spritesheet, &shaderProgram);
+		hearts[i] = Sprite::createSprite(glm::ivec2(16, 16), glm::vec2(0.33, 0.33), &spritesheetUI, &shaderProgram);
 		hearts[i]->setNumberAnimations(4);
 
 		hearts[i]->setAnimationSpeed(0, 8);
@@ -52,6 +52,33 @@ void UI::init(const glm::ivec2& uiPos, ShaderProgram& shaderProgram)
 		hearts[i]->addKeyframe(3, glm::vec2(0.66666666666f, 0.33333333333f));
 
         hearts[i]->changeAnimation(0);
+	}
+
+	spritesheetItem.loadFromFile("images/item_spritesheet.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	spritesheetItem.setMinFilter(GL_NEAREST);
+	spritesheetItem.setMagFilter(GL_NEAREST);
+
+	helmet = Sprite::createSprite(glm::ivec2(16, 16), glm::vec2(0.333333333333, 0.333333333333), &spritesheetItem, &shaderProgram);
+	helmet->setNumberAnimations(1);
+	helmet->setAnimationSpeed(0, 8);
+	helmet->addKeyframe(0, glm::vec2(0.0f, 0.33333333333f));
+	helmet->changeAnimation(0);
+	helmet->setPosition(uiPos);
+
+	rock = Sprite::createSprite(glm::ivec2(16, 16), glm::vec2(0.333333333333, 0.333333333333), &spritesheetItem, &shaderProgram);
+	rock->setNumberAnimations(1);
+	rock->setAnimationSpeed(0, 8);
+	rock->addKeyframe(0, glm::vec2(0.666666666666f, 0.33333333333f));
+	rock->changeAnimation(0);
+	rock->setPosition(uiPos);
+
+	for (int i = 0; i < 3; ++i) {
+		potion[i] = Sprite::createSprite(glm::ivec2(16, 16), glm::vec2(0.333333333333, 0.333333333333), &spritesheetItem, &shaderProgram);
+		potion[i]->setNumberAnimations(1);
+		potion[i]->setAnimationSpeed(0, 8);
+		potion[i]->addKeyframe(0, glm::vec2(0.33333333333f, 0.666666666666f));
+		potion[i]->changeAnimation(0);
+		potion[i]->setPosition(uiPos);
 	}
 }
 
@@ -71,6 +98,7 @@ void UI::update(int deltaTime, const glm::vec2& cameraPos, bool spear)
         fire->setPosition(glm::vec2(cameraPos.x + 10, cameraPos.y + 10));
         fire->update(deltaTime);
     }
+
 	for (int i = 0; i < num_hearts; ++i) {
 		if (i < 6) hearts[i]->setPosition(glm::vec2(cameraPos.x + 10, cameraPos.y + 21 + 8 * (i + 1)));
 		else hearts[i]->setPosition(glm::vec2(cameraPos.x + 10 + 8, cameraPos.y + 21 + 8 * (i - 6 + 1)));
@@ -85,6 +113,29 @@ void UI::update(int deltaTime, const glm::vec2& cameraPos, bool spear)
 
 		hearts[i]->update(deltaTime);
 	}
+
+	if (playerAttackingHits > 0) {
+		rock->setPosition(glm::vec2(cameraPos.x + 10, cameraPos.y + 208));
+		rock->update(deltaTime);
+	}
+	else {
+		rock->setPosition(glm::vec2(-100, -100));
+		rock->update(deltaTime);
+	}
+
+	if (playerDefensiveHits > 0) {
+		helmet->setPosition(glm::vec2(cameraPos.x + 34, cameraPos.y + 208));
+		helmet->update(deltaTime);
+	}
+	else {
+		helmet->setPosition(glm::vec2(-100, -100));
+		helmet->update(deltaTime);
+	}
+
+	for (int i = 0; i < playerPotions; ++i) {
+		potion[i]->setPosition(glm::vec2(cameraPos.x + 26 + 10 * i, cameraPos.y + 10));
+		potion[i]->update(deltaTime);
+	}
 }
 
 void UI::render()
@@ -93,6 +144,11 @@ void UI::render()
 	else fire->render();
 	for (int i = 0; i < num_hearts; ++i) {
 		hearts[i]->render();
+	}
+	helmet->render();
+	rock->render();
+	for (int i = 0; i < playerPotions; ++i) {
+		potion[i]->render();
 	}
 }
 
@@ -126,4 +182,9 @@ void UI::setPlayerDefensiveHits(int hits)
 void UI::setPlayerAttackingHits(int hits)
 {
 	playerAttackingHits = hits;
+}
+
+void UI::setPlayerPotions(int potions)
+{
+	playerPotions = potions;
 }

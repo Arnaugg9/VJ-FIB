@@ -379,7 +379,9 @@ void Player::handleSwordSprite()
 void Player::getHurt(int damage) {
 	if (defensiveHits > 0) {
 		--defensiveHits;
-		health -= damage / 2;
+		int newDamage = damage / 2;
+		if (newDamage < 1) newDamage = 1;
+		health -= newDamage;
 	}  
 	else health -= damage;
 	invencibilityTime = MAX_INVENCIBILITY_TIME;

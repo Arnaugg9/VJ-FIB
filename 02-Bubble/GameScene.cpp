@@ -417,6 +417,7 @@ void GameScene::updateUI(int deltaTime) {
 	ui->setPlayerMaxHealth(player->getMaxHealth());
 	ui->setPlayerDefensiveHits(player->getDefensiveHits());
 	ui->setPlayerAttackingHits(player->getAttackingHits());
+	ui->setPlayerPotions(player->getLives());
 }
 
 void GameScene::update(int deltaTime)
