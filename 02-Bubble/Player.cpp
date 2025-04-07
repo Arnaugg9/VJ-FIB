@@ -18,7 +18,7 @@
 #define MAX_INVENCIBILITY_TIME 1500
 #define FRAMES_AUX_HURT_ANIMATION 5
 #define TIME_HURT_ANIMATION 500
-#define PLAYER_DAMAGE 1;
+#define PLAYER_DAMAGE 10;
 
 #define LEFT_BOSSFIGHT 48*16
 
@@ -59,6 +59,7 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 	isCrouching = false;
 	previousJumpState = false;
 	onBossfight = false;
+	godModeOn = false;
 
 	defensiveHits = 0;
 	attackingHits = 0;
@@ -223,7 +224,7 @@ void Player::update(int deltaTime)
 	if (isAttacking) swordSprite->update(deltaTime);
 	
 	int tileID = map->collisionSpecialTile(posPlayerCollision, playerColliderSize);
-	if (invencibilityTime <= 0 && timeHurtAnimation <= 0 && tileID == 43) this->getHurt(1);
+	if (invencibilityTime <= 0 && timeHurtAnimation <= 0 && tileID == 43 && !godModeOn) this->getHurt(1);
 
 	handleInvincibility(deltaTime);
 	handleMovement();

@@ -19,7 +19,7 @@ public:
     glm::ivec2 getColliderSize();
     bool isActive();
     void activate(glm::ivec2& posBullet, int dir);
-    void activateBoss(glm::ivec2& posBullet, int dir);
+    void activateBoss(glm::ivec2& posBullet, int dir, int type);
     void deactivate();
 
 private:

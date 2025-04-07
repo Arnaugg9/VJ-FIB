@@ -68,6 +68,7 @@ void GameScene::init()
 	paused = false;
 
 	bossScreenShake = false;
+	bossDying = false;
 	bossDead = false;
 	timerScreenShake = TIME_SCREEN_SHAKE;
 	screenShakeDown = true;
@@ -389,7 +390,7 @@ void GameScene::updateEnemiesOnScreen(int deltaTime) {
 		if (s->isOnScreen()) updateEnemy(deltaTime, s);
 	}
 
-	if (boss->isOnScreen()) updateEnemy(deltaTime, boss);
+	if (boss->isOnScreen() && !bossDead) updateEnemy(deltaTime, boss);
 }
 
 void GameScene::updateItems(int deltaTime) {
@@ -460,12 +461,17 @@ void GameScene::update(int deltaTime)
 		timerScreenShake -= deltaTime;
 		if (timerScreenShake < 0) {
 			bossScreenShake = false;
-			bossDead = true;
+			bossDying = true;
 		}
 		else handleScreenShake();
 	}
-	else if (bossDead) {
-		boss->dieAnimation(deltaTime);
+	else if (bossDying) {
+		bool end = boss->dieAnimation(deltaTime);
+		if (end) {
+			bossDying = false;
+			bossDead = true;
+			spawnItem(boss->getColliderPosition(), boss->getColliderSize());
+		}
 	}
 	else if (!paused) {
 		currentTime += deltaTime;
@@ -495,7 +501,7 @@ void GameScene::renderEnemiesOnScreen() {
 		if (s->isOnScreen()) s->render();
 	}
 
-	if (boss->isOnScreen()) boss->render();
+	if (boss->isOnScreen() && !bossDead) boss->render();
 }
 
 void GameScene::renderItems() {
@@ -549,7 +555,10 @@ void GameScene::handleKeyPress(int key)
 			if (spear) player->setWeapon(SPEAR);
 			else player->setWeapon(FIRE);
 		}
-		if (key == GLFW_KEY_G) godModeOn = !godModeOn;
+		if (key == GLFW_KEY_G) {
+			godModeOn = !godModeOn;
+			player->godModeOn = godModeOn;
+		}
 		if (key == GLFW_KEY_H) player->healCheat();
 	}
 	if (key == GLFW_KEY_P) paused = !paused;

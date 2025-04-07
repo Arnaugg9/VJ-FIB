@@ -13,7 +13,7 @@ public:
 
 	Bullet* getBullet(int numBullet);
 	bool getHurt(int damage);
-	void dieAnimation(int deltaTime);
+	bool dieAnimation(int deltaTime);
 	int getHealth() { return health; }
 
 private:
@@ -45,6 +45,7 @@ private:
 
 	bool changingPhase;
 	int phaseChangeTimer;
+	int healthRecoverTimer;
 
 	//Parametres fase 1
 	bool inDestination;
@@ -53,6 +54,9 @@ private:
 	bool attacked;
 
 	//Parametres animacio mort
+	int dieAnimationTimer;
+	bool startedShootDieAnimation;
+	int dieAnimationTimer2;
 };
 
 #endif // _BOSS_INCLUDE

@@ -70,6 +70,7 @@ private:
 	bool godModeOn;
 
 	bool bossScreenShake;
+	bool bossDying;
 	bool bossDead;
 	int timerScreenShake;
 	bool screenShakeDown;

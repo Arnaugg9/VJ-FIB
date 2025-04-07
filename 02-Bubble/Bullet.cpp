@@ -123,7 +123,7 @@ void Bullet::activate(glm::ivec2& posBullet, int dir)
 	timeRest = timeToLive;
 }
 
-void Bullet::activateBoss(glm::ivec2& posBullet, int dir)
+void Bullet::activateBoss(glm::ivec2& posBullet, int dir, int type)
 {
 	pos = posBullet;
 	posCollider = pos;
@@ -133,7 +133,7 @@ void Bullet::activateBoss(glm::ivec2& posBullet, int dir)
 
 	direction = LEFT_UP + dir;
 
-	sprite->changeAnimation(NORMAL_ATTACK);
+	sprite->changeAnimation(type);
 	//cout << "I'm bullet " << direction << " and my pos is: " << pos.x << ' ' << pos.y << endl;
 	sprite->setPosition(pos);
 	timeRest = timeToLive;

@@ -47,6 +47,8 @@ public:
 	int getMaxHealth() { return maxHealth; }
 	
 	void healCheat();
+	bool godModeOn;
+
 private:
 	//Controladors de moviment
 	int dirPlayer;
