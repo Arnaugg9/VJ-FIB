@@ -15,6 +15,8 @@
 #include "Armor.h"
 #include "Helmet.h"
 #include "UI.h"
+#include <irrKlang.h>
+using namespace irrklang;
 
 
 // Scene contains all the entities of our game.
@@ -85,6 +87,9 @@ private:
 	EnemyElephant* enemyElephant[7];
 	EnemySnail* enemySnail[9];
 
+	ISoundEngine* soundEngine;
+	ISound* backgroundMusic;
+	bool music = false;
 };
 
 

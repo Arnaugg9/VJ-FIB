@@ -182,7 +182,12 @@ void GameScene::init()
 		enemySnail[8]->init(glm::ivec2(137 * 16, 63 * 16), texProgram, RIGHT_UPSIDE);
 		enemySnail[8]->setMap(map);
 
-
+	//Init sound
+	soundEngine = createIrrKlangDevice();
+	if (soundEngine) {
+		if (backgroundMusic) backgroundMusic->stop();
+		backgroundMusic = soundEngine->play2D("sounds/08_Forest Test.wav", true, false, true);
+	}
 	updateScreen();
 }
 
@@ -430,6 +435,11 @@ void GameScene::update(int deltaTime)
 		updateUI(deltaTime);
 
 		if (!player->isOnBossfight()) handleCamera();
+		else if (!music) {
+			if (backgroundMusic) backgroundMusic->stop();
+			backgroundMusic = soundEngine->play2D("sounds/11_Boss Battle.wav", true, false, true);
+			music = true;
+		}
 		updateScreen();
 
 		glm::vec2 cameraPos = glm::vec2(leftCam, topCam);
