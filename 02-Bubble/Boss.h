@@ -12,6 +12,7 @@ public:
 
 	Bullet* getBullet(int numBullet);
 	bool getHurt(int damage);
+	void dieAnimation(int deltaTime);
 
 private:
 	void phase0Control(int deltaTime);
@@ -21,7 +22,6 @@ private:
 	void moveTo(int deltaTime, glm::ivec2 dest);
 	void handleAttack(int deltaTime);
 
-	void die(int deltaTime);
 
 	Bullet* bullets[4];
 	glm::ivec2 posInitBullets[4];

@@ -39,6 +39,7 @@ public:
 private:
 	void initShaders();
 	void handleCamera();
+	void handleScreenShake();
 	void updateEnemiesOnScreen(int deltaTime);
 	void updateItems(int deltaTime);
 	void updateEnemy(int deltaTime, Enemy* enemy);
@@ -67,6 +68,11 @@ private:
 	bool spear;
 
 	bool godModeOn;
+
+	bool bossScreenShake;
+	bool bossDead;
+	int timerScreenShake;
+	bool screenShakeDown;
 
 	bool paused;
 	Texture pauseSpritesheet;

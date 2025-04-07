@@ -208,7 +208,6 @@ void Boss::update(int deltaTime)
 	else if (phaseNumber == 2) {
 		changingPhase = health <= 0;
 		if (!changingPhase) phase1Control(deltaTime);
-		else die(deltaTime);
 	}
 
 }
@@ -346,7 +345,7 @@ void Boss::handleAttack(int deltaTime)
 	}
 }
 
-void Boss::die(int deltaTime)
+void Boss::dieAnimation(int deltaTime)
 {
 	//Passa un temps que no es mou i només hi ha shake pantalla
 	//es reprodueix explosio (poc temps)

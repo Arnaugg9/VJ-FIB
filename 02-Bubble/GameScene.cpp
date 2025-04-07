@@ -21,6 +21,8 @@
 #define TOP_IN_TOP_OF_MAP 0
 #define LEFT_BOSSFIGHT 48*16
 
+#define TIME_SCREEN_SHAKE 2000
+
 #define SCREEN_MARGIN_UPDATE 90
 
 #define NUM_ITEMS 5
@@ -64,6 +66,11 @@ void GameScene::init()
 
 	godModeOn = false;
 	paused = false;
+
+	bossScreenShake = false;
+	bossDead = false;
+	timerScreenShake = TIME_SCREEN_SHAKE;
+	screenShakeDown = true;
 
 	//init player
 	player = new Player();
@@ -343,6 +350,9 @@ void GameScene::updateEnemy(int deltaTime, Enemy* enemy) {
 			spawnItem(enemy->getPosition(), enemy->getSize());
 			delete enemy;
 		}
+		else if (dead && enemy == boss) {
+			bossScreenShake = true;
+		}
 	}
 	else if (!godModeOn && !enemy->isInvencible() && !player->isInvencible() && collidesWithPlayer(enemy->getColliderPosition(), enemy->getColliderSize())) {
 		player->getHurt(enemy->getDamage());
@@ -445,7 +455,18 @@ void GameScene::updateUI(int deltaTime) {
 
 void GameScene::update(int deltaTime)
 {
-	if (!paused) {
+	if (bossScreenShake) {
+		timerScreenShake -= deltaTime;
+		if (timerScreenShake < 0) {
+			bossScreenShake = false;
+			bossDead = true;
+		}
+		else handleScreenShake();
+	}
+	else if (bossDead) {
+		boss->dieAnimation(deltaTime);
+	}
+	else if (!paused) {
 		currentTime += deltaTime;
 		player->update(deltaTime);
 		updateEnemiesOnScreen(deltaTime);
@@ -607,6 +628,19 @@ void GameScene::handleCamera()
 		else if (topCam <= TOP_IN_TOP_OF_MAP) topCam = TOP_IN_TOP_OF_MAP;
 	}
 
+	projection = glm::ortho(leftCam, leftCam + 16 * 16, topCam + 15 * 16, topCam);
+}
+
+void GameScene::handleScreenShake()
+{
+	if (screenShakeDown) {
+		topCam++;
+		if (topCam >= 6) screenShakeDown = false;
+	}
+	else {
+		topCam--;
+		if (topCam <= 0) screenShakeDown = true;
+	}
 	projection = glm::ortho(leftCam, leftCam + 16 * 16, topCam + 15 * 16, topCam);
 }
 
