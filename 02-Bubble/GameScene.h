@@ -15,6 +15,7 @@
 #include "Gourd.h"
 #include "Armor.h"
 #include "Helmet.h"
+#include "Totem.h"
 #include "UI.h"
 
 
@@ -75,6 +76,10 @@ private:
 	int timerScreenShake;
 	bool screenShakeDown;
 
+	int totemUpTimer;
+	bool endAnimation;
+	int endAnimationTimer;
+
 	bool paused;
 	Texture pauseSpritesheet;
 	Sprite* pauseScreenSprite;
@@ -87,6 +92,7 @@ private:
 	std::vector<Gourd*> gourd;
 	std::vector<Armor*> armor;
 	std::vector<Helmet*> helmet;
+	Totem* totem;
 
 	//Llistat d'enemics
 	EnemyFlower *enemyFlower[5];

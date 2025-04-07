@@ -34,6 +34,8 @@ public:
 
 	bool getIsAttacking2();
 	int getDamage();
+
+	void endAnimation(int deltaTime);
 	
 	void updateHealth(int health);
 	void updateGourds();

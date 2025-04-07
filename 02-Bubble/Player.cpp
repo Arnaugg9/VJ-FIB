@@ -18,7 +18,7 @@
 #define MAX_INVENCIBILITY_TIME 1500
 #define FRAMES_AUX_HURT_ANIMATION 5
 #define TIME_HURT_ANIMATION 500
-#define PLAYER_DAMAGE 10;
+#define PLAYER_DAMAGE 1;
 
 #define LEFT_BOSSFIGHT 48*16
 
@@ -26,7 +26,7 @@ enum PlayerAnims
 {
 	STAND_LEFT, STAND_RIGHT, MOVE_LEFT, MOVE_RIGHT, JUMP_LEFT, JUMP_RIGHT, ATCK_LEFT, ATCK_RIGHT, ATCK_MOVE_LEFT, ATCK_MOVE_RIGHT,
 	ATCK_JUMP_LEFT, ATCK_JUMP_RIGHT, COVER_LEFT, COVER_RIGHT, ATCK_JUMP_UP_LEFT, ATCK_JUMP_UP_RIGHT,
-	ATCK_JUMP_DOWN_LEFT, ATCK_JUMP_DOWN_RIGHT, HURT_LEFT, HURT_RIGHT
+	ATCK_JUMP_DOWN_LEFT, ATCK_JUMP_DOWN_RIGHT, HURT_LEFT, HURT_RIGHT, END
 };
 
 enum SwordAnims
@@ -78,7 +78,7 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 	spritesheet.setMagFilter(GL_NEAREST);
 		//Cada sprite ocupa 0.25 en x y 0.0625 en y
 	sprite = Sprite::createSprite(glm::ivec2(32, 64), glm::vec2(0.25, 0.0625), &spritesheet, &shaderProgram);
-	sprite->setNumberAnimations(20);
+	sprite->setNumberAnimations(21);
 	
 		//STAND_LEFT
 		sprite->setAnimationSpeed(STAND_LEFT, 8);
@@ -175,6 +175,10 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 		//HURT_RIGHT
 		sprite->setAnimationSpeed(HURT_RIGHT, 8);
 		sprite->addKeyframe(HURT_RIGHT, glm::vec2(0.f, 0.5f));
+
+		//END
+		sprite->setAnimationSpeed(END, 8);
+		sprite->addKeyframe(END, glm::vec2(0.f, 0.8125f));
 		
 	sprite->changeAnimation(STAND_RIGHT);
 	tileMapDispl = tileMapPos;
@@ -594,5 +598,14 @@ bool Player::getIsAttacking2()
 int Player::getDamage()
 {
 	return playerDamage;
+}
+
+void Player::endAnimation(int deltaTime)
+{
+	if (!isGrounded) update(deltaTime);
+	else {
+		sprite->changeAnimation(END);
+		sprite->setPosition(glm::ivec2(posPlayer.x, posPlayer.y - 14));
+	}
 }
 

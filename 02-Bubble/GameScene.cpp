@@ -23,6 +23,9 @@
 
 #define TIME_SCREEN_SHAKE 2000
 
+#define TOTEM_UP_TIMER 1000
+#define END_ANIMATION_DURATION 2000
+
 #define SCREEN_MARGIN_UPDATE 90
 
 #define NUM_ITEMS 5
@@ -72,6 +75,10 @@ void GameScene::init()
 	bossDead = false;
 	timerScreenShake = TIME_SCREEN_SHAKE;
 	screenShakeDown = true;
+
+	totemUpTimer = TOTEM_UP_TIMER;
+	endAnimation = false;
+	endAnimationTimer = END_ANIMATION_DURATION;
 
 	//init player
 	player = new Player();
@@ -200,6 +207,9 @@ void GameScene::init()
 		boss->init(glm::ivec2(55 * 16, 7 * 16), player, texProgram);
 		boss->setMap(map);
 
+		totem = new Totem();
+		totem->init(texProgram);
+		totem->setTileMap(map);
 
 	updateScreen();
 }
@@ -442,7 +452,22 @@ void GameScene::updateItems(int deltaTime) {
 				h->active = false;
 			}
 		}
-	}	
+	}
+
+	if (totem->isOnScreen()) {
+		totemUpTimer -= deltaTime;
+		if (totemUpTimer < 0) {
+			totem->update(deltaTime);
+		}
+		else {
+			totem->setPosition(glm::ivec2(totem->getPosition().x, totem->getPosition().y - 1));
+		}
+
+		if (collidesWithPlayerItem(totem->getColliderPosition(), totem->getColliderSize()) && !endAnimation) {
+			endAnimation = true;
+			totem->active = false;
+		}
+	}
 }
 
 void GameScene::updateUI(int deltaTime) {
@@ -470,7 +495,20 @@ void GameScene::update(int deltaTime)
 		if (end) {
 			bossDying = false;
 			bossDead = true;
-			spawnItem(boss->getColliderPosition(), boss->getColliderSize());
+
+			totem->setPosition(boss->getColliderPosition());
+			totem->active = true;
+			totem->setOnScreen(true);
+		}
+	}
+	else if (endAnimation) {
+		endAnimationTimer -= deltaTime;
+		if (endAnimationTimer > 0) {
+			player->endAnimation(deltaTime);
+		}
+		else {
+			//Canviar a creditos
+			cout << "CREDITOS" << endl;
 		}
 	}
 	else if (!paused) {
@@ -520,6 +558,7 @@ void GameScene::renderItems() {
 	for (Helmet* h : helmet) {
 		if (h->isOnScreen()) h->render();
 	}
+	if (totem->isOnScreen()) totem->render();
 }
 
 void GameScene::render()
