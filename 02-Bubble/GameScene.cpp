@@ -196,7 +196,7 @@ void GameScene::init()
 
 		//Boss
 		boss = new Boss();
-		boss->init(glm::ivec2(55 * 16, 7 * 16), texProgram);
+		boss->init(glm::ivec2(55 * 16, 7 * 16), player, texProgram);
 		boss->setMap(map);
 
 

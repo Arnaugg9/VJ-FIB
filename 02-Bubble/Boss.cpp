@@ -32,10 +32,12 @@ enum dirBullets {
 	LEFT_UP, LEFT_DOWN, RIGHT_UP, RIGHT_DOWN
 };
 
-void Boss::init(const glm::ivec2& enemyPos, ShaderProgram& shaderProgram)
+void Boss::init(const glm::ivec2& enemyPos, Player* player, ShaderProgram& shaderProgram)
 {
-	posEnemy = enemyPos;
+	this->player = player;
 
+	posEnemy = enemyPos;
+	
 	onScreen = false;
 	hasBullet = true;
 
@@ -226,8 +228,12 @@ void Boss::phase0Control(int deltaTime)
 		falling = true;
 		timeToRise = TIME_TO_RISE;
 		timeToFall = TIME_TO_FALL;
-		glm::ivec2 newPos = glm::ivec2(LEFT_BOSSFIGHT, TOP_IN_TOP_OF_MAP - sizeEnemy.y);
-		newPos.x += rand() % (13 * 16);
+		glm::ivec2 playerPos = player->getColliderPositionNeutral();
+		glm::ivec2 newPos = glm::ivec2(playerPos.x, TOP_IN_TOP_OF_MAP - sizeEnemy.y);
+		int posX = rand() % (2 * 16);
+		int dir = rand() % 2;
+		if (dir == 0) newPos.x = playerPos.x - posX;
+		else newPos.x = playerPos.x + posX;
 		posEnemy = newPos;
 	}
 

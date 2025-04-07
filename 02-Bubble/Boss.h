@@ -2,11 +2,12 @@
 #define _BOSS_INCLUDE
 
 #include "Enemy.h"
+#include "Player.h"
 
 class Boss : public Enemy
 {
 public:
-	void init(const glm::ivec2& enemyPos, ShaderProgram& shaderProgram);
+	void init(const glm::ivec2& enemyPos, Player* player, ShaderProgram& shaderProgram);
 	void update(int deltaTime);
 	void render();
 
@@ -22,6 +23,7 @@ private:
 	void moveTo(int deltaTime, glm::ivec2 dest);
 	void handleAttack(int deltaTime);
 
+	Player* player;
 
 	Bullet* bullets[4];
 	glm::ivec2 posInitBullets[4];
