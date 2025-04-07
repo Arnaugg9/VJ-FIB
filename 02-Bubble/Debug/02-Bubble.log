@@ -1,14 +1,33 @@
-﻿  Boss.cpp
+﻿  Armor.cpp
+  BigHeart.cpp
+  Boss.cpp
+  Bullet.cpp
+  Enemy.cpp
+  EnemyElephant.cpp
+  EnemyFlower.cpp
+  EnemySnail.cpp
+  Game.cpp
   GameScene.cpp
-C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\GameScene.cpp(209,12): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
-C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\GameScene.cpp(210,13): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
-C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\GameScene.cpp(592,25): warning C4244: '=': conversión de 'int' a 'float'; posible pérdida de datos
-C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\GameScene.cpp(619,24): warning C4244: '=': conversión de 'int' a 'float'; posible pérdida de datos
-C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\GameScene.cpp(625,23): warning C4244: '=': conversión de 'T' a 'float'; posible pérdida de datos
-C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\GameScene.cpp(625,23): warning C4244:         with
-C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\GameScene.cpp(625,23): warning C4244:         [
-C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\GameScene.cpp(625,23): warning C4244:             T=int
-C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\GameScene.cpp(625,23): warning C4244:         ]
+C:\Users\xXRel\Desktop\UNI\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\GameScene.cpp(209,12): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\xXRel\Desktop\UNI\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\GameScene.cpp(210,13): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\xXRel\Desktop\UNI\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\GameScene.cpp(593,25): warning C4244: '=': conversión de 'int' a 'float'; posible pérdida de datos
+C:\Users\xXRel\Desktop\UNI\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\GameScene.cpp(620,24): warning C4244: '=': conversión de 'int' a 'float'; posible pérdida de datos
+C:\Users\xXRel\Desktop\UNI\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\GameScene.cpp(626,23): warning C4244: '=': conversión de 'T' a 'float'; posible pérdida de datos
+C:\Users\xXRel\Desktop\UNI\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\GameScene.cpp(626,23): warning C4244:         with
+C:\Users\xXRel\Desktop\UNI\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\GameScene.cpp(626,23): warning C4244:         [
+C:\Users\xXRel\Desktop\UNI\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\GameScene.cpp(626,23): warning C4244:             T=int
+C:\Users\xXRel\Desktop\UNI\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\GameScene.cpp(626,23): warning C4244:         ]
+  Gourd.cpp
+  Helmet.cpp
+  MenuScene.cpp
   Player.cpp
+  SmallHeart.cpp
+  UI.cpp
+  main.cpp
   Generando código...
-  02-Bubble.vcxproj -> C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\Debug\02-Bubble.exe
+LINK : warning LNK4098: la biblioteca predeterminada'MSVCRT' entra en conflicto con otras bibliotecas; use la biblioteca /NODEFAULTLIB:biblioteca
+SOIL.lib(image_DXT.obj) : warning LNK4099: no se encontró PDB '' con 'SOIL.lib(image_DXT.obj)' o en ''; se vinculará el objeto sin tener en cuenta información de depuración
+SOIL.lib(image_helper.obj) : warning LNK4099: no se encontró PDB '' con 'SOIL.lib(image_helper.obj)' o en ''; se vinculará el objeto sin tener en cuenta información de depuración
+SOIL.lib(SOIL.obj) : warning LNK4099: no se encontró PDB '' con 'SOIL.lib(SOIL.obj)' o en ''; se vinculará el objeto sin tener en cuenta información de depuración
+SOIL.lib(stb_image_aug.obj) : warning LNK4099: no se encontró PDB '' con 'SOIL.lib(stb_image_aug.obj)' o en ''; se vinculará el objeto sin tener en cuenta información de depuración
+  02-Bubble.vcxproj -> C:\Users\xXRel\Desktop\UNI\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\Debug\02-Bubble.exe

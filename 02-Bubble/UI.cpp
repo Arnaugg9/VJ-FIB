@@ -15,9 +15,15 @@ void UI::init(const glm::ivec2& uiPos, ShaderProgram& shaderProgram)
 {
 	this->shaderProgram = &shaderProgram;
 
+	bossfight = false;
+
     spritesheet.loadFromFile("images/UI_spritesheet.png", TEXTURE_PIXEL_FORMAT_RGBA);
     spritesheet.setMinFilter(GL_NEAREST);
     spritesheet.setMagFilter(GL_NEAREST);
+
+	spritesheetBoss.loadFromFile("images/spirtesheet_boss.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	spritesheetBoss.setMinFilter(GL_NEAREST);
+	spritesheetBoss.setMagFilter(GL_NEAREST);
 
     spear = Sprite::createSprite(glm::ivec2(16, 16), glm::vec2(0.33, 0.33), &spritesheet, &shaderProgram);
     spear->setNumberAnimations(1);
@@ -53,6 +59,25 @@ void UI::init(const glm::ivec2& uiPos, ShaderProgram& shaderProgram)
 
         hearts[i]->changeAnimation(0);
 	}
+
+	for (int i = 0; i < 11; ++i) {
+		bossHearts[i] = Sprite::createSprite(glm::ivec2(64, 64), glm::vec2(0.125, 0.125), &spritesheetBoss, &shaderProgram);
+		bossHearts[i]->setNumberAnimations(4);
+
+		bossHearts[i]->setAnimationSpeed(0, 8);
+		bossHearts[i]->addKeyframe(0, glm::vec2(0.0f, 0.0f));
+
+		bossHearts[i]->setAnimationSpeed(1, 8);
+		bossHearts[i]->addKeyframe(1, glm::vec2(0.125f, 0.0f));
+
+		bossHearts[i]->setAnimationSpeed(2, 8);
+		bossHearts[i]->addKeyframe(2, glm::vec2(0.25f, 0.0f));
+
+		bossHearts[i]->setAnimationSpeed(3, 8);
+		bossHearts[i]->addKeyframe(3, glm::vec2(0.375f, 0.0f));
+
+		bossHearts[i]->changeAnimation(0);
+	}
 }
 
 void UI::update(int deltaTime, const glm::vec2& cameraPos, bool spear)
@@ -60,6 +85,9 @@ void UI::update(int deltaTime, const glm::vec2& cameraPos, bool spear)
 	num_hearts = playerMaxHealth / 3;
 	full_hearts = playerHealth / 3;
 	last_heart = playerHealth % 3;
+
+	full_heartsBoss = bossHealth / 3;
+	last_heartBoss = bossHealth % 3;
 
     if (spear) {
 		spearActive = true;
@@ -85,6 +113,21 @@ void UI::update(int deltaTime, const glm::vec2& cameraPos, bool spear)
 
 		hearts[i]->update(deltaTime);
 	}
+	if (bossfight) {
+		for (int i = 0; i < 11; ++i) {
+			if (i < 6) bossHearts[i]->setPosition(glm::vec2(cameraPos.x + 26, cameraPos.y + 21 + 8 * (i + 1)));
+			else bossHearts[i]->setPosition(glm::vec2(cameraPos.x + 26 + 8, cameraPos.y + 21 + 8 * (i - 6 + 1)));
+			bossHearts[i]->update(deltaTime);
+
+			if (i < full_heartsBoss) bossHearts[i]->changeAnimation(0);
+			else if (i == full_heartsBoss) {
+				if (last_heartBoss == 1) bossHearts[i]->changeAnimation(2);
+				else if (last_heartBoss == 2) bossHearts[i]->changeAnimation(1);
+				else bossHearts[i]->changeAnimation(3);
+			}
+			else bossHearts[i]->changeAnimation(3);
+		}
+	}
 }
 
 void UI::render()
@@ -93,6 +136,11 @@ void UI::render()
 	else fire->render();
 	for (int i = 0; i < num_hearts; ++i) {
 		hearts[i]->render();
+	}
+	if (bossfight) {
+		for (int i = 0; i < 11; ++i) {
+			bossHearts[i]->render();
+		}
 	}
 }
 
@@ -126,4 +174,14 @@ void UI::setPlayerDefensiveHits(int hits)
 void UI::setPlayerAttackingHits(int hits)
 {
 	playerAttackingHits = hits;
+}
+
+void UI::setBossfight()
+{
+	bossfight = true;
+}
+
+void UI::setBossHealth(int health)
+{
+	bossHealth = health;
 }

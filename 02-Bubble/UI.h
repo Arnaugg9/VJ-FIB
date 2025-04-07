@@ -20,13 +20,17 @@ public:
 	void setPlayerMaxHealth(int health);
 	void setPlayerDefensiveHits(int hits);
     void setPlayerAttackingHits(int hits);
+    void setBossfight();
+	void setBossHealth(int health);
 
 private:
     glm::ivec2 posUI;
     glm::vec2 uiOffset;
     Texture spritesheet;
+    Texture spritesheetBoss;
     Sprite* spear;
 	Sprite* fire;
+
 	bool spearActive;
 	int playerHealth;
 	int playerMaxHealth;
@@ -34,8 +38,15 @@ private:
 	int playerAttackingHits;
 	int num_hearts;
 	int full_hearts;
-	int last_heart;
+    int last_heart;
+
+    bool bossfight;
+	int bossHealth;
+	int full_heartsBoss;
+	int last_heartBoss;
+
     Sprite* hearts[12];
+    Sprite* bossHearts[11];
     Sprite* helmet;
     Sprite* rock;
     TileMap* map;

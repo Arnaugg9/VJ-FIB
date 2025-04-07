@@ -14,6 +14,7 @@ public:
 	Bullet* getBullet(int numBullet);
 	bool getHurt(int damage);
 	void dieAnimation(int deltaTime);
+	int getHealth() { return health; }
 
 private:
 	void phase0Control(int deltaTime);
