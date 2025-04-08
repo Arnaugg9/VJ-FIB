@@ -1,13 +1,1 @@
-﻿  GameScene.cpp
-C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\GameScene.cpp(220,12): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
-C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\GameScene.cpp(221,13): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
-C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\GameScene.cpp(641,25): warning C4244: '=': conversión de 'int' a 'float'; posible pérdida de datos
-C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\GameScene.cpp(668,24): warning C4244: '=': conversión de 'int' a 'float'; posible pérdida de datos
-C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\GameScene.cpp(674,23): warning C4244: '=': conversión de 'T' a 'float'; posible pérdida de datos
-C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\GameScene.cpp(674,23): warning C4244:         with
-C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\GameScene.cpp(674,23): warning C4244:         [
-C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\GameScene.cpp(674,23): warning C4244:             T=int
-C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\GameScene.cpp(674,23): warning C4244:         ]
-  Player.cpp
-  Generando código...
-  02-Bubble.vcxproj -> C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\Debug\02-Bubble.exe
+﻿
