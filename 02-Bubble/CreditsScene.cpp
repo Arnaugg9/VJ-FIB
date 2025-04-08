@@ -28,7 +28,7 @@ void CreditsScene::init()
 	fondo->setAnimationSpeed(0, 8);
 	fondo->addKeyframe(0, glm::vec2(0.0f, 0.0f));
 	fondo->changeAnimation(0);
-	
+
 	nombres = Sprite::createSprite(glm::ivec2(256, 224), glm::vec2(0.3333333333333f, 0.3333333333333f), &spritesheet, &texProgram);
 	nombres->setNumberAnimations(1);
 	nombres->setAnimationSpeed(0, 8);
@@ -64,7 +64,7 @@ void CreditsScene::init()
 	restart->setAnimationSpeed(0, 8);
 	restart->addKeyframe(0, glm::vec2(0.666666666f, 0.0f));
 	restart->changeAnimation(0);
-	restart->setPosition(glm::vec2(0, posTransition +  291));
+	restart->setPosition(glm::vec2(0, posTransition + 291));
 }
 
 void CreditsScene::update(int deltaTime)
@@ -75,8 +75,8 @@ void CreditsScene::update(int deltaTime)
 	if (posTransition == 53) {
 		medio = true;
 	}
-	
-	if (medio && !finmedio){
+
+	if (medio && !finmedio) {
 		--timeTransition;
 		indio1->update(deltaTime);
 		indio2->update(deltaTime);
@@ -95,7 +95,7 @@ void CreditsScene::update(int deltaTime)
 	}
 
 	if (posTransition == -190) fin = true;
-	
+
 
 	nombres->update(deltaTime);
 }

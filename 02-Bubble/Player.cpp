@@ -533,7 +533,19 @@ void Player::updateHealth(int health) {
 
 void Player::updateGourds() {
 	++gourds;
-	if (gourds == 9) {
+	if (gourds == 1) {
+		maxHealth += 3;
+		health += 3;
+	}
+	else if (gourds == 3) {
+		maxHealth += 3;
+		health += 3;
+	}
+	else if (gourds == 5) {
+		maxHealth += 3;
+		health += 3;
+	}
+	else if (gourds == 8) {
 		maxHealth += 3;
 		health += 3;
 	}
@@ -541,27 +553,15 @@ void Player::updateGourds() {
 		maxHealth += 3;
 		health += 3;
 	}
-	else if (gourds == 16) {
+	else if (gourds == 15) {
+		maxHealth += 3;
+		health += 3;
+	}
+	else if (gourds == 18) {
 		maxHealth += 3;
 		health += 3;
 	}
 	else if (gourds == 22) {
-		maxHealth += 3;
-		health += 3;
-	}
-	else if (gourds == 30) {
-		maxHealth += 3;
-		health += 3;
-	}
-	else if (gourds == 42) {
-		maxHealth += 3;
-		health += 3;
-	}
-	else if (gourds == 62) {
-		maxHealth += 3;
-		health += 3;
-	}
-	else if (gourds == 99) {
 		maxHealth += 3;
 		health += 3;
 	}

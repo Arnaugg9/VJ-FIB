@@ -25,18 +25,18 @@ private:
     glm::mat4 projection;
 
     int timeTransition;
-	int posTransition;
+    int posTransition;
     bool medio;
-	bool finmedio;
-	bool fin;
+    bool finmedio;
+    bool fin;
 
     Texture spritesheet;
     Sprite* fondo;
     Sprite* nombres;
     Sprite* restart;
-	int renderRestart;
+    int renderRestart;
     Sprite* indio1;
-	Sprite* indio2;
+    Sprite* indio2;
 
     GLuint textureColorbuffer;
     GLuint rbo;

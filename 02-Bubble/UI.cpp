@@ -89,7 +89,6 @@ void UI::init(const glm::ivec2& uiPos, ShaderProgram& shaderProgram)
 		potion[i]->changeAnimation(0);
 		potion[i]->setPosition(uiPos);
 	}
-}
 
 	for (int i = 0; i < 11; ++i) {
 		bossHearts[i] = Sprite::createSprite(glm::ivec2(64, 64), glm::vec2(0.125, 0.125), &spritesheetBoss, &shaderProgram);
@@ -160,7 +159,6 @@ void UI::update(int deltaTime, const glm::vec2& cameraPos, bool spear)
 			else bossHearts[i]->changeAnimation(3);
 		}
 	}
-}
 
 	if (playerAttackingHits > 0) {
 		rock->setPosition(glm::vec2(cameraPos.x + 10, cameraPos.y + 208));
@@ -198,7 +196,6 @@ void UI::render()
 	for (int i = 0; i < playerPotions; ++i) {
 		potion[i]->render();
 	}
-}
 	if (bossfight) {
 		for (int i = 0; i < 11; ++i) {
 			bossHearts[i]->render();
@@ -246,7 +243,6 @@ void UI::setBossfight()
 void UI::setBossHealth(int health)
 {
 	bossHealth = health;
-}
 }
 
 void UI::setPlayerPotions(int potions)
