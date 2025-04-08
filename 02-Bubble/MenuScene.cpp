@@ -31,6 +31,8 @@ void MenuScene::init()
         sprite->addKeyframe(i, glm::vec2(i * 0.2f, 0.0f));
     }
     sprite->changeAnimation(0);
+
+	SoundManager::playMusic("sounds/music/01_Stage Intro.wav", true);
 }
 
 void MenuScene::update(int deltaTime)

@@ -3,6 +3,7 @@
 #include <GL/glew.h>
 #include "EnemyFlower.h"
 #include "Game.h"
+#include "SoundManager.h"
 
 #define MAX_TIME_SHOOT 750
 #define MAX_TIME_TO_SHOOT 500
@@ -63,6 +64,7 @@ void EnemyFlower::update(int deltaTime)
 	else if (timeToShoot <= 0) {
 		timeShoot = MAX_TIME_SHOOT;
 		posCollider = initialBulletPos;
+		SoundManager::playSFX("sounds/effects/bullet.wav");
 	}
 	//Encara no hem de disparar
 	else {
@@ -78,4 +80,9 @@ void EnemyFlower::render()
 	Enemy::render();
 
 	if (timeShoot > 0) spriteBullet->render();
+}
+
+bool EnemyFlower::getHurt(int damage)
+{
+	return false;
 }

@@ -32,6 +32,9 @@ public:
     //Returns true if enemy life < 0
     virtual bool getHurt(int damage);
 
+	virtual void setDead(bool state);
+	virtual bool getDead() { return dead; }
+
     int getDamage();
 
     void setMap(TileMap* tileMap);
@@ -48,6 +51,7 @@ protected:
     //Data enemy properties
     int damage;
     int health;
+    bool dead;
 
     bool invencible;
     int timeInvencibility;

@@ -3,6 +3,7 @@
 #include <GL/glew.h>
 #include "EnemyElephant.h"
 #include "Game.h"
+#include "SoundManager.h"
 
 #define MIN_TIME_CHANGE_DIR 2000
 
@@ -175,6 +176,7 @@ void EnemyElephant::jump()
 void EnemyElephant::shoot() {
 	bullet->activate(posEnemy, direction);
 	timeToShoot = TIME_BETWEEN_SHOOT;
+	SoundManager::playSFX("sounds/effects/bullet.wav");
 }
 
 void EnemyElephant::handleShoot(int deltaTime)

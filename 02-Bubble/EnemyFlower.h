@@ -11,6 +11,7 @@ public:
 	void init(const glm::ivec2& enemyPos, ShaderProgram& shaderProgram);
 	void update(int deltaTime);
 	void render();
+	bool getHurt(int damage);
 
 private:
 	glm::vec2 initialBulletPos, posBullet, sizeBullet;

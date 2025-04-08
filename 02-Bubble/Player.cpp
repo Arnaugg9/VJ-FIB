@@ -3,6 +3,7 @@
 #include <GL/glew.h>
 #include "Player.h"
 #include "Game.h"
+#include "SoundManager.h"
 
 
 #define JUMP_ANGLE_STEP 4
@@ -18,7 +19,7 @@
 #define MAX_INVENCIBILITY_TIME 1500
 #define FRAMES_AUX_HURT_ANIMATION 5
 #define TIME_HURT_ANIMATION 500
-#define PLAYER_DAMAGE 1;
+#define PLAYER_DAMAGE 10;
 
 #define LEFT_BOSSFIGHT 48*16
 
@@ -362,6 +363,7 @@ void Player::handleJump()
 				bJumping = true;
 				jumpAngle = 0;
 				startY = posPlayer.y;
+				SoundManager::playSFX("sounds/effects/jump.wav");
 			}
 		}
 	}
@@ -382,11 +384,15 @@ void Player::handleAttack(int deltaTime)
 		}
 		else if (attackKeyPressed && !previousAttackState && (isGrounded || (!isCovering && !isCrouching))) {
 			isAttacking = true;
+			SoundManager::playSFX("sounds/effects/attack.wav");
 		}
 		previousAttackState = attackKeyPressed;
 	}
 	else if (weaponType == FIRE) {
-		if (attackKeyPressed && (isGrounded || (!isCovering && !isCrouching))) isAttacking = true;
+		if (attackKeyPressed && (isGrounded || (!isCovering && !isCrouching))) {
+			isAttacking = true;
+			SoundManager::playSFX("sounds/effects/fire.wav");
+		}
 		else isAttacking = false;
 	}
 }
@@ -411,12 +417,18 @@ void Player::getHurt(int damage) {
 		health -= newDamage;
 	}  
 	else health -= damage;
+	SoundManager::playSFX("sounds/effects/hurt.wav");
 	if (health <= 0) {
 		lives--;
 		if (lives < 0) {
 			die = true;
+			SoundManager::stopMusic();
+			SoundManager::playSFX("sounds/effects/die.wav");
 		}
-		else health = maxHealth;
+		else {
+			health = maxHealth;
+			SoundManager::playSFX("sounds/effects/revive.wav");
+		}
 	}
 	invencibilityTime = MAX_INVENCIBILITY_TIME;
 	timeHurtAnimation = TIME_HURT_ANIMATION;

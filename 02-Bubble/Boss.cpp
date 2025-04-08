@@ -3,6 +3,7 @@
 #include <GL/glew.h>
 #include "Boss.h"
 #include "Game.h"
+#include "SoundManager.h"
 
 #define TIME_TO_RISE 3000
 #define TIME_TO_FALL 3500
@@ -275,6 +276,7 @@ void Boss::changePhase(int deltaTime)
 			sizeCollider = sizeColliderPhase1;
 			health = HEALTH_RECOVER;
 			sprite->changeAnimation(IDLE_MOVE);
+			SoundManager::playSFX("sounds/effects/boss_change_phase.wav");
 		}
 		else {
 			if (sprite->animation() != CHANGE_PHASE) sprite->changeAnimation(CHANGE_PHASE);
@@ -425,7 +427,8 @@ bool Boss::getHurt(int damage)
 		health -= damage;
 		invencible = true;
 		if (health <= 0) return true;
+		SoundManager::playSFX("sounds/effects/boss_hurt.wav");
 	}
-	cout << "My health is: " << health << endl;
+	//cout << "My health is: " << health << endl;
 	return false;
 }

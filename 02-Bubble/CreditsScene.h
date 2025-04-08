@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 #include "ShaderProgram.h"
 #include "Sprite.h"
+#include "SoundManager.h"
 
 class CreditsScene
 {

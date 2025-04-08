@@ -17,8 +17,7 @@
 #include "Helmet.h"
 #include "Totem.h"
 #include "UI.h"
-#include <irrKlang.h>
-using namespace irrklang;
+#include "SoundManager.h"
 
 
 // Scene contains all the entities of our game.
@@ -105,9 +104,8 @@ private:
 	EnemySnail* enemySnail[9];
 	Boss* boss;
 
-	ISoundEngine* soundEngine;
-	ISound* backgroundMusic;
 	bool music = false;
+	bool musicTotem = false;
 };
 
 

@@ -15,9 +15,9 @@ void Game::init()
 	gameScene.init();
 	menuScene.init();
 	creditsScene.init();
-	
-	//currentScene = MENU_SCENE;
-	currentScene = GAME_SCENE;
+
+	currentScene = MENU_SCENE;
+	//currentScene = GAME_SCENE;
 }
 
 bool Game::update(int deltaTime)

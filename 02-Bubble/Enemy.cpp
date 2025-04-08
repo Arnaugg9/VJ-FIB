@@ -10,6 +10,7 @@
 
 void Enemy::init(const glm::ivec2& enemyPos, ShaderProgram& shaderProgram) {
     posEnemy = enemyPos;
+    dead = false;
 
     onScreen = false;
     hasBullet = false;
@@ -109,4 +110,6 @@ bool Enemy::isInvencible()
     return invencible;
 }
 
-
+void Enemy::setDead(bool state) {
+    dead = state;
+}

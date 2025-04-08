@@ -65,6 +65,8 @@ void CreditsScene::init()
 	restart->addKeyframe(0, glm::vec2(0.666666666f, 0.0f));
 	restart->changeAnimation(0);
 	restart->setPosition(glm::vec2(0, posTransition + 291));
+
+	SoundManager::playMusic("sounds/music/15_Credits.wav", true);
 }
 
 void CreditsScene::update(int deltaTime)

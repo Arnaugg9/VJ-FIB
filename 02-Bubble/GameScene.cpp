@@ -225,12 +225,8 @@ void GameScene::init()
 		totem->init(texProgram);
 		totem->setTileMap(map);
 
-	//Init sound
-	soundEngine = createIrrKlangDevice();
-	if (soundEngine) {
-		if (backgroundMusic) backgroundMusic->stop();
-		backgroundMusic = soundEngine->play2D("sounds/08_Forest Test.wav", true, false, true);
-	}
+	SoundManager::playMusic("sounds/music/08_Forest Test.wav", true);
+
 	updateScreen();
 }
 
@@ -253,15 +249,15 @@ bool GameScene::checkIfOnScreen(glm::ivec2 pos, glm::ivec2 size) {
 void GameScene::updateScreen() {
 	//Check if Enemies are on screen
 	for (EnemyFlower* f : enemyFlower) {
-		f->setOnScreen(checkIfOnScreen(f->getPosition(), f->getSize()));
+		f->setOnScreen(!f->getDead() && checkIfOnScreen(f->getPosition(), f->getSize()));
 	}
 
 	for (EnemyElephant* e : enemyElephant) {
-		e->setOnScreen(checkIfOnScreen(e->getPosition(), e->getSize()));
+		e->setOnScreen(!e->getDead() && checkIfOnScreen(e->getPosition(), e->getSize()));
 	}
 
 	for (EnemySnail* s : enemySnail) {
-		s->setOnScreen(checkIfOnScreen(s->getPosition(), s->getSize()));
+		s->setOnScreen(!s->getDead() && checkIfOnScreen(s->getPosition(), s->getSize()));
 	}
 
 	boss->setOnScreen(player->isOnBossfight());
@@ -293,8 +289,9 @@ void GameScene::spawnItem(glm::ivec2 pos, glm::ivec2 sizeEnemy)
 	int num = rand() % 100;
 
 	if (num < ITEM_GENERATION_PROBABILITY) {
+		SoundManager::playSFX("sounds/effects/spawn_powerup.wav");
 		num = rand() % NUM_ITEMS;
-		cout << "Generated item " << num << endl;
+		//cout << "Generated item " << num << endl;
 		if (num == SMALL_HEART) {
 			SmallHeart* item = new SmallHeart();
 			item->init(pos, texProgram);
@@ -378,8 +375,9 @@ void GameScene::updateEnemy(int deltaTime, Enemy* enemy) {
 		//cout << "I got Damaged on iteration " << endl;
 		bool dead = enemy->getHurt(player->getDamage());
 		if (dead && enemy != boss) {
+			SoundManager::playSFX("sounds/effects/enemy_die.wav");
 			spawnItem(enemy->getPosition(), enemy->getSize());
-			delete enemy;
+			enemy->setDead(true);
 		}
 		else if (dead && enemy == boss) {
 			bossScreenShake = true;
@@ -396,7 +394,7 @@ void GameScene::updateEnemy(int deltaTime, Enemy* enemy) {
 	else if (!godModeOn && enemy->getHasBullet() && enemy == boss && !player->isInvencible()) {
 		for (int i = 0; i < 4; ++i) {
 			if (collidesWithPlayer(boss->getBullet(i)->getColliderPosition(), boss->getBullet(i)->getColliderSize())) {
-				cout << "Hit by bullet" << endl;
+				//cout << "Hit by bullet" << endl;
 				player->getHurt(enemy->getDamage());
 				boss->getBullet(i)->deactivate();
 			}
@@ -428,6 +426,7 @@ void GameScene::updateItems(int deltaTime) {
 		if (sh->isOnScreen()) {
 			sh->update(deltaTime);
 			if (collidesWithPlayerItem(sh->getColliderPosition(), sh->getColliderSize())) {
+				SoundManager::playSFX("sounds/effects/grab_powerup.wav");
 				player->updateHealth(3);
 				sh->active = false;
 			}
@@ -438,6 +437,7 @@ void GameScene::updateItems(int deltaTime) {
 		if (bh->isOnScreen()) {
 			bh->update(deltaTime);
 			if (collidesWithPlayerItem(bh->getColliderPosition(), bh->getColliderSize())) {
+				SoundManager::playSFX("sounds/effects/grab_powerup.wav");
 				player->updateHealth(-1);
 				bh->active = false;
 			}
@@ -448,6 +448,7 @@ void GameScene::updateItems(int deltaTime) {
 		if (g->isOnScreen()) {
 			g->update(deltaTime);
 			if (collidesWithPlayerItem(g->getColliderPosition(), g->getColliderSize())) {
+				SoundManager::playSFX("sounds/effects/grab_powerup.wav");
 				player->updateGourds();
 				g->active = false;
 			}
@@ -458,6 +459,7 @@ void GameScene::updateItems(int deltaTime) {
 		if (a->isOnScreen()) {
 			a->update(deltaTime);
 			if (collidesWithPlayerItem(a->getColliderPosition(), a->getColliderSize())) {
+				SoundManager::playSFX("sounds/effects/grab_powerup.wav");
 				player->setInvencible();
 				a->active = false;
 			}
@@ -468,6 +470,7 @@ void GameScene::updateItems(int deltaTime) {
 		if (h->isOnScreen()) {
 			h->update(deltaTime);
 			if (collidesWithPlayerItem(h->getColliderPosition(), h->getColliderSize())) {
+				SoundManager::playSFX("sounds/effects/grab_powerup.wav");
 				player->setDefensiveHits(4);
 				h->active = false;
 			}
@@ -527,6 +530,10 @@ void GameScene::update(int deltaTime)
 	else if (endAnimation) {
 		ui->setBossfight(false);
 		endAnimationTimer -= deltaTime;
+		if (!musicTotem) {
+			SoundManager::playMusic("sounds/music/16_Stage Clear.wav", true);
+			musicTotem = true;
+		}
 		if (endAnimationTimer > 0) {
 			player->endAnimation(deltaTime);
 		}
@@ -543,8 +550,7 @@ void GameScene::update(int deltaTime)
 
 		if (!player->isOnBossfight()) handleCamera();
 		else if (!music) {
-			if (backgroundMusic) backgroundMusic->stop();
-			backgroundMusic = soundEngine->play2D("sounds/11_Boss Battle.wav", true, false, true);
+			SoundManager::playMusic("sounds/music/11_Boss Battle.wav", true);
 			music = true;
 		}
 		updateScreen();
@@ -634,7 +640,12 @@ void GameScene::handleKeyPress(int key)
 		}
 		if (key == GLFW_KEY_H) player->healCheat();
 	}
-	if (!player->getDie() && key == GLFW_KEY_P) paused = !paused;
+	if (!player->getDie() && key == GLFW_KEY_P) {
+		SoundManager::playSFX("sounds/effects/pause.wav");
+		paused = !paused;
+		if (!paused) SoundManager::playMusic("sounds/music/08_Forest Test.wav", true);
+		else SoundManager::stopMusic();
+	}
 	if (player->getDie() && key == GLFW_KEY_R) {
 		init();
 	}
