@@ -211,6 +211,12 @@ void GameScene::init()
 		totem->init(texProgram);
 		totem->setTileMap(map);
 
+	//Init sound
+	soundEngine = createIrrKlangDevice();
+	if (soundEngine) {
+		if (backgroundMusic) backgroundMusic->stop();
+		backgroundMusic = soundEngine->play2D("sounds/08_Forest Test.wav", true, false, true);
+	}
 	updateScreen();
 }
 
@@ -477,6 +483,7 @@ void GameScene::updateUI(int deltaTime) {
 	ui->setPlayerMaxHealth(player->getMaxHealth());
 	ui->setPlayerDefensiveHits(player->getDefensiveHits());
 	ui->setPlayerAttackingHits(player->getAttackingHits());
+	ui->setPlayerPotions(player->getLives());
 	if (player->isOnBossfight()) ui->setBossHealth(boss->getHealth());
 }
 
@@ -519,6 +526,11 @@ void GameScene::update(int deltaTime)
 		updateUI(deltaTime);
 
 		if (!player->isOnBossfight()) handleCamera();
+		else if (!music) {
+			if (backgroundMusic) backgroundMusic->stop();
+			backgroundMusic = soundEngine->play2D("sounds/11_Boss Battle.wav", true, false, true);
+			music = true;
+		}
 		updateScreen();
 
 		glm::vec2 cameraPos = glm::vec2(leftCam, topCam);

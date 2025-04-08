@@ -47,6 +47,7 @@ public:
 	int getAttackingHits() { return attackingHits; }
 	int getHealth() { return health; }
 	int getMaxHealth() { return maxHealth; }
+	int getLives() { return lives; }
 	
 	void healCheat();
 	bool godModeOn;
