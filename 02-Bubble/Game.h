@@ -5,6 +5,7 @@
 #include <GLFW/glfw3.h>
 #include "GameScene.h"
 #include "MenuScene.h"
+#include "CreditsScene.h"
 
 
 #define SCREEN_WIDTH 1280
@@ -48,6 +49,7 @@ private:
 							    // we can have access at any time
 	GameScene gameScene;
 	MenuScene menuScene;
+	CreditsScene creditsScene;
 	int currentScene;
 
 };

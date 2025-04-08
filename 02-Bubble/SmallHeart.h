@@ -20,6 +20,10 @@ public:
     glm::ivec2 getColliderPosition();
     glm::ivec2 getColliderSize();
 
+    bool isOnScreen();
+    void setOnScreen(bool value);
+    bool active;
+
 private:
     glm::ivec2 heartColliderSize;
     glm::ivec2 posHeart;
@@ -27,6 +31,8 @@ private:
     Texture spritesheet;
     Sprite* sprite;
     TileMap* map;
+
+    bool onScreen;
 };
 
 #endif // _SMALLHEART_INCLUDE

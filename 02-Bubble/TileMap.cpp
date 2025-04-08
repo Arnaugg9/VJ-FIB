@@ -153,8 +153,8 @@ bool TileMap::collisionMoveLeft(const glm::ivec2 &pos, const glm::ivec2 &size) c
 	y1 = (pos.y + size.y - 1) / tileSize;
 	for(int y=y0; y<=y1; y++)
 	{
-		if(map[y*mapSize.x+x] != 0)
-			return true;
+		int tile = map[y * mapSize.x + x];
+		if (tile != 0 && tile != 47 && tile != 48 && tile != 57 && tile != 58) return true;
 	}
 	
 	return false;
@@ -169,8 +169,8 @@ bool TileMap::collisionMoveRight(const glm::ivec2 &pos, const glm::ivec2 &size) 
 	y1 = (pos.y + size.y - 1) / tileSize;
 	for(int y=y0; y<=y1; y++)
 	{
-		if(map[y*mapSize.x+x] != 0)
-			return true;
+		int tile = map[y * mapSize.x + x];
+		if (tile != 0 && tile != 47 && tile != 48 && tile != 57 && tile != 58) return true;
 	}
 	
 	return false;
@@ -212,8 +212,8 @@ bool TileMap::collisionMoveUp(const glm::ivec2& pos, const glm::ivec2& size, int
 	{
 		if (map[y * mapSize.x + x] != 0)
 		{
-			if ((tileSize * (y + 1)) - *posY <= 6)
-			{
+			int tile = map[y * mapSize.x + x];
+			if (tile != 0 && tile != 47 && tile != 48 && tile != 57 && tile != 58) {
 				int diffy = (tileSize * (y + 1)) - pos.y;
 				*posY += diffy;
 				return true;

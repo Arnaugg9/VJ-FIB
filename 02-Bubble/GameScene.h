@@ -9,12 +9,16 @@
 #include "EnemyFlower.h"
 #include "EnemyElephant.h"
 #include "EnemySnail.h"
+#include "Boss.h"
 #include "SmallHeart.h"
 #include "BigHeart.h"
 #include "Gourd.h"
 #include "Armor.h"
 #include "Helmet.h"
+#include "Totem.h"
 #include "UI.h"
+#include <irrKlang.h>
+using namespace irrklang;
 
 
 // Scene contains all the entities of our game.
@@ -38,14 +42,19 @@ public:
 private:
 	void initShaders();
 	void handleCamera();
+	void handleScreenShake();
 	void updateEnemiesOnScreen(int deltaTime);
 	void updateItems(int deltaTime);
 	void updateEnemy(int deltaTime, Enemy* enemy);
+	void updateUI(int deltaTime);
 	void renderEnemiesOnScreen();
 	void renderItems();
 	bool checkIfOnScreen(glm::ivec2 pos, glm::ivec2 size);
 	bool collidesWithPlayer(glm::ivec2 posColliderEnemy, glm::ivec2 sizeColliderEnemy);
+	bool collidesWithPlayerItem(glm::ivec2 posColliderEnemy, glm::ivec2 sizeColliderEnemy);
 	void updateScreen();
+
+	void spawnItem(glm::ivec2 pos, glm::ivec2 sizeEnemy);
 
 
 private:
@@ -61,20 +70,41 @@ private:
 	bool verticalScroll;
 	bool spear;
 
+	bool godModeOn;
+
+	bool bossScreenShake;
+	bool bossDying;
+	bool bossDead;
+	int timerScreenShake;
+	bool screenShakeDown;
+
+	int totemUpTimer;
+	bool endAnimation;
+	int endAnimationTimer;
+
+	bool paused;
+	Texture pauseSpritesheet;
+	Sprite* pauseScreenSprite;
+
 	UI* ui;
 
 	//Llistat d'objectes
-	SmallHeart* smallHeart;
-	BigHeart* bigHeart;
-	Gourd* gourd[2];
-	Armor* armor;
-	Helmet* helmet;
+	std::vector<SmallHeart*> smallHeart;
+	std::vector<BigHeart*> bigHeart;
+	std::vector<Gourd*> gourd;
+	std::vector<Armor*> armor;
+	std::vector<Helmet*> helmet;
+	Totem* totem;
 
 	//Llistat d'enemics
 	EnemyFlower *enemyFlower[5];
 	EnemyElephant* enemyElephant[7];
 	EnemySnail* enemySnail[9];
+	Boss* boss;
 
+	ISoundEngine* soundEngine;
+	ISound* backgroundMusic;
+	bool music = false;
 };
 
 

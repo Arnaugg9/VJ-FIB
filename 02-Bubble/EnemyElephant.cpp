@@ -74,7 +74,7 @@ void EnemyElephant::init(const glm::ivec2& enemyPos, ShaderProgram& shaderProgra
 
 
 	bullet = new Bullet();
-	bullet->init(glm::ivec2(8,8), direction,bulletSprite, 2, TIME_BULLET_ALIVE);
+	bullet->init(glm::ivec2(8,8), direction, bulletSprite, 2, TIME_BULLET_ALIVE);
 
 	timeToShoot = TIME_BETWEEN_SHOOT;
 }

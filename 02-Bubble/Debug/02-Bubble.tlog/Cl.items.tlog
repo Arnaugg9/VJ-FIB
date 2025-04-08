@@ -1,6 +1,8 @@
 C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\Armor.cpp;C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\Debug\Armor.obj
 C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\BigHeart.cpp;C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\Debug\BigHeart.obj
+C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\Boss.cpp;C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\Debug\Boss.obj
 C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\Bullet.cpp;C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\Debug\Bullet.obj
+C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\CreditsScene.cpp;C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\Debug\CreditsScene.obj
 C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\Enemy.cpp;C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\Debug\Enemy.obj
 C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\EnemyElephant.cpp;C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\Debug\EnemyElephant.obj
 C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\EnemyFlower.cpp;C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\Debug\EnemyFlower.obj
@@ -18,4 +20,5 @@ C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\ShaderP
 C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\Sprite.cpp;C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\Debug\Sprite.obj
 C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\Texture.cpp;C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\Debug\Texture.obj
 C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\TileMap.cpp;C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\Debug\TileMap.obj
+C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\Totem.cpp;C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\Debug\Totem.obj
 C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\UI.cpp;C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\02-Bubble\Debug\UI.obj

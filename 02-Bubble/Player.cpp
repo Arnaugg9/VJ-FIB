@@ -10,9 +10,14 @@
 #define EXTRA_JUMP_HEIGHT 16
 #define FALL_STEP 4
 
+#define ATTACK_TIME 400
+
+#define INITIAL_MAX_HEALTH 12
+#define INITIAL_LIVES 1
+
 #define MAX_INVENCIBILITY_TIME 1500
 #define FRAMES_AUX_HURT_ANIMATION 5
-#define TIME_HURT_ANIMATION 400
+#define TIME_HURT_ANIMATION 500
 #define PLAYER_DAMAGE 1;
 
 #define LEFT_BOSSFIGHT 48*16
@@ -21,17 +26,21 @@ enum PlayerAnims
 {
 	STAND_LEFT, STAND_RIGHT, MOVE_LEFT, MOVE_RIGHT, JUMP_LEFT, JUMP_RIGHT, ATCK_LEFT, ATCK_RIGHT, ATCK_MOVE_LEFT, ATCK_MOVE_RIGHT,
 	ATCK_JUMP_LEFT, ATCK_JUMP_RIGHT, COVER_LEFT, COVER_RIGHT, ATCK_JUMP_UP_LEFT, ATCK_JUMP_UP_RIGHT,
-	ATCK_JUMP_DOWN_LEFT, ATCK_JUMP_DOWN_RIGHT, HURT_LEFT, HURT_RIGHT
+	ATCK_JUMP_DOWN_LEFT, ATCK_JUMP_DOWN_RIGHT, HURT_LEFT, HURT_RIGHT, END
 };
 
 enum SwordAnims
 {
-	SWORD_LEFT, SWORD_RIGHT
+	SWORD_LEFT, SWORD_RIGHT, FIRE_LEFT, FIRE_RIGHT
 };
 
 enum Directions
 {
 	LEFT, RIGHT
+};
+
+enum Weapons {
+	SPEAR, FIRE
 };
 
 void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
@@ -50,15 +59,17 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 	isCrouching = false;
 	previousJumpState = false;
 	onBossfight = false;
+	godModeOn = false;
 
 	defensiveHits = 0;
 	attackingHits = 0;
 
-	attackTime = 500;
-	attackTime = 500; 
+	attackTime = ATTACK_TIME;
 	playerDamage = PLAYER_DAMAGE;
+	weaponType = SPEAR;
 
-	maxHealth = health = 12;	//Al principi té 4 cors, cada unitat es 1 terç de cor
+	maxHealth = health = INITIAL_MAX_HEALTH;	//Al principi té 4 cors, cada unitat es 1 terç de cor
+	lives = INITIAL_LIVES;
 	invencibilityTime = 0;
 	auxAnimationHurt = FRAMES_AUX_HURT_ANIMATION;
 
@@ -67,7 +78,7 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 	spritesheet.setMagFilter(GL_NEAREST);
 		//Cada sprite ocupa 0.25 en x y 0.0625 en y
 	sprite = Sprite::createSprite(glm::ivec2(32, 64), glm::vec2(0.25, 0.0625), &spritesheet, &shaderProgram);
-	sprite->setNumberAnimations(20);
+	sprite->setNumberAnimations(21);
 	
 		//STAND_LEFT
 		sprite->setAnimationSpeed(STAND_LEFT, 8);
@@ -164,6 +175,10 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 		//HURT_RIGHT
 		sprite->setAnimationSpeed(HURT_RIGHT, 8);
 		sprite->addKeyframe(HURT_RIGHT, glm::vec2(0.f, 0.5f));
+
+		//END
+		sprite->setAnimationSpeed(END, 8);
+		sprite->addKeyframe(END, glm::vec2(0.f, 0.8125f));
 		
 	sprite->changeAnimation(STAND_RIGHT);
 	tileMapDispl = tileMapPos;
@@ -171,10 +186,10 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 
 	
 	swordSprite = Sprite::createSprite(glm::ivec2(32, 64), glm::vec2(0.25, 0.0625), &spritesheet, &shaderProgram);
-	swordSprite->setNumberAnimations(2);
+	swordSprite->setNumberAnimations(4);
 
 		//SWORD_LEFT
-		swordSprite->setAnimationSpeed(SWORD_LEFT, 13);
+		swordSprite->setAnimationSpeed(SWORD_LEFT, 18);
 		swordSprite->addKeyframe(SWORD_LEFT, glm::vec2(0.f, 0.6875f));
 		swordSprite->addKeyframe(SWORD_LEFT, glm::vec2(0.25f, 0.6875f));
 		swordSprite->addKeyframe(SWORD_LEFT, glm::vec2(0.5f, 0.6875f));
@@ -184,7 +199,7 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 
 
 		//SWORD_RIGHT
-		swordSprite->setAnimationSpeed(SWORD_RIGHT, 13);
+		swordSprite->setAnimationSpeed(SWORD_RIGHT, 18);
 		swordSprite->addKeyframe(SWORD_RIGHT, glm::vec2(0.f, 0.625f));
 		swordSprite->addKeyframe(SWORD_RIGHT, glm::vec2(0.25f, 0.625f));
 		swordSprite->addKeyframe(SWORD_RIGHT, glm::vec2(0.5f, 0.625f));
@@ -192,10 +207,19 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 		swordSprite->addKeyframe(SWORD_RIGHT, glm::vec2(0.5f, 0.625f));
 		swordSprite->addKeyframe(SWORD_RIGHT, glm::vec2(0.25f, 0.625f));
 
+		//FIRE_LEFT
+		swordSprite->setAnimationSpeed(FIRE_LEFT, 18);
+		swordSprite->addKeyframe(FIRE_LEFT, glm::vec2(0.5f, 0.75f));
+		swordSprite->addKeyframe(FIRE_LEFT, glm::vec2(0.75f, 0.75f));
+
+		//FIRE_RIGHT
+		swordSprite->setAnimationSpeed(FIRE_RIGHT, 18);
+		swordSprite->addKeyframe(FIRE_RIGHT, glm::vec2(0.f, 0.75f));
+		swordSprite->addKeyframe(FIRE_RIGHT, glm::vec2(0.25f, 0.75f));
 
 
-		swordSprite->changeAnimation(SWORD_RIGHT);
-		swordSprite->setPosition(glm::ivec2(posPlayer.x + 28, posPlayer.y));
+	swordSprite->changeAnimation(SWORD_RIGHT);
+	swordSprite->setPosition(glm::ivec2(posPlayer.x + 28, posPlayer.y));
 }
 
 void Player::update(int deltaTime)
@@ -204,7 +228,7 @@ void Player::update(int deltaTime)
 	if (isAttacking) swordSprite->update(deltaTime);
 	
 	int tileID = map->collisionSpecialTile(posPlayerCollision, playerColliderSize);
-	if (invencibilityTime <= 0 && timeHurtAnimation <= 0 && tileID == 43) this->getHurt(1);
+	if (invencibilityTime <= 0 && timeHurtAnimation <= 0 && tileID == 43 && !godModeOn) this->getHurt(1);
 
 	handleInvincibility(deltaTime);
 	handleMovement();
@@ -313,10 +337,14 @@ void Player::handleJump()
 			int currentJumpHeight = JUMP_HEIGHT;
 			if (extraJump) currentJumpHeight += EXTRA_JUMP_HEIGHT;
 			posPlayer.y = int(startY - currentJumpHeight * sin(3.14159f * jumpAngle / 180.f));
-			cout << currentJumpHeight << endl;
 			if (jumpAngle > 90) {
 				posPlayerCollision.y = posPlayer.y;
 				bJumping = !map->collisionMoveDown(posPlayerCollision, playerColliderSize, &posPlayer.y);
+				posPlayerCollision.y = posPlayer.y;
+			}
+			else {
+				posPlayerCollision.y = posPlayer.y;
+				bJumping = !map->collisionMoveUp(posPlayerCollision, playerColliderSize, &posPlayer.y);
 				posPlayerCollision.y = posPlayer.y;
 			}
 		}
@@ -343,22 +371,31 @@ void Player::handleJump()
 void Player::handleAttack(int deltaTime)
 {
 	bool attackKeyPressed = Game::instance().getKey(GLFW_KEY_X);
-	if (isAttacking) {
-		attackTime -= deltaTime;
-		if (attackTime <= 0) {
-			isAttacking = false;
-			attackTime = 500;
+	if (weaponType == SPEAR) {
+		if (isAttacking) {
+			attackTime -= deltaTime;
+			if (attackTime <= 0) {
+				isAttacking = false;
+				attackTime = ATTACK_TIME;
+				swordSprite->changeAnimation(swordSprite->animation());
+			}
 		}
+		else if (attackKeyPressed && !previousAttackState && (isGrounded || (!isCovering && !isCrouching))) {
+			isAttacking = true;
+		}
+		previousAttackState = attackKeyPressed;
 	}
-	else if (attackKeyPressed && !previousAttackState && (isGrounded || (!isCovering && !isCrouching))) {
-		isAttacking = true;
+	else if (weaponType == FIRE) {
+		if (attackKeyPressed && (isGrounded || (!isCovering && !isCrouching))) isAttacking = true;
+		else isAttacking = false;
 	}
-	previousAttackState = attackKeyPressed;
 }
 
 void Player::handleSwordSprite()
 {
-	int new_anim = dirPlayer == LEFT ? SWORD_LEFT : SWORD_RIGHT;
+	int new_anim = swordSprite->animation();
+	if (weaponType == SPEAR) new_anim = dirPlayer == LEFT ? SWORD_LEFT : SWORD_RIGHT;
+	else if (weaponType == FIRE) new_anim = dirPlayer == LEFT ? FIRE_LEFT : FIRE_RIGHT;
 
 	if (new_anim != swordSprite->animation()) swordSprite->changeAnimation(new_anim);
 
@@ -369,7 +406,9 @@ void Player::handleSwordSprite()
 void Player::getHurt(int damage) {
 	if (defensiveHits > 0) {
 		--defensiveHits;
-		health -= damage / 2;
+		int newDamage = damage / 2;
+		if (newDamage < 1) newDamage = 1;
+		health -= newDamage;
 	}  
 	else health -= damage;
 	invencibilityTime = MAX_INVENCIBILITY_TIME;
@@ -443,11 +482,13 @@ glm::ivec2 Player::getColliderPosition() {
 	else if (!isGrounded && isCrouching)
 		return glm::ivec2(posPlayerCollision.x, posPlayerCollision.y + 19);
 
-	else if (dirPlayer == LEFT)
-		return glm::ivec2(posPlayerCollision.x - 32, posPlayerCollision.y);
+	else if (dirPlayer == LEFT) {
+		if (weaponType == SPEAR) return glm::ivec2(posPlayerCollision.x - 32, posPlayerCollision.y);
+		if (weaponType == FIRE) return glm::ivec2(posPlayerCollision.x - 24, posPlayerCollision.y);
+	}
 
 	else if (dirPlayer == RIGHT)
-		return glm::ivec2(posPlayerCollision.x + playerColliderSize.x, posPlayerCollision.y);
+		return glm::ivec2(posPlayerCollision.x + sizePlayer.x, posPlayerCollision.y);
 
 	return posPlayerCollision;
 }
@@ -462,12 +503,21 @@ glm::ivec2 Player::getColliderSize() {
 	else if (!isGrounded && isCrouching)
 		return glm::ivec2(playerColliderSize.x, 17);
 
-	else if (dirPlayer == LEFT)
-		return glm::ivec2(32, playerColliderSize.y);
+	else if (dirPlayer == LEFT || dirPlayer == RIGHT) {
+		if (weaponType == SPEAR) return glm::ivec2(32, playerColliderSize.y);
+		if (weaponType == FIRE) return glm::ivec2(24, playerColliderSize.y);
+	}
 
-	else if (dirPlayer == RIGHT)
-		return glm::ivec2(34, playerColliderSize.y);
+	return playerColliderSize;
+}
 
+glm::ivec2 Player::getColliderPositionNeutral()
+{
+	return posPlayerCollision;
+}
+
+glm::ivec2 Player::getColliderSizeNeutral()
+{
 	return playerColliderSize;
 }
 
@@ -483,7 +533,19 @@ void Player::updateHealth(int health) {
 
 void Player::updateGourds() {
 	++gourds;
-	if (gourds == 9) {
+	if (gourds == 1) {
+		maxHealth += 3;
+		health += 3;
+	}
+	else if (gourds == 3) {
+		maxHealth += 3;
+		health += 3;
+	}
+	else if (gourds == 5) {
+		maxHealth += 3;
+		health += 3;
+	}
+	else if (gourds == 8) {
 		maxHealth += 3;
 		health += 3;
 	}
@@ -491,27 +553,15 @@ void Player::updateGourds() {
 		maxHealth += 3;
 		health += 3;
 	}
-	else if (gourds == 16) {
+	else if (gourds == 15) {
+		maxHealth += 3;
+		health += 3;
+	}
+	else if (gourds == 18) {
 		maxHealth += 3;
 		health += 3;
 	}
 	else if (gourds == 22) {
-		maxHealth += 3;
-		health += 3;
-	}
-	else if (gourds == 30) {
-		maxHealth += 3;
-		health += 3;
-	}
-	else if (gourds == 42) {
-		maxHealth += 3;
-		health += 3;
-	}
-	else if (gourds == 62) {
-		maxHealth += 3;
-		health += 3;
-	}
-	else if (gourds == 99) {
 		maxHealth += 3;
 		health += 3;
 	}
@@ -528,6 +578,15 @@ void Player::setDefensiveHits(int hits) {
 void Player::setAttackingHits(int hits) {
 	attackingHits = hits;
 }
+void Player::setWeapon(int type)
+{
+	weaponType = type;
+}
+void Player::healCheat()
+{
+	health = maxHealth;
+	lives = 2;
+}
 bool Player::isOnBossfight()
 {
 	return onBossfight;
@@ -541,5 +600,14 @@ bool Player::getIsAttacking2()
 int Player::getDamage()
 {
 	return playerDamage;
+}
+
+void Player::endAnimation(int deltaTime)
+{
+	if (!isGrounded) update(deltaTime);
+	else {
+		sprite->changeAnimation(END);
+		sprite->setPosition(glm::ivec2(posPlayer.x, posPlayer.y - 14));
+	}
 }
 

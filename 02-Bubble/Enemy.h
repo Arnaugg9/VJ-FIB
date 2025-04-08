@@ -29,7 +29,8 @@ public:
 
     bool getHasBullet();
 
-    virtual void getHurt(int damage);
+    //Returns true if enemy life < 0
+    virtual bool getHurt(int damage);
 
     int getDamage();
 

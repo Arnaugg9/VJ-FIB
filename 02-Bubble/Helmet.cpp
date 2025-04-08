@@ -13,6 +13,9 @@ Helmet::~Helmet()
 
 void Helmet::init(const glm::ivec2& helmetPos, ShaderProgram& shaderProgram)
 {
+    active = true;
+    onScreen = false;
+
     helmetColliderSize = glm::ivec2(16, 16);
 
     spritesheet.loadFromFile("images/item_spritesheet.png", TEXTURE_PIXEL_FORMAT_RGBA);
@@ -25,11 +28,15 @@ void Helmet::init(const glm::ivec2& helmetPos, ShaderProgram& shaderProgram)
     sprite->addKeyframe(0, glm::vec2(0.0f, 0.33333333333f));
     sprite->changeAnimation(0);
 
-    //sprite->setPosition(helmetPos);
+    setPosition(helmetPos);
 }
 
 void Helmet::update(int deltaTime)
 {
+    setPosition(glm::ivec2(posHelmet.x, posHelmet.y + 1));
+    map->collisionMoveDown(posHelmetCollision, helmetColliderSize, &posHelmet.y);
+    setPosition(posHelmet);
+
     sprite->update(deltaTime);
 }
 
@@ -63,4 +70,14 @@ glm::ivec2 Helmet::getColliderPosition()
 glm::ivec2 Helmet::getColliderSize()
 {
     return helmetColliderSize;
+}
+
+bool Helmet::isOnScreen()
+{
+    return active && onScreen;
+}
+
+void Helmet::setOnScreen(bool value)
+{
+    onScreen = value;
 }

@@ -14,7 +14,9 @@
     <ClInclude Include="AnimKeyframes.h" />
     <ClInclude Include="Armor.h" />
     <ClInclude Include="BigHeart.h" />
+    <ClInclude Include="Boss.h" />
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="CreditsScene.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyElephant.h" />
     <ClInclude Include="EnemyFlower.h" />
@@ -31,12 +33,15 @@
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TileMap.h" />
+    <ClInclude Include="Totem.h" />
     <ClInclude Include="UI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Armor.cpp" />
     <ClCompile Include="BigHeart.cpp" />
+    <ClCompile Include="Boss.cpp" />
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="CreditsScene.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyElephant.cpp" />
     <ClCompile Include="EnemyFlower.cpp" />
@@ -54,6 +59,7 @@
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TileMap.cpp" />
+    <ClCompile Include="Totem.cpp" />
     <ClCompile Include="UI.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -98,13 +104,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\..\libs\Simple OpenGL Image Library\src;..\..\..\libs\glew-1.13.0\include;..\..\..\libs\glm;..\..\..\libs\glfw-3.3.8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\libs\Simple OpenGL Image Library\src;..\..\..\libs\glew-1.13.0\include;..\..\..\libs\glm;..\..\..\libs\glfw-3.3.8\include;..\..\..\libs\irrKlang-1.6.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\..\libs\Simple OpenGL Image Library\projects\VC9\Debug;..\..\..\libs\glew-1.13.0\lib\Release\Win32;..\..\..\libs\glfw-3.3.8\lib-vc2015;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SOIL.lib;glew32.lib;glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\libs\Simple OpenGL Image Library\projects\VC9\Debug;..\..\..\libs\glew-1.13.0\lib\Release\Win32;..\..\..\libs\glfw-3.3.8\lib-vc2015;..\..\..\libs\irrKlang-1.6.0\lib\Win32-visualStudio;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SOIL.lib;glew32.lib;glfw3.lib;opengl32.lib;irrKlang.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
