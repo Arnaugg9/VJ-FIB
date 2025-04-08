@@ -8,11 +8,11 @@
 #define SCREEN_X 0
 #define SCREEN_Y 0
 
-#define INIT_PLAYER_X_TILES 39			//Original 33
-#define INIT_PLAYER_Y_TILES 7			//Original 39
+#define INIT_PLAYER_X_TILES 33			//Original 33, Boss 39
+#define INIT_PLAYER_Y_TILES 39			//Original 39, Boss 7
 
-#define INIT_CAMERA_X 32*16				//Original 32*16
-#define INIT_CAMERA_Y 0					//Original 30*16
+#define INIT_CAMERA_X 32*16				//Original 32*16, Boss 32*16
+#define INIT_CAMERA_Y 30*16				//Original 30*16, Boss 0
 
 #define TOP_HORIZONTAL_MIDDLE 30*16
 #define LEFT_VERTICAL_RIGHT 128*16
@@ -24,7 +24,7 @@
 #define TIME_SCREEN_SHAKE 2000
 
 #define TOTEM_UP_TIMER 1000
-#define END_ANIMATION_DURATION 2000
+#define END_ANIMATION_DURATION 2500
 
 #define SCREEN_MARGIN_UPDATE 90
 
@@ -114,6 +114,20 @@ void GameScene::init()
 
 	pauseScreenSprite->setPosition(glm::ivec2(leftCam, topCam));
 	pauseScreenSprite->changeAnimation(0);
+
+	//Die screen
+	dieSpritesheet.loadFromFile("images/DieScene.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	dieSpritesheet.setMinFilter(GL_NEAREST);
+	dieSpritesheet.setMagFilter(GL_NEAREST);
+
+	dieScreenSprite = Sprite::createSprite(glm::ivec2(256, 224), glm::vec2(1.f, 1.f), &dieSpritesheet, &texProgram);
+	dieScreenSprite->setNumberAnimations(1);
+
+	dieScreenSprite->setAnimationSpeed(0, 8);
+	dieScreenSprite->addKeyframe(0, glm::vec2(0.f, 0.f));
+
+	dieScreenSprite->setPosition(glm::ivec2(leftCam, topCam));
+	dieScreenSprite->changeAnimation(0);
 
 
 	//Init enemics
@@ -478,7 +492,7 @@ void GameScene::updateItems(int deltaTime) {
 
 void GameScene::updateUI(int deltaTime) {
 	ui->update(deltaTime, glm::vec2(leftCam, topCam), spear);
-	if (player->isOnBossfight()) ui->setBossfight();
+	if (player->isOnBossfight()) ui->setBossfight(true);
 	ui->setPlayerHealth(player->getHealth());
 	ui->setPlayerMaxHealth(player->getMaxHealth());
 	ui->setPlayerDefensiveHits(player->getDefensiveHits());
@@ -490,6 +504,7 @@ void GameScene::updateUI(int deltaTime) {
 void GameScene::update(int deltaTime)
 {
 	if (bossScreenShake) {
+		ui->setBossfight(false);
 		timerScreenShake -= deltaTime;
 		if (timerScreenShake < 0) {
 			bossScreenShake = false;
@@ -498,6 +513,7 @@ void GameScene::update(int deltaTime)
 		else handleScreenShake();
 	}
 	else if (bossDying) {
+		ui->setBossfight(false);
 		bool end = boss->dieAnimation(deltaTime);
 		if (end) {
 			bossDying = false;
@@ -509,16 +525,16 @@ void GameScene::update(int deltaTime)
 		}
 	}
 	else if (endAnimation) {
+		ui->setBossfight(false);
 		endAnimationTimer -= deltaTime;
 		if (endAnimationTimer > 0) {
 			player->endAnimation(deltaTime);
 		}
 		else {
-			//Canviar a creditos
-			cout << "CREDITOS" << endl;
+			Game::instance().changeScene(2);
 		}
 	}
-	else if (!paused) {
+	else if (!paused && !player->getDie()) {
 		currentTime += deltaTime;
 		player->update(deltaTime);
 		updateEnemiesOnScreen(deltaTime);
@@ -579,7 +595,7 @@ void GameScene::render()
 
 	texProgram.use();
 	texProgram.setUniformMatrix4f("projection", projection);
-	if (!paused) texProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
+	if (!paused && !player->getDie()) texProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
 	else texProgram.setUniform4f("color", 0.3f, 0.3f, 0.3f, 1.0f);
 	modelview = glm::mat4(1.0f);
 	texProgram.setUniformMatrix4f("modelview", modelview);
@@ -596,11 +612,17 @@ void GameScene::render()
 		texProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
 		pauseScreenSprite->render();
 	}
+
+	if (player->getDie()) {
+		dieScreenSprite->setPosition(glm::ivec2(leftCam, topCam));
+		texProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
+		dieScreenSprite->render();
+	}
 }
 
 void GameScene::handleKeyPress(int key)
 {
-	if (!paused) {
+	if (!paused && !player->getDie()) {
 		if (key == GLFW_KEY_C) {
 			spear = !spear;
 			if (spear) player->setWeapon(SPEAR);
@@ -612,7 +634,11 @@ void GameScene::handleKeyPress(int key)
 		}
 		if (key == GLFW_KEY_H) player->healCheat();
 	}
-	if (key == GLFW_KEY_P) paused = !paused;
+	if (!player->getDie() && key == GLFW_KEY_P) paused = !paused;
+	if (player->getDie() && key == GLFW_KEY_R) {
+		init();
+	}
+	
 }
 
 void GameScene::initShaders()

@@ -54,7 +54,7 @@ void Boss::init(const glm::ivec2& enemyPos, Player* player, ShaderProgram& shade
 	sizeEnemy = glm::ivec2(30, 48);
 	sizePhase1 = glm::ivec2(32, 44);
 
-	damage = 2;
+	damage = 3;
 	health = 33;
 
 	posCollider = posEnemy;

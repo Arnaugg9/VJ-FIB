@@ -15,20 +15,21 @@ void UI::init(const glm::ivec2& uiPos, ShaderProgram& shaderProgram)
 {
 	this->shaderProgram = &shaderProgram;
 
+	bossfight = false;
+
     spritesheetUI.loadFromFile("images/UI_spritesheet.png", TEXTURE_PIXEL_FORMAT_RGBA);
     spritesheetUI.setMinFilter(GL_NEAREST);
     spritesheetUI.setMagFilter(GL_NEAREST);
-	bossfight = false;
-
-    spritesheet.loadFromFile("images/UI_spritesheet.png", TEXTURE_PIXEL_FORMAT_RGBA);
-    spritesheet.setMinFilter(GL_NEAREST);
-    spritesheet.setMagFilter(GL_NEAREST);
 
 	spritesheetBoss.loadFromFile("images/spirtesheet_boss.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	spritesheetBoss.setMinFilter(GL_NEAREST);
 	spritesheetBoss.setMagFilter(GL_NEAREST);
 
-    spear = Sprite::createSprite(glm::ivec2(16, 16), glm::vec2(0.33, 0.33), &spritesheet, &shaderProgram);
+	spritesheetItem.loadFromFile("images/item_spritesheet.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	spritesheetItem.setMinFilter(GL_NEAREST);
+	spritesheetItem.setMagFilter(GL_NEAREST);
+
+    spear = Sprite::createSprite(glm::ivec2(16, 16), glm::vec2(0.33, 0.33), &spritesheetUI, &shaderProgram);
     spear->setNumberAnimations(1);
     spear->setAnimationSpeed(0, 8);
     spear->addKeyframe(0, glm::vec2(0.0f, 0.33333333333f));
@@ -63,24 +64,6 @@ void UI::init(const glm::ivec2& uiPos, ShaderProgram& shaderProgram)
         hearts[i]->changeAnimation(0);
 	}
 
-	spritesheetItem.loadFromFile("images/item_spritesheet.png", TEXTURE_PIXEL_FORMAT_RGBA);
-	spritesheetItem.setMinFilter(GL_NEAREST);
-	spritesheetItem.setMagFilter(GL_NEAREST);
-
-	helmet = Sprite::createSprite(glm::ivec2(16, 16), glm::vec2(0.333333333333, 0.333333333333), &spritesheetItem, &shaderProgram);
-	helmet->setNumberAnimations(1);
-	helmet->setAnimationSpeed(0, 8);
-	helmet->addKeyframe(0, glm::vec2(0.0f, 0.33333333333f));
-	helmet->changeAnimation(0);
-	helmet->setPosition(uiPos);
-
-	rock = Sprite::createSprite(glm::ivec2(16, 16), glm::vec2(0.333333333333, 0.333333333333), &spritesheetItem, &shaderProgram);
-	rock->setNumberAnimations(1);
-	rock->setAnimationSpeed(0, 8);
-	rock->addKeyframe(0, glm::vec2(0.666666666666f, 0.33333333333f));
-	rock->changeAnimation(0);
-	rock->setPosition(uiPos);
-
 	for (int i = 0; i < 3; ++i) {
 		potion[i] = Sprite::createSprite(glm::ivec2(16, 16), glm::vec2(0.333333333333, 0.333333333333), &spritesheetItem, &shaderProgram);
 		potion[i]->setNumberAnimations(1);
@@ -108,6 +91,20 @@ void UI::init(const glm::ivec2& uiPos, ShaderProgram& shaderProgram)
 
 		bossHearts[i]->changeAnimation(0);
 	}
+
+	helmet = Sprite::createSprite(glm::ivec2(16, 16), glm::vec2(0.333333333333, 0.333333333333), &spritesheetItem, &shaderProgram);
+	helmet->setNumberAnimations(1);
+	helmet->setAnimationSpeed(0, 8);
+	helmet->addKeyframe(0, glm::vec2(0.0f, 0.33333333333f));
+	helmet->changeAnimation(0);
+	helmet->setPosition(uiPos);
+
+	rock = Sprite::createSprite(glm::ivec2(16, 16), glm::vec2(0.333333333333, 0.333333333333), &spritesheetItem, &shaderProgram);
+	rock->setNumberAnimations(1);
+	rock->setAnimationSpeed(0, 8);
+	rock->addKeyframe(0, glm::vec2(0.666666666666f, 0.33333333333f));
+	rock->changeAnimation(0);
+	rock->setPosition(uiPos);
 }
 
 void UI::update(int deltaTime, const glm::vec2& cameraPos, bool spear)
@@ -235,9 +232,9 @@ void UI::setPlayerAttackingHits(int hits)
 	playerAttackingHits = hits;
 }
 
-void UI::setBossfight()
+void UI::setBossfight(bool boss)
 {
-	bossfight = true;
+	bossfight = boss;
 }
 
 void UI::setBossHealth(int health)

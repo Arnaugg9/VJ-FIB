@@ -6,14 +6,14 @@
 
 
 #define JUMP_ANGLE_STEP 4
-#define JUMP_HEIGHT 64
-#define EXTRA_JUMP_HEIGHT 16
+#define JUMP_HEIGHT 48             //64
+#define EXTRA_JUMP_HEIGHT 32       //16
 #define FALL_STEP 4
 
 #define ATTACK_TIME 400
 
 #define INITIAL_MAX_HEALTH 12
-#define INITIAL_LIVES 1
+#define INITIAL_LIVES 2
 
 #define MAX_INVENCIBILITY_TIME 1500
 #define FRAMES_AUX_HURT_ANIMATION 5
@@ -411,6 +411,13 @@ void Player::getHurt(int damage) {
 		health -= newDamage;
 	}  
 	else health -= damage;
+	if (health <= 0) {
+		lives--;
+		if (lives < 0) {
+			die = true;
+		}
+		else health = maxHealth;
+	}
 	invencibilityTime = MAX_INVENCIBILITY_TIME;
 	timeHurtAnimation = TIME_HURT_ANIMATION;
 	sprite->changeAnimation(dirPlayer == LEFT ? HURT_LEFT : HURT_RIGHT);
@@ -610,4 +617,3 @@ void Player::endAnimation(int deltaTime)
 		sprite->setPosition(glm::ivec2(posPlayer.x, posPlayer.y - 14));
 	}
 }
-

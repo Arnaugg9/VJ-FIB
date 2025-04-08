@@ -48,6 +48,7 @@ public:
 	int getHealth() { return health; }
 	int getMaxHealth() { return maxHealth; }
 	int getLives() { return lives; }
+	bool getDie() { return die; };
 	
 	void healCheat();
 	bool godModeOn;
@@ -92,6 +93,7 @@ private:
 	int invencibilityTime; //Controla la inmortalitat del personatge --> Està en ms (per evitar problemes de diferents fps...)
 	int auxAnimationHurt;
 	int timeHurtAnimation;
+	bool die = false;
 
 	bool extraJump;
 
@@ -105,7 +107,6 @@ private:
 	void handleAttack(int deltaTime);
 
 	void handleSwordSprite();
-
 };
 
 

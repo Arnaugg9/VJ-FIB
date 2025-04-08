@@ -21,7 +21,7 @@ public:
 	void setPlayerDefensiveHits(int hits);
     void setPlayerAttackingHits(int hits);
 	void setPlayerPotions(int potions);
-    void setBossfight();
+    void setBossfight(bool boss);
 	void setBossHealth(int health);
 
 private:
@@ -29,7 +29,6 @@ private:
     glm::vec2 uiOffset;
     Texture spritesheetUI;
     Texture spritesheetItem;
-    Texture spritesheet;
     Texture spritesheetBoss;
     Sprite* spear;
 	Sprite* fire;

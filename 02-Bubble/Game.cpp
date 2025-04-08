@@ -39,6 +39,15 @@ void Game::render()
 
 void Game::changeScene(int scene) {
 	currentScene = scene;
+	if (scene == MENU_SCENE) {
+		menuScene.init();
+	}
+	else if (scene == GAME_SCENE) {
+		gameScene.init();
+	}
+	else if (scene == CREDITS_SCENE) {
+		creditsScene.init();
+	}
 }
 
 void Game::keyPressed(int key)

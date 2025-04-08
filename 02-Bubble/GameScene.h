@@ -86,6 +86,9 @@ private:
 	Texture pauseSpritesheet;
 	Sprite* pauseScreenSprite;
 
+	Texture dieSpritesheet;
+	Sprite* dieScreenSprite;
+
 	UI* ui;
 
 	//Llistat d'objectes
