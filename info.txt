@@ -13,15 +13,15 @@ Se han implementado todas las animaciones del jugador, incluyendo caminar, salta
 
 Enemigos
 El juego cuenta con tres tipos de enemigos, cada uno con un comportamiento diferenciado:
-- Elefante volador: se desplaza por el aire y lanza proyectiles al jugador.
+- Elefante volador: se desplaza por el aire dando botes y lanza proyectiles al jugador.
 - Planta: dispara proyectiles, pero es invulnerable a los ataques del jugador.
-- Caracol: se desplaza por paredes verticales y puede esconderse en su caparazón como defensa.
+- Caracol: se desplaza por paredes verticales y por el techo en todas direcciones. Puede esconderse en su caparazón como defensa.
 
 Interfaz de usuario (UI)
 La interfaz ha sido clonada respetando la estética del juego original. Esta muestra la vida del jugador, vidas extra (representadas como pociones) y otros elementos visuales necesarios para el seguimiento de la partida.
 
 Mapa y entorno
-Se ha recreado con detalle el nivel original "Magic Forest", adaptándolo para hacerlo jugable sin elementos dinámicos presentes en el juego base, como las flores flotantes. Entre los elementos interactivos del mapa se encuentran:
+Se ha recreado con detalle el nivel original "Magic Forest". Se han incorporado algunos elementos interactivos en el mapa como:
 - Hojas que permiten al jugador realizar saltos más altos.
 - Lava que resta vida al jugador al contacto, replicando su comportamiento original.
 
@@ -61,6 +61,7 @@ Para enriquecer la experiencia de juego y mejorar el feedback al jugador, se ha 
 
 
 INSTRUCCIONES DEL JUEGO
+Si se accede al menú de pausa (tecla p) se puede ver la descripción gráfica de los controles.
 - Flecha derecha y flecha izquierda para moverse a la dirección correspondiente.
 - Flecha arriba para cubrirse.
 - Flecha abajo para agacharse.
