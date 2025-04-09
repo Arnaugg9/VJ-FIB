@@ -70,6 +70,9 @@ void GameScene::init()
 	godModeOn = false;
 	paused = false;
 
+	music = false;
+	musicTotem = false;
+
 	bossScreenShake = false;
 	bossDying = false;
 	bossDead = false;
@@ -380,6 +383,7 @@ void GameScene::updateEnemy(int deltaTime, Enemy* enemy) {
 			enemy->setDead(true);
 		}
 		else if (dead && enemy == boss) {
+			SoundManager::playSFX("sounds/effects/boss_die.wav");
 			bossScreenShake = true;
 		}
 	}
@@ -484,6 +488,10 @@ void GameScene::updateItems(int deltaTime) {
 		}
 		else {
 			totem->setPosition(glm::ivec2(totem->getPosition().x, totem->getPosition().y - 1));
+			if (totem->getPosition().y < -15) {
+				totem->setPosition(glm::ivec2(totem->getPosition().x, -15));
+				totemUpTimer = -1;
+			}
 		}
 
 		if (collidesWithPlayerItem(totem->getColliderPosition(), totem->getColliderSize()) && !endAnimation) {
@@ -646,8 +654,17 @@ void GameScene::handleKeyPress(int key)
 		if (!paused) SoundManager::playMusic("sounds/music/08_Forest Test.wav", true);
 		else SoundManager::stopMusic();
 	}
+	else if (paused && !player->getDie() && key == GLFW_KEY_ESCAPE) {
+		SoundManager::playSFX("sounds/effects/pause.wav");
+		Game::instance().init();
+	}
 	if (player->getDie() && key == GLFW_KEY_R) {
+		SoundManager::playSFX("sounds/effects/pause.wav");
 		init();
+	}
+	else if (player->getDie() && key == GLFW_KEY_ESCAPE) {
+		SoundManager::playSFX("sounds/effects/pause.wav");
+		Game::instance().init();
 	}
 	
 }
@@ -721,6 +738,7 @@ void GameScene::handleCamera()
 		if (posPlayer.x < LEFT_VERTICAL_RIGHT - 12 && posPlayer.x > LEFT_VERTICAL_LEFT + 16 * 16 - 12) {
 			verticalScroll = false;
 			leftCam = posPlayer.x;
+			topCam = posPlayer.y >= TOP_IN_BOTTOM_OF_MAP ? TOP_IN_BOTTOM_OF_MAP : TOP_IN_TOP_OF_MAP;
 		}
 		if (topCam >= TOP_IN_BOTTOM_OF_MAP) topCam = TOP_IN_BOTTOM_OF_MAP;
 		else if (topCam <= TOP_IN_TOP_OF_MAP) topCam = TOP_IN_TOP_OF_MAP;

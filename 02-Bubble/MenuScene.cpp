@@ -3,7 +3,7 @@
 #include "MenuScene.h"
 #include "Game.h"
 
-MenuScene::MenuScene() : startGame(false), transitioning(false), transitionAlpha(0.0f), initTransition(true)
+MenuScene::MenuScene()
 {
 }
 
@@ -15,6 +15,13 @@ MenuScene::~MenuScene()
 
 void MenuScene::init()
 {
+    startGame = false;
+    transitioning = false;
+    transitionAlpha = 0.0f;
+    initTransition = true;
+	animationTime = 20;
+    sound = true;
+
     initShaders();
     currentTime = 0.0f;
     projection = glm::ortho(0.0f, float(256), float(224), 0.0f);
@@ -82,7 +89,13 @@ void MenuScene::render()
 
 void MenuScene::handleKeyPress(int key)
 {
-    if (!initTransition) startGame = true;
+    if (!initTransition) {
+        if (sound) {
+            SoundManager::playSFX("sounds/effects/pause.wav");
+            sound = false;
+        }
+        startGame = true;
+    }
 }
 
 void MenuScene::initShaders()

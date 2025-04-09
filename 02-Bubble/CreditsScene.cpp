@@ -3,7 +3,7 @@
 #include "CreditsScene.h"
 #include "Game.h"
 
-CreditsScene::CreditsScene() : medio(false), fin(false), posTransition(225), timeTransition(200), finmedio(false), renderRestart(0)
+CreditsScene::CreditsScene()
 {
 }
 
@@ -15,6 +15,13 @@ CreditsScene::~CreditsScene()
 
 void CreditsScene::init()
 {
+	medio = false;
+	fin = false;
+	posTransition = 225;
+	timeTransition = 200;
+	finmedio = false;
+	renderRestart = 0;
+
 	initShaders();
 	currentTime = 0.0f;
 	projection = glm::ortho(0.0f, float(256), float(224), 0.0f);
@@ -154,5 +161,8 @@ void CreditsScene::initShaders()
 
 void CreditsScene::handleKeyPress(int key)
 {
-	if (fin) Game::instance().changeScene(0);
+	if (fin) {
+		SoundManager::playSFX("sounds/effects/pause.wav");
+		Game::instance().init();
+	}
 }

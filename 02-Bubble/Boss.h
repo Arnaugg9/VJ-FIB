@@ -52,6 +52,7 @@ private:
 	int timerAttackDuration;
 	glm::ivec2 destination;
 	bool attacked;
+	bool firstHit;
 
 	//Parametres animacio mort
 	int dieAnimationTimer;

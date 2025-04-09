@@ -104,8 +104,8 @@ private:
 	EnemySnail* enemySnail[9];
 	Boss* boss;
 
-	bool music = false;
-	bool musicTotem = false;
+	bool music;
+	bool musicTotem;
 };
 
 

@@ -14,10 +14,9 @@ void Game::init()
 	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 	gameScene.init();
 	menuScene.init();
-	creditsScene.init();
+	//creditsScene.init();
 
 	currentScene = MENU_SCENE;
-	//currentScene = GAME_SCENE;
 }
 
 bool Game::update(int deltaTime)
@@ -52,7 +51,7 @@ void Game::changeScene(int scene) {
 
 void Game::keyPressed(int key)
 {
-	if(key == GLFW_KEY_ESCAPE) // Escape code
+	if(key == GLFW_KEY_E) // Escape code
 		bPlay = false;
 
 	/*

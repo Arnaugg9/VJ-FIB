@@ -27,12 +27,13 @@ private:
 
     Texture spritesheet;
 	Sprite* sprite;
-    float animationTime = 20;
+    float animationTime;
 
     bool startGame;
     bool transitioning;
     float transitionAlpha;
 	bool initTransition;
+    bool sound;
 
     GLuint textureColorbuffer;
     GLuint rbo;

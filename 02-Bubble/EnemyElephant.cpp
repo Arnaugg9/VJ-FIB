@@ -36,8 +36,8 @@ void EnemyElephant::init(const glm::ivec2& enemyPos, ShaderProgram& shaderProgra
 	//Caracteristiques comunes
 	sizeEnemy = glm::ivec2(25.f, 26.f);
 
-	damage = 1;
-	health = 4;
+	damage = 2;
+	health = 10;
 
 	hasBullet = true;
 

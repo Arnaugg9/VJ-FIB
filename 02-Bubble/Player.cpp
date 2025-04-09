@@ -19,7 +19,7 @@
 #define MAX_INVENCIBILITY_TIME 1500
 #define FRAMES_AUX_HURT_ANIMATION 5
 #define TIME_HURT_ANIMATION 500
-#define PLAYER_DAMAGE 10;
+#define PLAYER_DAMAGE 3;
 
 #define LEFT_BOSSFIGHT 48*16
 
@@ -46,6 +46,9 @@ enum Weapons {
 
 void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 {
+	die = false;
+	sound = true;
+
 	playerColliderSize = glm::ivec2(18.f, 32.f);
 
 	sizePlayer = glm::ivec2(24, 32);
@@ -391,9 +394,15 @@ void Player::handleAttack(int deltaTime)
 	else if (weaponType == FIRE) {
 		if (attackKeyPressed && (isGrounded || (!isCovering && !isCrouching))) {
 			isAttacking = true;
-			SoundManager::playSFX("sounds/effects/fire.wav");
+			if (sound) {
+				SoundManager::playSFX("sounds/effects/fire.wav");
+				sound = false;
+			}
 		}
-		else isAttacking = false;
+		else {
+			isAttacking = false;
+			sound = true;
+		}
 	}
 }
 

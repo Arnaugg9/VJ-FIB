@@ -93,7 +93,8 @@ private:
 	int invencibilityTime; //Controla la inmortalitat del personatge --> Està en ms (per evitar problemes de diferents fps...)
 	int auxAnimationHurt;
 	int timeHurtAnimation;
-	bool die = false;
+	bool die;
+	bool sound;
 
 	bool extraJump;
 

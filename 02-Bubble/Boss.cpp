@@ -44,6 +44,7 @@ void Boss::init(const glm::ivec2& enemyPos, Player* player, ShaderProgram& shade
 	hasBullet = true;
 
 	invencible = false;
+	firstHit = true;
 
 	spritesheet.loadFromFile("images/spirtesheet_boss.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	spritesheet.setMinFilter(GL_NEAREST);
@@ -373,6 +374,7 @@ bool Boss::dieAnimation(int deltaTime)
 		dieAnimationTimer -= deltaTime;
 		if (dieAnimationTimer < 0) {
 			startedShootDieAnimation = true;
+			SoundManager::playSFX("sounds/effects/explosion.wav");
 
 			glm::ivec2 centerBoss = posEnemy + sizeEnemy / 2;
 			posInitBullets[LEFT_UP] = glm::ivec2(centerBoss.x - 11, centerBoss.y - 10);
@@ -425,6 +427,10 @@ bool Boss::getHurt(int damage)
 {
 	if (!changingPhase) {
 		health -= damage;
+		if (firstHit) {
+			firstHit = false;
+			health += 3;
+		}
 		invencible = true;
 		if (health <= 0) return true;
 		SoundManager::playSFX("sounds/effects/boss_hurt.wav");

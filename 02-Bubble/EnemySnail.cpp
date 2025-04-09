@@ -47,7 +47,7 @@ void EnemySnail::init(const glm::ivec2& enemyPos, ShaderProgram& shaderProgram, 
 	sizeCollider = sizeColliderHorizontal;
 
 	damage = 2;
-	health = 1;
+	health = 7;
 
 	//Si alguna direcció es d'up ha de donar true 
 	direction = dir;
