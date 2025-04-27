@@ -6,4 +6,4 @@ El ejecutable se encuentra en la carpeta de 'Binari'. En la carpeta 'Projecte' e
 Enunciado Juego 2D:
 [Exercici2D-2024_25-Q2.pdf](https://github.com/user-attachments/files/19395688/Exercici2D-2024_25-Q2.pdf)
 
-Enunciado Juego 3D:
+Enunciado Juego 3D: [Exercici3D-2024_25-Q2.pdf](https://github.com/user-attachments/files/19931884/Exercici3D-2024_25-Q2.pdf)
