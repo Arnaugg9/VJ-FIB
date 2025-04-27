@@ -1,0 +1,44 @@
+﻿  Armor.cpp
+  BigHeart.cpp
+  Boss.cpp
+  Bullet.cpp
+  CreditsScene.cpp
+  Enemy.cpp
+  EnemyElephant.cpp
+  EnemyFlower.cpp
+  EnemySnail.cpp
+  Game.cpp
+  Gourd.cpp
+  Helmet.cpp
+  main.cpp
+  MenuScene.cpp
+  Player.cpp
+  GameScene.cpp
+C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\Projecte\Whomp'Em\GameScene.cpp(239,12): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\Projecte\Whomp'Em\GameScene.cpp(240,13): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\Projecte\Whomp'Em\GameScene.cpp(707,25): warning C4244: '=': conversión de 'int' a 'float'; posible pérdida de datos
+C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\Projecte\Whomp'Em\GameScene.cpp(734,24): warning C4244: '=': conversión de 'int' a 'float'; posible pérdida de datos
+C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\Projecte\Whomp'Em\GameScene.cpp(740,23): warning C4244: '=': conversión de 'T' a 'float'; posible pérdida de datos
+C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\Projecte\Whomp'Em\GameScene.cpp(740,23): warning C4244:         with
+C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\Projecte\Whomp'Em\GameScene.cpp(740,23): warning C4244:         [
+C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\Projecte\Whomp'Em\GameScene.cpp(740,23): warning C4244:             T=int
+C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\Projecte\Whomp'Em\GameScene.cpp(740,23): warning C4244:         ]
+C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\Projecte\Whomp'Em\GameScene.cpp(741,25): warning C4244: '=': conversión de 'int' a 'float'; posible pérdida de datos
+  SmallHeart.cpp
+  Shader.cpp
+  ShaderProgram.cpp
+  SoundManager.cpp
+  Generando código...
+  Compilando...
+  Sprite.cpp
+  Texture.cpp
+  TileMap.cpp
+  Totem.cpp
+  UI.cpp
+  Generando código...
+LINK : warning LNK4098: la biblioteca predeterminada'MSVCRT' entra en conflicto con otras bibliotecas; use la biblioteca /NODEFAULTLIB:biblioteca
+SOIL.lib(image_DXT.obj) : warning LNK4099: no se encontró PDB '' con 'SOIL.lib(image_DXT.obj)' o en ''; se vinculará el objeto sin tener en cuenta información de depuración
+SOIL.lib(image_helper.obj) : warning LNK4099: no se encontró PDB '' con 'SOIL.lib(image_helper.obj)' o en ''; se vinculará el objeto sin tener en cuenta información de depuración
+SOIL.lib(SOIL.obj) : warning LNK4099: no se encontró PDB '' con 'SOIL.lib(SOIL.obj)' o en ''; se vinculará el objeto sin tener en cuenta información de depuración
+SOIL.lib(stb_image_aug.obj) : warning LNK4099: no se encontró PDB '' con 'SOIL.lib(stb_image_aug.obj)' o en ''; se vinculará el objeto sin tener en cuenta información de depuración
+  Whomp'Em.vcxproj -> C:\Users\Arnau\Documents\Uni\Q6\VJ\OpenGL_VS2015\2DGame\VJ-FIB\Binari\Whomp'Em.exe
