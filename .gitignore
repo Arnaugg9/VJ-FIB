@@ -1,0 +1,22 @@
+# Ignorar carpetas generadas automáticamente por Unity
+Joc 3D/Arkanoid/Library/
+Joc 3D/Arkanoid/Temp/
+Joc 3D/Arkanoid/Logs/
+Joc 3D/Arkanoid/Obj/
+Joc 3D/Arkanoid/Build/
+Joc 3D/Arkanoid/Builds/
+
+# Ignorar configuraciones de usuario locales
+Joc 3D/Arkanoid/UserSettings/
+
+# Ignorar archivos de Visual Studio
+Joc 3D/Arkanoid/*.sln
+Joc 3D/Arkanoid/*.csproj
+Joc 3D/Arkanoid/*.pidb
+Joc 3D/Arkanoid/*.user
+Joc 3D/Arkanoid/*.userprefs
+Joc 3D/Arkanoid/.vsconfig
+
+# Ignorar archivos del sistema operativo
+Joc 3D/Arkanoid/.DS_Store
+Joc 3D/Arkanoid/Thumbs.db
