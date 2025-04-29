@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class ShipController : MonoBehaviour
+public class PaddleBehaviour : MonoBehaviour
 {
     //Components
     private Rigidbody _rb;
@@ -37,6 +37,7 @@ public class ShipController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        _rb.velocity = _dir * speed;
+        Vector3 newPos = _rb.position + _dir * speed * Time.fixedDeltaTime;
+        _rb.MovePosition(newPos);
     }
 }
