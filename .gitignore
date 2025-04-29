@@ -16,6 +16,7 @@ Joc 3D/Arkanoid/*.pidb
 Joc 3D/Arkanoid/*.user
 Joc 3D/Arkanoid/*.userprefs
 Joc 3D/Arkanoid/.vsconfig
+Joc 3D/Arkanoid/.vs/*
 
 # Ignorar archivos del sistema operativo
 Joc 3D/Arkanoid/.DS_Store
