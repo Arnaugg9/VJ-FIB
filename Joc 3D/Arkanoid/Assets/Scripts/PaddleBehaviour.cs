@@ -11,6 +11,12 @@ public class PaddleBehaviour : MonoBehaviour
     //Movement
     private Vector3 _dir;
     public float speed;
+    public Transform leftWall;
+    public Transform rightWall;
+    public float wallWidth;
+
+    //Properties
+    public float paddleSize;
 
     // Start is called before the first frame update
     void Start()
@@ -38,6 +44,8 @@ public class PaddleBehaviour : MonoBehaviour
     private void FixedUpdate()
     {
         Vector3 newPos = _rb.position + _dir * speed * Time.fixedDeltaTime;
+        if (newPos.x + paddleSize / 2 >= rightWall.position.x - wallWidth/2) newPos.x = rightWall.position.x - wallWidth/2 - paddleSize/2;
+        if (newPos.x - paddleSize / 2 <= leftWall.position.x + wallWidth/2) newPos.x = leftWall.position.x + wallWidth/2 + paddleSize / 2;
         _rb.MovePosition(newPos);
     }
 }

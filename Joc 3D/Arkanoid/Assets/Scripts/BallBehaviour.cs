@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditorInternal.VersionControl.ListControl;
 
 public class BallBehaviour : MonoBehaviour
 {
@@ -61,6 +62,18 @@ public class BallBehaviour : MonoBehaviour
         if (!_wasShoot && !_ballDead)
         {
             transform.position = paddle.transform.position + new Vector3(0, 0, 0.75f);
+        }
+        else if (!_ballDead)
+        {
+            Vector3 velocity = _rb.velocity;
+
+            if (Mathf.Abs(velocity.z) < 0.3f)
+            {
+                float sign = Mathf.Sign(velocity.z) != 0 ? Mathf.Sign(velocity.z) : 1f;     //Per si de cas fos 0 va predeterminat endavant
+                velocity.z = 0.3f * sign;
+                velocity = velocity.normalized * speed;
+                _rb.velocity = velocity;
+            }
         }
     }
 
