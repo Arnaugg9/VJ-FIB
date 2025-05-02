@@ -57,7 +57,7 @@ public class PaddleBehaviour : MonoBehaviour
 
         //Input controll
         _dir = Vector3.zero;
-        if (Input.GetKey(KeyCode.D) ||Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
         {
             _dir = Vector3.right;
         }
