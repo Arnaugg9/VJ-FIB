@@ -53,6 +53,10 @@ public class BlockBehaviour : MonoBehaviour
             {
                 collision.collider.GetComponent<BallBehaviour>().setPower(true);
             }
+            else if (tag == "MagnetPU")
+            {
+                GameManager.Instance.paddle.activateMagnet();
+            }
             Break();
         }
     }
@@ -73,7 +77,11 @@ public class BlockBehaviour : MonoBehaviour
             {
                 collision.GetComponent<BallBehaviour>().setPower(true);
             }
-            Break();
+            else if (tag == "MagnetPU")
+            {
+                GameManager.Instance.paddle.activateMagnet();
+            }
+                Break();
         }
     }
 }

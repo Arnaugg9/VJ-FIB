@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEditorInternal.VersionControl.ListControl;
 
@@ -7,15 +8,16 @@ public class BallBehaviour : MonoBehaviour
 {
     //components
     private Rigidbody _rb;
-    public GameObject paddle;
+    private PaddleBehaviour paddle;
 
     //Movement controll
     public int speed;
     private Vector3 _dir;
-    private bool _first_collision;
+    private float _paddleOffset;
         //VELOCIDAD VARIABLE CON TIEMPO -> Dificultad
 
     //triggers
+    private bool _first_collision;
     private bool _wasShoot;
     private bool _ballDead;
 
@@ -27,11 +29,14 @@ public class BallBehaviour : MonoBehaviour
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
+        paddle = GameManager.Instance.paddle;
+
         _rb.isKinematic = true; 
         _dir = Vector3.zero;
-        _first_collision = true;
-        transform.position = paddle.transform.position + new Vector3(0, 0.5f, 0.5f);
+        _paddleOffset = 0.0f;
+        transform.position = paddle.transform.position + new Vector3(_paddleOffset, 0.0f, 0.75f);
 
+        _first_collision = true;
         _wasShoot = false;
         _ballDead = false;
 
@@ -43,7 +48,8 @@ public class BallBehaviour : MonoBehaviour
         _rb.isKinematic = true;
         _dir = Vector3.zero;
         _first_collision = true;
-        transform.position = paddle.transform.position + new Vector3(0, 0.5f, 0.5f);
+        _paddleOffset = 0;
+        transform.position = paddle.transform.position + new Vector3(_paddleOffset, 0.0f, 0.75f);
 
         _wasShoot = false;
         _ballDead = false;
@@ -74,12 +80,12 @@ public class BallBehaviour : MonoBehaviour
     {
         if (!_wasShoot && !_ballDead)
         {
-            transform.position = paddle.transform.position + new Vector3(0, 0, 0.75f);
+            Vector3 newPos = transform.position;
+            transform.position = paddle.transform.position + new Vector3(_paddleOffset, 0, 0.75f);
         }
         else if (!_ballDead)
         {
             Vector3 velocity = _rb.velocity;
-            print(velocity);
 
             if (Mathf.Abs(velocity.z) < 2.0f)
             {
@@ -95,7 +101,15 @@ public class BallBehaviour : MonoBehaviour
     {
         if (collision.gameObject.tag == "Paddle")
         {
-            if (!_first_collision)
+            if (paddle.magnetRemain > 0)
+            {
+                _wasShoot = false;
+                _first_collision = false;
+                _rb.isKinematic = true;
+                _paddleOffset = transform.position.x - paddle.transform.position.x;
+                --paddle.magnetRemain;
+            }
+            else if (!_first_collision)
             {
                 // Treu punt on ha chocat
                 Vector3 hitPoint = collision.GetContact(0).point;

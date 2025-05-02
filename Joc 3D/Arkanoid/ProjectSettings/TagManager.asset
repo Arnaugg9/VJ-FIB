@@ -12,6 +12,7 @@ TagManager:
   - BigPU
   - SmallPU
   - PowerPU
+  - MagnetPU
   layers:
   - Default
   - TransparentFX

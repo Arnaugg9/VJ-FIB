@@ -20,8 +20,9 @@ public class PaddleBehaviour : MonoBehaviour
     public float paddleSize;
 
     //Timers
-    public float _sizeTimer;
+    private float _sizeTimer;
     private const float _PU_SIZE_DURATION = 8;
+    public int magnetRemain;
 
 
     private void Awake()
@@ -34,7 +35,9 @@ public class PaddleBehaviour : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         _dir = Vector3.zero;
+
         _sizeTimer = 0;
+        magnetRemain = 0;
     }
 
     // Update is called once per frame
@@ -87,5 +90,10 @@ public class PaddleBehaviour : MonoBehaviour
         GetComponent<BoxCollider>().size = newSize;
         newSize.y = transform.GetChild(0).localScale.y;
         transform.GetChild(0).localScale = newSize;
+    }
+
+    public void activateMagnet()
+    {
+        magnetRemain = 5;
     }
 }
