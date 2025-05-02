@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
+
 public class PaddleBehaviour : MonoBehaviour
 {
     //Components
@@ -18,16 +19,40 @@ public class PaddleBehaviour : MonoBehaviour
     //Properties
     public float paddleSize;
 
+    //Timers
+    public float _sizeTimer;
+    private const float _PU_SIZE_DURATION = 8;
+
+
+    private void Awake()
+    {
+        GameManager.Instance.paddle = this;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
         _dir = Vector3.zero;
+        _sizeTimer = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
+        //Timer updates
+        if (_sizeTimer > 0)
+        {
+            _sizeTimer -= Time.deltaTime;
+            if (_sizeTimer <= 0)
+            {
+                paddleSize = 2.75f;
+                updateSize();
+            }
+        }
+
+
+        //Input controll
         _dir = Vector3.zero;
         if (Input.GetKey(KeyCode.D) ||Input.GetKey(KeyCode.RightArrow))
         {
@@ -38,7 +63,6 @@ public class PaddleBehaviour : MonoBehaviour
             _dir = Vector3.left;
         }
 
-
     }
 
     private void FixedUpdate()
@@ -47,5 +71,21 @@ public class PaddleBehaviour : MonoBehaviour
         if (newPos.x + paddleSize / 2 >= rightWall.position.x - wallWidth/2) newPos.x = rightWall.position.x - wallWidth/2 - paddleSize/2;
         if (newPos.x - paddleSize / 2 <= leftWall.position.x + wallWidth/2) newPos.x = leftWall.position.x + wallWidth/2 + paddleSize / 2;
         _rb.MovePosition(newPos);
+    }
+
+    public void changeSize(float size)
+    {
+        _sizeTimer = _PU_SIZE_DURATION;
+        paddleSize = size;
+        updateSize();
+    }
+
+    private void updateSize()
+    {
+        Vector3 newSize = GetComponent<BoxCollider>().size;
+        newSize.x = paddleSize;
+        GetComponent<BoxCollider>().size = newSize;
+        newSize.y = transform.GetChild(0).localScale.y;
+        transform.GetChild(0).localScale = newSize;
     }
 }

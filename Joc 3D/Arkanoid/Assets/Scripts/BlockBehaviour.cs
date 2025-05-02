@@ -35,12 +35,44 @@ public class BlockBehaviour : MonoBehaviour
 
     public void Break()
     {
-        Destroy(gameObject);
+            Destroy(gameObject);
     }
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Ball")
         {
+            if (tag == "SmallPU")
+            {
+                GameManager.Instance.changePaddleSize(1.75f);
+            }
+            else if (tag == "BigPU")
+            {
+                GameManager.Instance.changePaddleSize(3.75f);
+            }
+            else if (tag == "PowerPU")
+            {
+                collision.collider.GetComponent<BallBehaviour>().setPower(true);
+            }
+            Break();
+        }
+    }
+
+    private void OnTriggerEnter(Collider collision)
+    {
+        if (collision.gameObject.tag == "Ball")
+        {
+            if (tag == "SmallPU")
+            {
+                GameManager.Instance.changePaddleSize(1.75f);
+            }
+            else if (tag == "BigPU")
+            {
+                GameManager.Instance.changePaddleSize(3.75f);
+            }
+            else if (tag == "PowerPU")
+            {
+                collision.GetComponent<BallBehaviour>().setPower(true);
+            }
             Break();
         }
     }

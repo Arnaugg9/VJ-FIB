@@ -19,6 +19,10 @@ public class BallBehaviour : MonoBehaviour
     private bool _wasShoot;
     private bool _ballDead;
 
+    //Timers
+    private float _powerTimer;
+    private const float _PU_POWER_DURATION = 8;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,6 +34,8 @@ public class BallBehaviour : MonoBehaviour
 
         _wasShoot = false;
         _ballDead = false;
+
+        _powerTimer = 0;
     }
 
     public void Restart()
@@ -46,6 +52,13 @@ public class BallBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Timer updates
+        if (_powerTimer > 0) {
+            _powerTimer -= Time.deltaTime;
+            if (_powerTimer <= 0) setPower(false);
+        }
+
+        //Input control
         if (!_ballDead && !_wasShoot && Input.GetKeyUp(KeyCode.Space))
         {
             _wasShoot = true;
@@ -66,11 +79,12 @@ public class BallBehaviour : MonoBehaviour
         else if (!_ballDead)
         {
             Vector3 velocity = _rb.velocity;
+            print(velocity);
 
-            if (Mathf.Abs(velocity.z) < 0.3f)
+            if (Mathf.Abs(velocity.z) < 2.0f)
             {
                 float sign = Mathf.Sign(velocity.z) != 0 ? Mathf.Sign(velocity.z) : 1f;     //Per si de cas fos 0 va predeterminat endavant
-                velocity.z = 0.3f * sign;
+                velocity.z = 2.0f * sign;
                 velocity = velocity.normalized * speed;
                 _rb.velocity = velocity;
             }
@@ -108,5 +122,12 @@ public class BallBehaviour : MonoBehaviour
         {
             _ballDead = true;
         }
+    }
+
+    public void setPower(bool value)
+    {
+        if (value) _powerTimer = _PU_POWER_DURATION;
+        Physics.IgnoreLayerCollision(gameObject.layer, LayerMask.NameToLayer("Block"), value);
+        transform.GetChild(1).gameObject.SetActive(value);
     }
 }

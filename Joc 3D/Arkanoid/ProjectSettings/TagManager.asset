@@ -9,14 +9,17 @@ TagManager:
   - Walls
   - DeathZone
   - Block
+  - BigPU
+  - SmallPU
+  - PowerPU
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ball
   - Water
   - UI
-  - 
+  - Block
   - 
   - 
   - 

@@ -12,7 +12,11 @@ public class GameManager : MonoBehaviour
     //Sound Managment
     private AudioSource _audioSource;
 
+    //Scripts Managment
+    public PaddleBehaviour paddle;
 
+    //Game State Managment
+    
 
     private void Awake()
     {
@@ -38,5 +42,10 @@ public class GameManager : MonoBehaviour
     void Update()
     {
       
+    }
+
+    public void changePaddleSize(float size)
+    {
+        paddle.changeSize(size);
     }
 }
