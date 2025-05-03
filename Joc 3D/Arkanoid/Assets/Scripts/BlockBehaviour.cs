@@ -57,6 +57,10 @@ public class BlockBehaviour : MonoBehaviour
             {
                 GameManager.Instance.paddle.activateMagnet();
             }
+            else if (tag == "ClonePU")
+            {
+                GameManager.Instance.cloneBall(collision.collider.transform.position);
+            }
             Break();
         }
     }
@@ -80,6 +84,10 @@ public class BlockBehaviour : MonoBehaviour
             else if (tag == "MagnetPU")
             {
                 GameManager.Instance.paddle.activateMagnet();
+            }
+            else if (tag == "ClonePU")
+            {
+                GameManager.Instance.cloneBall(collision.transform.position);
             }
                 Break();
         }

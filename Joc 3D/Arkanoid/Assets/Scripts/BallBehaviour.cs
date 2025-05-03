@@ -25,21 +25,28 @@ public class BallBehaviour : MonoBehaviour
     private float _powerTimer;
     private const float _PU_POWER_DURATION = 8;
 
+    private void Awake()
+    {
+        GameManager.Instance.activeBalls.Add(this);
+        _rb = GetComponent<Rigidbody>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        _rb = GetComponent<Rigidbody>();
         paddle = GameManager.Instance.paddle;
 
-        _rb.isKinematic = true; 
-        _dir = Vector3.zero;
-        _paddleOffset = 0.0f;
-        transform.position = paddle.transform.position + new Vector3(_paddleOffset, 0.0f, 0.75f);
+        if (!_wasShoot)
+        {
+            _rb.isKinematic = true;
+            _dir = Vector3.zero;
+            transform.position = paddle.transform.position + new Vector3(_paddleOffset, 0.0f, 0.75f);
 
-        _first_collision = true;
-        _wasShoot = false;
+            _first_collision = true;
+            _wasShoot = false;
+        }
         _ballDead = false;
-
+        _paddleOffset = 0.0f;
         _powerTimer = 0;
     }
 
@@ -143,5 +150,15 @@ public class BallBehaviour : MonoBehaviour
         if (value) _powerTimer = _PU_POWER_DURATION;
         Physics.IgnoreLayerCollision(gameObject.layer, LayerMask.NameToLayer("Block"), value);
         transform.GetChild(1).gameObject.SetActive(value);
+    }
+
+    public void initAfterClone(Vector3 dir)
+    {
+        _rb.isKinematic = false;
+        _dir = dir;
+        _rb.velocity = _dir * speed;
+
+        _first_collision = false;
+        _wasShoot = true;
     }
 }

@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Numerics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -14,8 +13,12 @@ public class GameManager : MonoBehaviour
     //Sound Managment
     private AudioSource _audioSource;
 
+    //Prefabs
+    public GameObject ballPrefab;
+
     //Scripts Managment
     public PaddleBehaviour paddle;
+    public List<BallBehaviour> activeBalls;
 
     //Game State Managment
     public GodModeWalls godModeWall;
@@ -32,6 +35,7 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         _audioSource = GetComponent<AudioSource>();
+        activeBalls = new List<BallBehaviour>();
     }
 
     // Start is called before the first frame update
@@ -45,21 +49,43 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.G)) godModeWall.gameObject.SetActive(!godModeWall.gameObject.activeSelf);
 
-        if (SceneManager.GetActiveScene().name != "Level1" && (Input.GetKeyDown(KeyCode.Keypad1) || Input.GetKeyDown(KeyCode.Alpha1))) 
-            SceneManager.LoadScene("Level1");
+        if (SceneManager.GetActiveScene().name != "Level1" && (Input.GetKeyDown(KeyCode.Keypad1) || Input.GetKeyDown(KeyCode.Alpha1)))
+            changeScene("Level1");
         if (SceneManager.GetActiveScene().name != "Level2" && (Input.GetKeyDown(KeyCode.Keypad2) || Input.GetKeyDown(KeyCode.Alpha2)))
-            SceneManager.LoadScene("Level2");
+            changeScene("Level2");
         if (SceneManager.GetActiveScene().name != "Level3" && (Input.GetKeyDown(KeyCode.Keypad3) || Input.GetKeyDown(KeyCode.Alpha3)))
-            SceneManager.LoadScene("Level3");
+            changeScene("Level3");
         if (SceneManager.GetActiveScene().name != "Level4" && (Input.GetKeyDown(KeyCode.Keypad4) || Input.GetKeyDown(KeyCode.Alpha4)))
-            SceneManager.LoadScene("Level4");
+            changeScene("Level4");
         if (SceneManager.GetActiveScene().name != "Level5" && (Input.GetKeyDown(KeyCode.Keypad5) || Input.GetKeyDown(KeyCode.Alpha5)))
-            SceneManager.LoadScene("Level5");
+            changeScene("Level5");
 
+    }
+
+    private void changeScene(string scene)
+    {
+        activeBalls.Clear();
+        paddle = null;
+        godModeWall = null;
+        SceneManager.LoadScene(scene);
     }
 
     public void changePaddleSize(float size)
     {
         paddle.changeSize(size);
+    }
+
+    public void cloneBall(UnityEngine.Vector3 originalPos)
+    {
+        instantiateBall(originalPos, new Vector3(-1, 0, 1));
+        instantiateBall(originalPos, new Vector3(1, 0, 1));
+
+    }
+
+    public void instantiateBall(Vector3 pos, Vector3 dir)
+    {
+        GameObject newBall = Instantiate(ballPrefab, pos, Quaternion.identity);
+
+        newBall.GetComponent<BallBehaviour>().initAfterClone(dir);
     }
 }

@@ -13,6 +13,7 @@ TagManager:
   - SmallPU
   - PowerPU
   - MagnetPU
+  - ClonePU
   layers:
   - Default
   - TransparentFX
