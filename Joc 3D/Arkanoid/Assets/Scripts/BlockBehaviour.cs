@@ -43,6 +43,7 @@ public class BlockBehaviour : MonoBehaviour
     {
         wasDestroyed = true;
         GameManager.Instance.blocksDestroyed++;
+        GameManager.Instance.gameScore += 500;
         Destroy(gameObject);
     }
     private void OnCollisionEnter(Collision collision)

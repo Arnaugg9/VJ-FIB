@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -22,6 +23,8 @@ public class GameManager : MonoBehaviour
     public List<BallBehaviour> activeBalls;
 
     //Game State Managment
+    public int gameScore;
+    public int lives;
     public bool levelStarted;
 
     public GodModeWalls godModeWall;
@@ -31,6 +34,11 @@ public class GameManager : MonoBehaviour
     public int blocksLvl4;
     public int blocksLvl5;
     public int blocksDestroyed;
+
+    //UI Managment
+    public TextMeshProUGUI scoreTxt;
+    public TextMeshProUGUI livesTxt;
+    public TextMeshProUGUI levelTxt;
 
     private void Awake()
     {
@@ -50,15 +58,23 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         levelStarted = false;
+        gameScore = 0;
+        lives = 3;
     }
 
     // Update is called once per frame
     void Update()
     {
+        //Text updates
+        scoreTxt.text = "Score: " + gameScore;
+        livesTxt.text = "Lives: " + lives;
+        levelTxt.text = "Level " + SceneManager.GetActiveScene().buildIndex;
+
         if (levelStarted)
         {
             activeScene = SceneManager.GetActiveScene().name;
 
+            //Scene change with number
             if (Input.GetKeyDown(KeyCode.G)) godModeWall.gameObject.SetActive(!godModeWall.gameObject.activeSelf);
 
             if (activeScene != "Level1" && (Input.GetKeyDown(KeyCode.Keypad1) || Input.GetKeyDown(KeyCode.Alpha1)))
@@ -72,6 +88,7 @@ public class GameManager : MonoBehaviour
             if (activeScene != "Level5" && (Input.GetKeyDown(KeyCode.Keypad5) || Input.GetKeyDown(KeyCode.Alpha5)))
                 changeScene("Level5");
 
+            //Scene change next Level
             if (activeScene == "Level1")
             {
                 if (Input.GetKeyDown(KeyCode.N) && ((float)blocksDestroyed / blocksLvl1) * 100 >= 95)
@@ -139,5 +156,10 @@ public class GameManager : MonoBehaviour
     {
         GameObject newBall = Instantiate(ballPrefab, pos, Quaternion.identity);
         newBall.GetComponent<BallBehaviour>().initAfterClone(dir);
+    }
+
+    public void loseGame()
+    {
+        print("LOST");
     }
 }

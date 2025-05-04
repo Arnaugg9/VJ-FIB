@@ -43,41 +43,35 @@ public class PaddleBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameManager.Instance.levelStarted)
+        //Timer updates
+        if (_sizeTimer > 0)
         {
-            //Timer updates
-            if (_sizeTimer > 0)
+            _sizeTimer -= Time.deltaTime;
+            if (_sizeTimer <= 0)
             {
-                _sizeTimer -= Time.deltaTime;
-                if (_sizeTimer <= 0)
-                {
-                    paddleSize = 2.75f;
-                    updateSize();
-                }
+                paddleSize = 2.75f;
+                updateSize();
             }
+        }
 
-            //Input controll
-            _dir = Vector3.zero;
-            if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
-            {
-                _dir = Vector3.right;
-            }
-            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
-            {
-                _dir = Vector3.left;
-            }
+        //Input controll
+        _dir = Vector3.zero;
+        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+        {
+            _dir = Vector3.right;
+        }
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+        {
+            _dir = Vector3.left;
         }
     }
 
     private void FixedUpdate()
     {
-        if (GameManager.Instance.levelStarted)
-        {
-            Vector3 newPos = _rb.position + _dir * speed * Time.fixedDeltaTime;
-            if (newPos.x + paddleSize / 2 >= rightWall.position.x - wallWidth / 2) newPos.x = rightWall.position.x - wallWidth / 2 - paddleSize / 2;
-            if (newPos.x - paddleSize / 2 <= leftWall.position.x + wallWidth / 2) newPos.x = leftWall.position.x + wallWidth / 2 + paddleSize / 2;
-            _rb.MovePosition(newPos);
-        }
+        Vector3 newPos = _rb.position + _dir * speed * Time.fixedDeltaTime;
+        if (newPos.x + paddleSize / 2 >= rightWall.position.x - wallWidth / 2) newPos.x = rightWall.position.x - wallWidth / 2 - paddleSize / 2;
+        if (newPos.x - paddleSize / 2 <= leftWall.position.x + wallWidth / 2) newPos.x = leftWall.position.x + wallWidth / 2 + paddleSize / 2;
+        _rb.MovePosition(newPos);
     }
 
     public void changeSize(float size)

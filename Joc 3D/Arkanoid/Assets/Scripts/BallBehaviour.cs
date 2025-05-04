@@ -89,24 +89,21 @@ public class BallBehaviour : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (GameManager.Instance.levelStarted)
+        if (!_wasShoot && !_ballDead)
         {
-            if (!_wasShoot && !_ballDead)
-            {
-                Vector3 newPos = transform.position;
-                transform.position = paddle.transform.position + new Vector3(_paddleOffset, 0, 0.75f);
-            }
-            else if (!_ballDead)
-            {
-                Vector3 velocity = _rb.velocity;
+            Vector3 newPos = transform.position;
+            transform.position = paddle.transform.position + new Vector3(_paddleOffset, 0, 0.75f);
+        }
+        else if (!_ballDead)
+        {
+            Vector3 velocity = _rb.velocity;
 
-                if (Mathf.Abs(velocity.z) < 2.0f)
-                {
-                    float sign = Mathf.Sign(velocity.z) != 0 ? Mathf.Sign(velocity.z) : 1f;     //Per si de cas fos 0 va predeterminat endavant
-                    velocity.z = 2.0f * sign;
-                    velocity = velocity.normalized * speed;
-                    _rb.velocity = velocity;
-                }
+            if (Mathf.Abs(velocity.z) < 2.0f)
+            {
+                float sign = Mathf.Sign(velocity.z) != 0 ? Mathf.Sign(velocity.z) : 1f;     //Per si de cas fos 0 va predeterminat endavant
+                velocity.z = 2.0f * sign;
+                velocity = velocity.normalized * speed;
+                _rb.velocity = velocity;
             }
         }
     }
@@ -149,10 +146,17 @@ public class BallBehaviour : MonoBehaviour
         if (collision.gameObject.tag == "DeathZone")
         {
             _ballDead = true;
-            if(GameManager.Instance.activeBalls.Count > 1)
+            if (GameManager.Instance.activeBalls.Count > 1)
             {
                 GameManager.Instance.activeBalls.Remove(this);
                 Destroy(gameObject);
+            }
+            else
+            {
+                if (--GameManager.Instance.lives < 0)
+                {
+                    GameManager.Instance.loseGame();
+                }
             }
         }
     }
