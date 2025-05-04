@@ -4,16 +4,22 @@ using UnityEngine;
 
 public class BlockBehaviour : MonoBehaviour
 {
-
+    //Components
     private Rigidbody _rb;
+    //triggers
     public bool isGrounded;
+    public bool wasDestroyed;
+
+    //properties
     public float fallSpeed;
     public float floorY;
+
     // Start is called before the first frame update
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
         _rb.isKinematic = true;
+        wasDestroyed = false;
     }
 
     // Update is called once per frame
@@ -35,11 +41,12 @@ public class BlockBehaviour : MonoBehaviour
 
     public void Break()
     {
-            Destroy(gameObject);
+        wasDestroyed = true;
+        Destroy(gameObject);
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Ball")
+        if (!wasDestroyed && collision.gameObject.tag == "Ball")
         {
             if (tag == "SmallPU")
             {
@@ -61,13 +68,14 @@ public class BlockBehaviour : MonoBehaviour
             {
                 GameManager.Instance.cloneBall(collision.collider.transform.position);
             }
+            
             Break();
         }
     }
 
     private void OnTriggerEnter(Collider collision)
     {
-        if (collision.gameObject.tag == "Ball")
+        if (!wasDestroyed && collision.gameObject.tag == "Ball")
         {
             if (tag == "SmallPU")
             {
@@ -89,7 +97,7 @@ public class BlockBehaviour : MonoBehaviour
             {
                 GameManager.Instance.cloneBall(collision.transform.position);
             }
-                Break();
+            Break();
         }
     }
 }

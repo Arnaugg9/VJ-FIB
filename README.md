@@ -2,7 +2,9 @@
 VJ FIB (UPC) Curso 2024-25 Cuadrimestre Primavera
 
 Dentro de cada carpeta se puede encontrar tanto el código como los ejecutables. Además también los enunciados en formato pdf.
-Para el juego 3D también se incluye la memoria.
+
+Para el juego 3D también se incluye la memoria.ç
+
 JUEGO 3D -> Work in progress
 
 Enunciado Juego 2D:

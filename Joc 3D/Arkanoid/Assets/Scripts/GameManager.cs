@@ -79,13 +79,11 @@ public class GameManager : MonoBehaviour
     {
         instantiateBall(originalPos, new Vector3(-1, 0, 1));
         instantiateBall(originalPos, new Vector3(1, 0, 1));
-
     }
 
     public void instantiateBall(Vector3 pos, Vector3 dir)
     {
         GameObject newBall = Instantiate(ballPrefab, pos, Quaternion.identity);
-
         newBall.GetComponent<BallBehaviour>().initAfterClone(dir);
     }
 }
