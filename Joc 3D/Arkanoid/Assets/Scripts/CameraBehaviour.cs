@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class CameraBehivour : MonoBehaviour
+public class CameraBehaviour : MonoBehaviour
 {
     public Transform target;          // Centro del nivel
     public float duration;       // Cuánto tiempo dura la animación
@@ -38,6 +38,7 @@ public class CameraBehivour : MonoBehaviour
             if (_timer >= duration)
             {
                 _orbiting = false;
+                GameManager.Instance.levelStarted = true;
             }
         }
     }

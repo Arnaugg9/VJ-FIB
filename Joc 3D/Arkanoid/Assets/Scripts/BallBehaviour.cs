@@ -65,41 +65,48 @@ public class BallBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Timer updates
-        if (_powerTimer > 0) {
-            _powerTimer -= Time.deltaTime;
-            if (_powerTimer <= 0) setPower(false);
-        }
-
-        //Input control
-        if (!_ballDead && !_wasShoot && Input.GetKeyUp(KeyCode.Space))
+        if (GameManager.Instance.levelStarted)
         {
-            _wasShoot = true;
-            _rb.isKinematic = false;
-            _dir = new Vector3(Random.Range(-0.75f, 0.75f), 0, 1);
-            _rb.velocity = _dir * speed;
-        }
+            //Timer updates
+            if (_powerTimer > 0)
+            {
+                _powerTimer -= Time.deltaTime;
+                if (_powerTimer <= 0) setPower(false);
+            }
 
-        if (_ballDead && Input.GetKeyUp(KeyCode.Space)) Restart();
+            //Input control
+            if (!_ballDead && !_wasShoot && Input.GetKeyUp(KeyCode.Space))
+            {
+                _wasShoot = true;
+                _rb.isKinematic = false;
+                _dir = new Vector3(Random.Range(-0.75f, 0.75f), 0, 1);
+                _rb.velocity = _dir * speed;
+            }
+
+            if (_ballDead && Input.GetKeyUp(KeyCode.Space)) Restart();
+        }
     }
 
     private void FixedUpdate()
     {
-        if (!_wasShoot && !_ballDead)
+        if (GameManager.Instance.levelStarted)
         {
-            Vector3 newPos = transform.position;
-            transform.position = paddle.transform.position + new Vector3(_paddleOffset, 0, 0.75f);
-        }
-        else if (!_ballDead)
-        {
-            Vector3 velocity = _rb.velocity;
-
-            if (Mathf.Abs(velocity.z) < 2.0f)
+            if (!_wasShoot && !_ballDead)
             {
-                float sign = Mathf.Sign(velocity.z) != 0 ? Mathf.Sign(velocity.z) : 1f;     //Per si de cas fos 0 va predeterminat endavant
-                velocity.z = 2.0f * sign;
-                velocity = velocity.normalized * speed;
-                _rb.velocity = velocity;
+                Vector3 newPos = transform.position;
+                transform.position = paddle.transform.position + new Vector3(_paddleOffset, 0, 0.75f);
+            }
+            else if (!_ballDead)
+            {
+                Vector3 velocity = _rb.velocity;
+
+                if (Mathf.Abs(velocity.z) < 2.0f)
+                {
+                    float sign = Mathf.Sign(velocity.z) != 0 ? Mathf.Sign(velocity.z) : 1f;     //Per si de cas fos 0 va predeterminat endavant
+                    velocity.z = 2.0f * sign;
+                    velocity = velocity.normalized * speed;
+                    _rb.velocity = velocity;
+                }
             }
         }
     }
