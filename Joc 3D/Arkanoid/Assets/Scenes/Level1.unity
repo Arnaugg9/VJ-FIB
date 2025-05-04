@@ -298,6 +298,37 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9172782d44d4cab4f9650787e63ab9b7, type: 3}
+--- !u!1 &345232356
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 345232357}
+  m_Layer: 0
+  m_Name: PosCameraAnimation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &345232357
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 345232356}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.149077, y: 0.6912135, z: -0.14907703, w: 0.6912135}
+  m_LocalPosition: {x: -19.8, y: 13.1, z: 4.59}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &424672894 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7083454679735005358, guid: ce399f0680892034c8dcf3bb6cb2c958, type: 3}
@@ -522,6 +553,7 @@ GameObject:
   - component: {fileID: 963194228}
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
+  - component: {fileID: 963194229}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -596,13 +628,29 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.2122706, y: -0, z: -0, w: 0.977211}
-  m_LocalPosition: {x: 0.42, y: 11.18, z: -14.53}
+  m_LocalRotation: {x: 0.149077, y: 0.6912135, z: -0.14907703, w: 0.6912135}
+  m_LocalPosition: {x: -19.8, y: 13.1, z: 4.59}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 24.511, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 24.342, y: 90, z: 0}
+--- !u!114 &963194229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ac7ec81c47090d488b63b805aa90225, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 1781300852}
+  duration: 3
+  speed: 30
+  dist: 20
 --- !u!1001 &977148681
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -774,6 +822,37 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b47d61d2734af6a48b1735af9baa2255, type: 3}
+--- !u!1 &1781300851
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1781300852}
+  m_Layer: 0
+  m_Name: Center
+  m_TagString: Untagged
+  m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1781300852
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1781300851}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.28, y: 0, z: 4.59}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1912916948
 GameObject:
   m_ObjectHideFlags: 0
@@ -900,10 +979,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfe2e95b0b38f8d4e84b0bbb2e96cfd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activeScene: 
   ballPrefab: {fileID: 3576742904372869324, guid: 9fc18c451f1c18342a9441bd9d289ed0, type: 3}
   paddle: {fileID: 0}
   activeBalls: []
   godModeWall: {fileID: 0}
+  blocksLvl1: 10
+  blocksLvl2: 0
+  blocksLvl3: 0
+  blocksLvl4: 0
+  blocksLvl5: 0
+  blocksDestroyed: 0
 --- !u!4 &1912916951
 Transform:
   m_ObjectHideFlags: 0
@@ -1216,7 +1302,9 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 345232357}
   - {fileID: 963194228}
+  - {fileID: 1781300852}
   - {fileID: 705507995}
   - {fileID: 1912916951}
   - {fileID: 2302053894792433780}

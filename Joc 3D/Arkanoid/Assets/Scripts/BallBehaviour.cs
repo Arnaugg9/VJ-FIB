@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEditorInternal.VersionControl.ListControl;
@@ -29,13 +30,12 @@ public class BallBehaviour : MonoBehaviour
     {
         GameManager.Instance.activeBalls.Add(this);
         _rb = GetComponent<Rigidbody>();
+        paddle = GameManager.Instance.paddle;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        paddle = GameManager.Instance.paddle;
-
         if (!_wasShoot)
         {
             _rb.isKinematic = true;
@@ -142,6 +142,11 @@ public class BallBehaviour : MonoBehaviour
         if (collision.gameObject.tag == "DeathZone")
         {
             _ballDead = true;
+            if(GameManager.Instance.activeBalls.Count > 1)
+            {
+                GameManager.Instance.activeBalls.Remove(this);
+                Destroy(gameObject);
+            }
         }
     }
 

@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
 
     //Scenes Managment
     public enum scenes {MainMenu, Level1, Level2, Level3, Level4, Level5, Credits};
+    public string activeScene;
 
     //Sound Managment
     private AudioSource _audioSource;
@@ -22,7 +23,14 @@ public class GameManager : MonoBehaviour
 
     //Game State Managment
     public GodModeWalls godModeWall;
-    
+    public int blocksLvl1;
+    public int blocksLvl2;
+    public int blocksLvl3;
+    public int blocksLvl4;
+    public int blocksLvl5;
+    public int blocksDestroyed;
+
+
 
     private void Awake()
     {
@@ -47,19 +55,61 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        activeScene = SceneManager.GetActiveScene().name;
+
         if (Input.GetKeyDown(KeyCode.G)) godModeWall.gameObject.SetActive(!godModeWall.gameObject.activeSelf);
 
-        if (SceneManager.GetActiveScene().name != "Level1" && (Input.GetKeyDown(KeyCode.Keypad1) || Input.GetKeyDown(KeyCode.Alpha1)))
+        if (activeScene != "Level1" && (Input.GetKeyDown(KeyCode.Keypad1) || Input.GetKeyDown(KeyCode.Alpha1)))
             changeScene("Level1");
-        if (SceneManager.GetActiveScene().name != "Level2" && (Input.GetKeyDown(KeyCode.Keypad2) || Input.GetKeyDown(KeyCode.Alpha2)))
+        if (activeScene != "Level2" && (Input.GetKeyDown(KeyCode.Keypad2) || Input.GetKeyDown(KeyCode.Alpha2)))
             changeScene("Level2");
-        if (SceneManager.GetActiveScene().name != "Level3" && (Input.GetKeyDown(KeyCode.Keypad3) || Input.GetKeyDown(KeyCode.Alpha3)))
+        if (activeScene != "Level3" && (Input.GetKeyDown(KeyCode.Keypad3) || Input.GetKeyDown(KeyCode.Alpha3)))
             changeScene("Level3");
-        if (SceneManager.GetActiveScene().name != "Level4" && (Input.GetKeyDown(KeyCode.Keypad4) || Input.GetKeyDown(KeyCode.Alpha4)))
+        if (activeScene != "Level4" && (Input.GetKeyDown(KeyCode.Keypad4) || Input.GetKeyDown(KeyCode.Alpha4)))
             changeScene("Level4");
-        if (SceneManager.GetActiveScene().name != "Level5" && (Input.GetKeyDown(KeyCode.Keypad5) || Input.GetKeyDown(KeyCode.Alpha5)))
+        if (activeScene != "Level5" && (Input.GetKeyDown(KeyCode.Keypad5) || Input.GetKeyDown(KeyCode.Alpha5)))
             changeScene("Level5");
 
+        if (activeScene == "Level1")
+        {
+            if (Input.GetKeyDown(KeyCode.N) && ((float)blocksDestroyed/blocksLvl1)*100 >= 95)
+            {
+                blocksDestroyed = 0;
+                changeScene("Level2");
+            }
+        }
+        if (activeScene == "Level2")
+        {
+            if (Input.GetKeyDown(KeyCode.N) && ((float)blocksDestroyed / blocksLvl2) * 100 >= 95)
+            {
+                blocksDestroyed = 0;
+                changeScene("Level3");
+            }
+        }
+        if (activeScene == "Level3")
+        {
+            if (Input.GetKeyDown(KeyCode.N) && ((float)blocksDestroyed / blocksLvl3) * 100 >= 95)
+            {
+                blocksDestroyed = 0;
+                changeScene("Level4");
+            }
+        }
+        if (activeScene == "Level4")
+        {
+            if (Input.GetKeyDown(KeyCode.N) && ((float)blocksDestroyed / blocksLvl4) * 100 >= 95)
+            {
+                blocksDestroyed = 0;
+                changeScene("Level5");
+            }
+        }
+        if (activeScene == "Level5")
+        {
+            if (Input.GetKeyDown(KeyCode.N) && ((float)blocksDestroyed / blocksLvl5) * 100 >= 95)
+            {
+                blocksDestroyed = 0;
+                changeScene("Credits");
+            }
+        }
     }
 
     private void changeScene(string scene)
