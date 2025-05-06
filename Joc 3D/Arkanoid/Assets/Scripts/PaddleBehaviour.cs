@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 
 public class PaddleBehaviour : MonoBehaviour
@@ -23,7 +24,13 @@ public class PaddleBehaviour : MonoBehaviour
     private float _sizeTimer;
     private const float _PU_SIZE_DURATION = 8;
     public int magnetRemain;
+    private float _timeShooting;
+    private const float _TIME_SHOOTING = 10;
+    private float _nextShoot;
+    private const float _TIME_BETWEEN_SHOOT = 2;
 
+    //Prefabs
+    public GameObject bulletPrefab;
 
     private void Awake()
     {
@@ -51,6 +58,17 @@ public class PaddleBehaviour : MonoBehaviour
             {
                 paddleSize = 2.75f;
                 updateSize();
+            }
+        }
+
+        if (_timeShooting > 0)
+        {
+            _timeShooting -= Time.deltaTime;
+            _nextShoot -= Time.deltaTime;
+            if (_nextShoot <= 0)
+            {
+                shootBullets();
+                _nextShoot = _TIME_BETWEEN_SHOOT;
             }
         }
 
@@ -93,5 +111,21 @@ public class PaddleBehaviour : MonoBehaviour
     public void activateMagnet()
     {
         magnetRemain = 5;
+    }
+
+    public void shootBullets()
+    {
+        Vector3 posPaddle = transform.position;
+        Vector3 posB = posPaddle;
+        posB.x -= paddleSize / 2 + 0.5f;
+        GameObject bullet1 = Instantiate(bulletPrefab, posB, Quaternion.identity);
+        posB.x += paddleSize - 1f;
+        GameObject bullet2 = Instantiate(bulletPrefab, posB, Quaternion.identity);
+    }
+
+    public void startShooting()
+    {
+        _timeShooting = _TIME_SHOOTING;
+        _nextShoot = 0;
     }
 }

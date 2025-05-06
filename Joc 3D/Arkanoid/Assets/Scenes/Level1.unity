@@ -2061,6 +2061,10 @@ PrefabInstance:
       propertyPath: rightWall
       value: 
       objectReference: {fileID: 80878963}
+    - target: {fileID: 6095618964637783774, guid: 85d3f04d7eeb7c84a8047a9da2276f7d, type: 3}
+      propertyPath: bulletPrefab
+      value: 
+      objectReference: {fileID: 766194315639484783, guid: 1be7feb929dd7f04f92ecb8d045e3c31, type: 3}
     - target: {fileID: 8938264091157366885, guid: 85d3f04d7eeb7c84a8047a9da2276f7d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.52388275

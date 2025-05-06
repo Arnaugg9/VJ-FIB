@@ -1,11 +1,14 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BlockBehaviour : MonoBehaviour
 {
     //Components
     private Rigidbody _rb;
+
     //triggers
     public bool isGrounded;
     public bool wasDestroyed;
@@ -13,6 +16,9 @@ public class BlockBehaviour : MonoBehaviour
     //properties
     public float fallSpeed;
     public float floorY;
+
+    public int itemSpawnProbability = 30;
+    public GameObject itemPrefab;
 
     // Start is called before the first frame update
     void Start()
@@ -50,54 +56,31 @@ public class BlockBehaviour : MonoBehaviour
     {
         if (!wasDestroyed && collision.gameObject.tag == "Ball")
         {
-            if (tag == "SmallPU")
+            int rand = Random.Range(0, 100);
+            if (rand < itemSpawnProbability)
             {
-                GameManager.Instance.changePaddleSize(1.75f);
+                Instantiate(itemPrefab, transform.position, Quaternion.identity);
             }
-            else if (tag == "BigPU")
+            if (collision.gameObject.tag == "Bullet")
             {
-                GameManager.Instance.changePaddleSize(3.75f);
+                collision.gameObject.GetComponent<BulletBehaviour>().Break();
             }
-            else if (tag == "PowerPU")
-            {
-                collision.collider.GetComponent<BallBehaviour>().setPower(true);
-            }
-            else if (tag == "MagnetPU")
-            {
-                GameManager.Instance.paddle.activateMagnet();
-            }
-            else if (tag == "ClonePU")
-            {
-                GameManager.Instance.cloneBall(collision.collider.transform.position);
-            }
-            
             Break();
         }
     }
 
     private void OnTriggerEnter(Collider collision)
     {
-        if (!wasDestroyed && collision.gameObject.tag == "Ball")
+        if (!wasDestroyed && (collision.gameObject.tag == "Ball" || collision.gameObject.tag == "Bullet"))
         {
-            if (tag == "SmallPU")
+            int rand = Random.Range(0, 100);
+            if (rand < itemSpawnProbability)
             {
-                GameManager.Instance.changePaddleSize(1.75f);
+                Instantiate(itemPrefab, transform.position, Quaternion.identity);
             }
-            else if (tag == "BigPU")
+            if (collision.gameObject.tag == "Bullet")
             {
-                GameManager.Instance.changePaddleSize(3.75f);
-            }
-            else if (tag == "PowerPU")
-            {
-                collision.GetComponent<BallBehaviour>().setPower(true);
-            }
-            else if (tag == "MagnetPU")
-            {
-                GameManager.Instance.paddle.activateMagnet();
-            }
-            else if (tag == "ClonePU")
-            {
-                GameManager.Instance.cloneBall(collision.transform.position);
+                collision.gameObject.GetComponent<BulletBehaviour>().Break();
             }
             Break();
         }

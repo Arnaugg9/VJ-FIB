@@ -162,4 +162,12 @@ public class GameManager : MonoBehaviour
     {
         print("LOST");
     }
+
+    public void activatePower()
+    {
+        for (int i = 0; i < activeBalls.Count; ++i)
+        {
+            activeBalls[i].setPower(true);
+        }
+    }
 }
