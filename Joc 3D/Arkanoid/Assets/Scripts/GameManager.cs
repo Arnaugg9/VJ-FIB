@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -26,6 +27,7 @@ public class GameManager : MonoBehaviour
     public int gameScore;
     public int lives;
     public bool levelStarted;
+    private bool _canNextLvl;
 
     public GodModeWalls godModeWall;
     public int blocksLvl1;
@@ -39,6 +41,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI scoreTxt;
     public TextMeshProUGUI livesTxt;
     public TextMeshProUGUI levelTxt;
+    public GameObject NextLvlButton;
 
     private void Awake()
     {
@@ -88,48 +91,23 @@ public class GameManager : MonoBehaviour
             if (activeScene != "Level5" && (Input.GetKeyDown(KeyCode.Keypad5) || Input.GetKeyDown(KeyCode.Alpha5)))
                 changeScene("Level5");
 
-            //Scene change next Level
-            if (activeScene == "Level1")
+            _canNextLvl = checkNextLvl();
+            if (_canNextLvl)
             {
-                if (Input.GetKeyDown(KeyCode.N) && ((float)blocksDestroyed / blocksLvl1) * 100 >= 95)
-                {
-                    blocksDestroyed = 0;
-                    changeScene("Level2");
-                }
-            }
-            if (activeScene == "Level2")
-            {
-                if (Input.GetKeyDown(KeyCode.N) && ((float)blocksDestroyed / blocksLvl2) * 100 >= 95)
-                {
-                    blocksDestroyed = 0;
-                    changeScene("Level3");
-                }
-            }
-            if (activeScene == "Level3")
-            {
-                if (Input.GetKeyDown(KeyCode.N) && ((float)blocksDestroyed / blocksLvl3) * 100 >= 95)
-                {
-                    blocksDestroyed = 0;
-                    changeScene("Level4");
-                }
-            }
-            if (activeScene == "Level4")
-            {
-                if (Input.GetKeyDown(KeyCode.N) && ((float)blocksDestroyed / blocksLvl4) * 100 >= 95)
-                {
-                    blocksDestroyed = 0;
-                    changeScene("Level5");
-                }
-            }
-            if (activeScene == "Level5")
-            {
-                if (Input.GetKeyDown(KeyCode.N) && ((float)blocksDestroyed / blocksLvl5) * 100 >= 95)
-                {
-                    blocksDestroyed = 0;
-                    changeScene("Credits");
-                }
+                if (!NextLvlButton.activeSelf) NextLvlButton.SetActive(true);
+                if (Input.GetKeyDown(KeyCode.N)) gotoNextLvl();
             }
         }
+    }
+
+    private bool checkNextLvl()
+    {
+        if (activeScene == "Level1") return (((float)blocksDestroyed / blocksLvl1) * 100 >= 95);
+        if (activeScene == "Level2") return (((float)blocksDestroyed / blocksLvl2) * 100 >= 95);
+        if (activeScene == "Level3") return (((float)blocksDestroyed / blocksLvl3) * 100 >= 95);
+        if (activeScene == "Level4") return (((float)blocksDestroyed / blocksLvl4) * 100 >= 95);
+        if (activeScene == "Level5") return (((float)blocksDestroyed / blocksLvl5) * 100 >= 95);
+        return false;
     }
 
     private void changeScene(string scene)
@@ -138,6 +116,8 @@ public class GameManager : MonoBehaviour
         paddle = null;
         godModeWall = null;
         levelStarted = false;
+        blocksDestroyed = 0;
+        NextLvlButton.SetActive(false);
         SceneManager.LoadScene(scene);
     }
 
@@ -169,5 +149,16 @@ public class GameManager : MonoBehaviour
         {
             activeBalls[i].setPower(true);
         }
+    }
+
+    public void gotoNextLvl()
+    {
+        activeBalls.Clear();
+        paddle = null;
+        godModeWall = null;
+        levelStarted = false;
+        blocksDestroyed = 0;
+        NextLvlButton.SetActive(false);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }
