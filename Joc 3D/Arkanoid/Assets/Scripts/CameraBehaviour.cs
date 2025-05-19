@@ -1,45 +1,51 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class CameraBehaviour : MonoBehaviour
 {
+    [Header("Pivote y timings")]
     public Transform target;          // Centro del nivel
-    public float duration;       // Cuánto tiempo dura la animación
-    public float speed;         // Velocidad de rotación
-    public float dist;      // Distancia al centro
+    public float duration = 3f;       // Duracion de la animacion
+
+    [Header("Marcador de posicion final")]
+    public Transform endMarker;       // Empty que marca la posicion final
 
     private float _timer;
     private bool _orbiting;
 
-    private Vector3 _offset;
+    private Vector3 _startOffset;     // offset inicial (posicion - target)
+    private Vector3 _endOffset;       // offset final (endMarker - target)
 
-    // Start is called before the first frame update
     void Start()
     {
-        _timer = 0;
+        _timer = 0f;
         _orbiting = true;
-        _offset = (transform.position - target.position).normalized * dist;
-        transform.position = target.position + _offset;
+
+        // Calcula offsets relativos al target
+        _startOffset = transform.position - target.position;
+        _endOffset = endMarker.position - target.position;
+
+        // Asegura posicion inicial y mirada al centro
+        transform.position = target.position + _startOffset;
         transform.LookAt(target);
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (_orbiting)
+        if (!_orbiting) return;
+
+        _timer += Time.deltaTime;
+        float t = Mathf.Clamp01(_timer / duration);
+
+        // Interpola sobre la esfera para mantener la misma distancia
+        Vector3 offset = Vector3.Slerp(_startOffset, _endOffset, t);
+
+        transform.position = target.position + offset;
+        transform.LookAt(target);
+
+        if (_timer >= duration)
         {
-            _timer += Time.deltaTime;
-
-            transform.RotateAround(target.position, Vector3.down, speed * Time.deltaTime);
-            transform.LookAt(target);
-
-            if (_timer >= duration)
-            {
-                _orbiting = false;
-                GameManager.Instance.levelStarted = true;
-            }
+            _orbiting = false;
+            GameManager.Instance.levelStarted = true;
         }
     }
 }

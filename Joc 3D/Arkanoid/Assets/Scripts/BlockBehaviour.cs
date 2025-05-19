@@ -26,13 +26,14 @@ public class BlockBehaviour : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
         _rb.isKinematic = true;
         wasDestroyed = false;
+        floorY = -0.5f;
     }
 
     // Update is called once per frame
     void Update()
     {
         //transform.position = transform.GetChild(0).position;
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 0.5f);
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 1f);
     }
 
     private void FixedUpdate()

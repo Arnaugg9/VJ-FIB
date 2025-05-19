@@ -18,7 +18,7 @@ public class PowerUpBehaviour : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
 
-        int rand = Random.Range(0, 5);
+        int rand = Random.Range(0, 6);
         selectPU((PowerUpTypes)rand);
     }
 
