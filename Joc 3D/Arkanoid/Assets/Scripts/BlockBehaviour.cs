@@ -17,7 +17,7 @@ public class BlockBehaviour : MonoBehaviour
     public float fallSpeed;
     public float floorY;
 
-    public int itemSpawnProbability = 30;
+    public int itemSpawnProbability;
     public GameObject itemPrefab;
 
     // Start is called before the first frame update
@@ -27,27 +27,45 @@ public class BlockBehaviour : MonoBehaviour
         _rb.isKinematic = true;
         wasDestroyed = false;
         floorY = -0.5f;
+        isGrounded = true;
+        GameManager.Instance.blocksCurrent++;
+        itemSpawnProbability = 7;
     }
 
     // Update is called once per frame
     void Update()
     {
         //transform.position = transform.GetChild(0).position;
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 1f);
+        Vector3 origin = transform.position + Vector3.up * 0.1f; // subir un poco el rayo
+        isGrounded = Physics.Raycast(origin, Vector3.down, out RaycastHit hit, 0.11f);
     }
 
     private void FixedUpdate()
     {
         if (!isGrounded)
         {
-            Vector3 newPos = _rb.position + Vector3.down * fallSpeed * Time.fixedDeltaTime;
+            Vector3 newPos = transform.position + Vector3.down * fallSpeed * Time.fixedDeltaTime;
             if (newPos.y < floorY) newPos.y = floorY;
-            _rb.MovePosition(newPos);
+            transform.position = newPos;
         }
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Vector3 rayOrigin = transform.position;
+        Gizmos.DrawLine(rayOrigin, rayOrigin + Vector3.down * 0.01f);
     }
 
     public void Break()
     {
+        //Spawns item
+        int rand = Random.Range(0, 100);
+        if (rand < itemSpawnProbability)
+        {
+            Instantiate(itemPrefab, transform.position, Quaternion.identity);
+        }
+
         wasDestroyed = true;
         GameManager.Instance.blocksDestroyed++;
         GameManager.Instance.gameScore += 500;
@@ -57,15 +75,11 @@ public class BlockBehaviour : MonoBehaviour
     {
         if (!wasDestroyed && collision.gameObject.tag == "Ball")
         {
-            int rand = Random.Range(0, 100);
-            if (rand < itemSpawnProbability)
-            {
-                Instantiate(itemPrefab, transform.position, Quaternion.identity);
-            }
-            if (collision.gameObject.tag == "Bullet")
-            {
-                collision.gameObject.GetComponent<BulletBehaviour>().Break();
-            }
+            Break();
+        }
+        else if (!wasDestroyed && collision.gameObject.tag == "Bullet")
+        {
+            collision.gameObject.GetComponent<BulletBehaviour>().Break();
             Break();
         }
     }

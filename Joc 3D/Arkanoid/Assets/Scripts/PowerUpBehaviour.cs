@@ -97,7 +97,12 @@ public class PowerUpBehaviour : MonoBehaviour
             }
             Break();
         }
+        if (collision.gameObject.tag == "DeathZone")
+        {
+            Break();
+        }
     }
+
     public void Break()
     {
         Destroy(gameObject);

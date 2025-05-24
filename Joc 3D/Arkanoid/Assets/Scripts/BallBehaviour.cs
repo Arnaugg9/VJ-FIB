@@ -27,14 +27,15 @@ public class BallBehaviour : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.Instance.activeBalls.Add(this);
         _rb = GetComponent<Rigidbody>();
         paddle = GameManager.Instance.paddle;
+        GameManager.Instance.activeBalls.Add(this);
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        Physics.IgnoreLayerCollision(gameObject.layer, LayerMask.NameToLayer("Block"), false);
         if (!_wasShoot)
         {
             _rb.isKinematic = true;
@@ -47,6 +48,7 @@ public class BallBehaviour : MonoBehaviour
         _ballDead = false;
         _paddleOffset = 0.0f;
         _powerTimer = 0;
+        speed = 8;
     }
 
     public void Restart()

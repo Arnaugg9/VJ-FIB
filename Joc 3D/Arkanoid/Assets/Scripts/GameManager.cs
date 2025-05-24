@@ -30,11 +30,7 @@ public class GameManager : MonoBehaviour
     private bool _canNextLvl;
 
     public GodModeWalls godModeWall;
-    public int blocksLvl1;
-    public int blocksLvl2;
-    public int blocksLvl3;
-    public int blocksLvl4;
-    public int blocksLvl5;
+    public int blocksCurrent;
     public int blocksDestroyed;
 
     //UI Managment
@@ -63,6 +59,7 @@ public class GameManager : MonoBehaviour
         levelStarted = false;
         gameScore = 0;
         lives = 3;
+        blocksCurrent = 0;
     }
 
     // Update is called once per frame
@@ -102,12 +99,7 @@ public class GameManager : MonoBehaviour
 
     private bool checkNextLvl()
     {
-        if (activeScene == "Level1") return (((float)blocksDestroyed / blocksLvl1) * 100 >= 95);
-        if (activeScene == "Level2") return (((float)blocksDestroyed / blocksLvl2) * 100 >= 95);
-        if (activeScene == "Level3") return (((float)blocksDestroyed / blocksLvl3) * 100 >= 95);
-        if (activeScene == "Level4") return (((float)blocksDestroyed / blocksLvl4) * 100 >= 95);
-        if (activeScene == "Level5") return (((float)blocksDestroyed / blocksLvl5) * 100 >= 95);
-        return false;
+        return (((float)blocksDestroyed / blocksCurrent) * 100 >= 95);
     }
 
     private void changeScene(string scene)
@@ -117,6 +109,7 @@ public class GameManager : MonoBehaviour
         godModeWall = null;
         levelStarted = false;
         blocksDestroyed = 0;
+        blocksCurrent = 0;
         NextLvlButton.SetActive(false);
         SceneManager.LoadScene(scene);
     }
@@ -158,6 +151,7 @@ public class GameManager : MonoBehaviour
         godModeWall = null;
         levelStarted = false;
         blocksDestroyed = 0;
+        blocksCurrent = 0;
         NextLvlButton.SetActive(false);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
