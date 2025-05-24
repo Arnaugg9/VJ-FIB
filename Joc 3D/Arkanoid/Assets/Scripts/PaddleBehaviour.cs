@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -8,6 +9,8 @@ public class PaddleBehaviour : MonoBehaviour
 {
     //Components
     private Rigidbody _rb;
+    private AudioSource _audioSource;
+    private List<AudioClip> hitClips;
 
     //Movement
     private Vector3 _dir;
@@ -40,6 +43,8 @@ public class PaddleBehaviour : MonoBehaviour
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
+        _audioSource = GetComponent<AudioSource>();
+        hitClips = Resources.LoadAll<AudioClip>("Audio/Sword").ToList();
         _dir = Vector3.zero;
 
         _sizeTimer = 0;
@@ -126,5 +131,12 @@ public class PaddleBehaviour : MonoBehaviour
     {
         _timeShooting = _TIME_SHOOTING;
         _nextShoot = 0;
+    }
+
+    public void playHitSound()
+    {
+        int index = Random.Range(0, hitClips.Count);
+        _audioSource.PlayOneShot(hitClips[index]);
+        //AudioSource.PlayClipAtPoint(hitClips[index], Camera.main.transform.position);
     }
 }

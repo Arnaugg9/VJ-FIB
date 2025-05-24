@@ -123,6 +123,7 @@ public class BallBehaviour : MonoBehaviour
             }
             else if (!_first_collision)
             {
+                paddle.playHitSound();
                 // Treu punt on ha chocat
                 Vector3 hitPoint = collision.GetContact(0).point;
                 Vector3 palaCenter = collision.transform.position;
@@ -138,7 +139,11 @@ public class BallBehaviour : MonoBehaviour
                 // Aplica la nueva direcció
                 _rb.velocity = newDir * _rb.velocity.magnitude;
             }
-            else _first_collision = false;
+            else
+            {
+                paddle.playHitSound();
+                _first_collision = false;
+            }
         }
     }
 

@@ -18,6 +18,17 @@ TagManager:
   - ShootPU
   - WoodBlock
   - GrassBlock
+  - CactusBlock
+  - SandBlock
+  - NoStoneBlock
+  - StoneBlock
+  - CrystalBlock
+  - NetherBrickBlock
+  - NetherrackBlock
+  - SoulSandBlock
+  - EndCrystalBlock
+  - BedrockBlock
+  - DragonEgg
   layers:
   - Default
   - TransparentFX

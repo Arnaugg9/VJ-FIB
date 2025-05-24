@@ -11,7 +11,8 @@ public class BlockBehaviour : MonoBehaviour
     private Rigidbody _rb;
 
     //Resources
-    public List<AudioClip> breakClips; 
+    private List<AudioClip> breakClips;
+    private List<AudioClip> breakClips2;
 
     //triggers
     public bool isGrounded;
@@ -21,6 +22,9 @@ public class BlockBehaviour : MonoBehaviour
     public float fallSpeed;
     public float floorY;
 
+    //Dissenys per fer randomitzacio de blocks en lvl3
+    public List<GameObject> oreBlocks;
+
     public int itemSpawnProbability;
     public GameObject itemPrefab;
 
@@ -29,13 +33,52 @@ public class BlockBehaviour : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         _rb.isKinematic = true;
-        if (tag == "WoodBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/Wood").Where(clip => clip.name.StartsWith("Wood_dig")).ToList();
-        else if (tag == "GrassBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/Grass").Where(clip => clip.name.StartsWith("Grass_dig")).ToList();
+        assignSounds();
+        if (tag == "StoneBlock") changeRandomly();
+
         wasDestroyed = false;
         floorY = -0.5f;
         isGrounded = true;
         GameManager.Instance.blocksCurrent++;
         itemSpawnProbability = 7;
+    }
+
+    private void assignSounds()
+    {
+        if (tag == "WoodBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/Wood").ToList();
+        else if (tag == "GrassBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/Grass").ToList();
+        else if (tag == "CactusBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/Cactus").ToList();
+        else if (tag == "SandBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/Sand").ToList();
+        else if (tag == "StoneBlock" || tag == "NoStoneBlock" || tag == "BedrockBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/Stone").ToList();
+        else if (tag == "CrystalBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/Crystal").ToList();
+        else if (tag == "NetherBrickBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/NetherBrick").ToList();
+        else if (tag == "NetherrackBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/Netherrack").ToList();
+        else if (tag == "SoulSandBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/SoulSand").ToList();
+        else if (tag == "EndCrystalBlock")
+        {
+            breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/Crystal").ToList();
+            breakClips2 = Resources.LoadAll<AudioClip>("Audio/Blocks/Explosion").ToList();
+        }
+
+    }
+
+    private void changeRandomly()
+    {
+        int rand = Random.Range(0, 100);
+        if (rand < 35)
+        {
+            rand = Random.Range(0, 5 + 4 + 2 + 1);
+            Destroy(transform.GetChild(0).gameObject);
+            GameObject newBlock;
+            if (rand < 5) newBlock = oreBlocks[0];
+            else if (rand < 9) newBlock = oreBlocks[1];
+            else if (rand < 11) newBlock = oreBlocks[2];
+            else newBlock = oreBlocks[3];
+
+            newBlock = Instantiate(newBlock, transform);
+            newBlock.transform.localPosition = Vector3.zero;
+            newBlock.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+        }
     }
 
     // Update is called once per frame
@@ -76,11 +119,15 @@ public class BlockBehaviour : MonoBehaviour
         if (breakClips.Count > 0)
         {
             int index = Random.Range(0, breakClips.Count);
-            Debug.Log("Reproduciendo sonido: " + breakClips[index].name);
             AudioSource.PlayClipAtPoint(breakClips[index], Camera.main.transform.position);
+            if (tag == "EndCrystalBlock" && breakClips2.Count > 0)
+            {
+                index = Random.Range(0, breakClips2.Count);
+                AudioSource.PlayClipAtPoint(breakClips2[index], Camera.main.transform.position);
+            }
         }
 
-            wasDestroyed = true;
+        wasDestroyed = true;
         GameManager.Instance.blocksDestroyed++;
         GameManager.Instance.gameScore += 500;
         Destroy(gameObject);

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2327135918649306850}
   m_Layer: 6
   m_Name: StoneBlock
-  m_TagString: Block
+  m_TagString: StoneBlock
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -95,10 +95,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c29498ff2f3ff8459476c564971b57a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  breakClips: []
   isGrounded: 0
   wasDestroyed: 0
   fallSpeed: 1
   floorY: 0
+  oreBlocks:
+  - {fileID: 919132149155446097, guid: 679e5a17c25279c458bfd5503ff22651, type: 3}
+  - {fileID: 919132149155446097, guid: ed860de602baed1469290c0d0624dca1, type: 3}
+  - {fileID: 919132149155446097, guid: 91a841c6fb1743b4d8266a47ee3ad654, type: 3}
+  - {fileID: 919132149155446097, guid: 1c7d13c8e7b412b49a8826ae1c41e6c0, type: 3}
   itemSpawnProbability: 40
   itemPrefab: {fileID: 7012138492000490094, guid: 3d53b1010af0a504ea91f5cd19c30583, type: 3}
 --- !u!1001 &6769989840710593392

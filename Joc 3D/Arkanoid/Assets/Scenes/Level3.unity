@@ -10397,11 +10397,7 @@ MonoBehaviour:
   lives: 0
   levelStarted: 1
   godModeWall: {fileID: 0}
-  blocksLvl1: 10
-  blocksLvl2: 0
-  blocksLvl3: 0
-  blocksLvl4: 0
-  blocksLvl5: 0
+  blocksCurrent: 0
   blocksDestroyed: 0
   scoreTxt: {fileID: 826648350}
   livesTxt: {fileID: 826648349}
@@ -10732,6 +10728,9 @@ Transform:
   - {fileID: 855632754}
   - {fileID: 183685145}
   - {fileID: 149663602}
+  - {fileID: 1614722672}
+  - {fileID: 1305994822}
+  - {fileID: 1370411724}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &317337584
@@ -39046,7 +39045,7 @@ Transform:
   m_GameObject: {fileID: 1305994821}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.496, y: 2.4799995, z: -0.509}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -39098,7 +39097,7 @@ Transform:
   - {fileID: 1551221354}
   - {fileID: 1470609909}
   - {fileID: 1075140455}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 316248633}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1306132397 stripped
 Transform:
@@ -40856,7 +40855,7 @@ Transform:
   m_GameObject: {fileID: 1370411723}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.496, y: 3.4799995, z: -0.509}
+  m_LocalPosition: {x: 0, y: 4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -40908,7 +40907,7 @@ Transform:
   - {fileID: 320609693}
   - {fileID: 136890471}
   - {fileID: 1077043687}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 316248633}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1370656773
 PrefabInstance:
@@ -47814,7 +47813,7 @@ Transform:
   m_GameObject: {fileID: 1614722671}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.496, y: 1.4799995, z: -0.509}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -47866,7 +47865,7 @@ Transform:
   - {fileID: 71126995}
   - {fileID: 1934139332}
   - {fileID: 1306132397}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 316248633}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1614803958
 PrefabInstance:
@@ -63501,7 +63500,4 @@ SceneRoots:
   - {fileID: 316248633}
   - {fileID: 185022523}
   - {fileID: 826648346}
-  - {fileID: 1614722672}
-  - {fileID: 1305994822}
-  - {fileID: 1370411724}
   - {fileID: 712346464}
