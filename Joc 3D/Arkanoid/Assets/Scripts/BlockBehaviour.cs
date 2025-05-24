@@ -1,6 +1,7 @@
 using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -8,6 +9,9 @@ public class BlockBehaviour : MonoBehaviour
 {
     //Components
     private Rigidbody _rb;
+
+    //Resources
+    public List<AudioClip> breakClips; 
 
     //triggers
     public bool isGrounded;
@@ -25,6 +29,8 @@ public class BlockBehaviour : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         _rb.isKinematic = true;
+        if (tag == "WoodBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/Wood").Where(clip => clip.name.StartsWith("Wood_dig")).ToList();
+        else if (tag == "GrassBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/Grass").Where(clip => clip.name.StartsWith("Grass_dig")).ToList();
         wasDestroyed = false;
         floorY = -0.5f;
         isGrounded = true;
@@ -66,7 +72,15 @@ public class BlockBehaviour : MonoBehaviour
             Instantiate(itemPrefab, transform.position, Quaternion.identity);
         }
 
-        wasDestroyed = true;
+        //reprodueix audio
+        if (breakClips.Count > 0)
+        {
+            int index = Random.Range(0, breakClips.Count);
+            Debug.Log("Reproduciendo sonido: " + breakClips[index].name);
+            AudioSource.PlayClipAtPoint(breakClips[index], Camera.main.transform.position);
+        }
+
+            wasDestroyed = true;
         GameManager.Instance.blocksDestroyed++;
         GameManager.Instance.gameScore += 500;
         Destroy(gameObject);
@@ -77,26 +91,17 @@ public class BlockBehaviour : MonoBehaviour
         {
             Break();
         }
-        else if (!wasDestroyed && collision.gameObject.tag == "Bullet")
-        {
-            collision.gameObject.GetComponent<BulletBehaviour>().Break();
-            Break();
-        }
     }
 
     private void OnTriggerEnter(Collider collision)
     {
-        if (!wasDestroyed && (collision.gameObject.tag == "Ball" || collision.gameObject.tag == "Bullet"))
+        if (!wasDestroyed && (collision.gameObject.tag == "Ball"))
         {
-            int rand = Random.Range(0, 100);
-            if (rand < itemSpawnProbability)
-            {
-                Instantiate(itemPrefab, transform.position, Quaternion.identity);
-            }
-            if (collision.gameObject.tag == "Bullet")
-            {
-                collision.gameObject.GetComponent<BulletBehaviour>().Break();
-            }
+            Break();
+        }
+        else if (!wasDestroyed && collision.gameObject.tag == "Bullet")
+        {
+            collision.gameObject.GetComponent<BulletBehaviour>().Break();
             Break();
         }
     }

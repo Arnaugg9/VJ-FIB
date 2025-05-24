@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2327135918649306850}
   m_Layer: 6
   m_Name: DirtBlock
-  m_TagString: Block
+  m_TagString: GrassBlock
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -95,6 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c29498ff2f3ff8459476c564971b57a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  breakClips: []
   isGrounded: 0
   wasDestroyed: 0
   fallSpeed: 1

@@ -16,6 +16,8 @@ TagManager:
   - ClonePU
   - Bullet
   - ShootPU
+  - WoodBlock
+  - GrassBlock
   layers:
   - Default
   - TransparentFX
