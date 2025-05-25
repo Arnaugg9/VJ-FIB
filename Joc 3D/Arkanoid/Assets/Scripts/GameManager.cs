@@ -4,6 +4,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -35,7 +36,9 @@ public class GameManager : MonoBehaviour
 
     //UI Managment
     public TextMeshProUGUI scoreTxt;
-    public TextMeshProUGUI livesTxt;
+    public List<GameObject> lifeSlots;
+    public Texture fullHeart;
+    public Texture emptyHeart;
     public TextMeshProUGUI levelTxt;
     public GameObject NextLvlButton;
 
@@ -72,6 +75,20 @@ public class GameManager : MonoBehaviour
         lives = 3;
         blocksCurrent = 0;
         changeMusic(SceneManager.GetActiveScene().name);
+        drawLife();
+    }
+
+    public void drawLife()
+    {
+        foreach(GameObject slot in lifeSlots)
+        {
+            slot.GetComponent<UnityEngine.UI.RawImage>().texture = emptyHeart; 
+        }
+
+        if (lives >= 1) lifeSlots[0].GetComponent<UnityEngine.UI.RawImage>().texture = fullHeart;
+        if (lives >= 2) lifeSlots[1].GetComponent<UnityEngine.UI.RawImage>().texture = fullHeart;
+        if (lives >= 3) lifeSlots[2].GetComponent<UnityEngine.UI.RawImage>().texture = fullHeart;
+
     }
 
     // Update is called once per frame
@@ -79,7 +96,6 @@ public class GameManager : MonoBehaviour
     {
         //Text updates
         scoreTxt.text = "Score: " + gameScore;
-        livesTxt.text = "Lives: " + lives;
         levelTxt.text = "Level " + SceneManager.GetActiveScene().buildIndex;
 
         if (levelStarted)
@@ -133,7 +149,7 @@ public class GameManager : MonoBehaviour
 
     private void changeMusic(String scene)
     {
-        scene_themes = Resources.LoadAll<AudioClip>("Audio/OST/" + scene).ToList();
+        scene_themes = Resources.LoadAll<AudioClip>("Audio/OST/Levels").ToList();
         playRandomClip();
     }
 
@@ -189,5 +205,15 @@ public class GameManager : MonoBehaviour
         NextLvlButton.SetActive(false);
         changeMusic(scenes[SceneManager.GetActiveScene().buildIndex + 1]);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+
+    public void loseLife()
+    {
+        --lives;
+        drawLife();
+        if (lives < 0)
+        {
+            loseGame();
+        }
     }
 }

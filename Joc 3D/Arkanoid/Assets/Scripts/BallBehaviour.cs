@@ -82,6 +82,7 @@ public class BallBehaviour : MonoBehaviour
                 _rb.isKinematic = false;
                 _dir = new Vector3(Random.Range(-0.75f, 0.75f), 0, 1);
                 _rb.velocity = _dir * speed;
+                paddle.playHitSound();
             }
 
             if (_ballDead && Input.GetKeyUp(KeyCode.Space)) Restart();
@@ -159,10 +160,7 @@ public class BallBehaviour : MonoBehaviour
             }
             else
             {
-                if (--GameManager.Instance.lives < 0)
-                {
-                    GameManager.Instance.loseGame();
-                }
+                GameManager.Instance.loseLife();
             }
         }
     }

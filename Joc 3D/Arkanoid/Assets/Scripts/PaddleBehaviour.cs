@@ -44,6 +44,7 @@ public class PaddleBehaviour : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         _audioSource = GetComponent<AudioSource>();
+        _audioSource.volume = 0.4f;
         hitClips = Resources.LoadAll<AudioClip>("Audio/Sword").ToList();
         _dir = Vector3.zero;
 
