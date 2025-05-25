@@ -10389,7 +10389,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfe2e95b0b38f8d4e84b0bbb2e96cfd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activeScene: 
   ballPrefab: {fileID: 3576742904372869324, guid: 9fc18c451f1c18342a9441bd9d289ed0, type: 3}
   paddle: {fileID: 0}
   activeBalls: []
@@ -13332,7 +13331,7 @@ PrefabInstance:
     - target: {fileID: 4675893186791574623, guid: ce399f0680892034c8dcf3bb6cb2c958, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: b49d0516de92f5f44a2a5f6439bddd71, type: 2}
+      objectReference: {fileID: 2100000, guid: dc1e99b6448f82f48a603a5e55d7e52d, type: 2}
     - target: {fileID: 5904301579313406797, guid: ce399f0680892034c8dcf3bb6cb2c958, type: 3}
       propertyPath: m_LocalPosition.x
       value: 17.37
