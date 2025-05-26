@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -20,6 +17,8 @@ public class PowerUpBehaviour : MonoBehaviour
     public GameObject magnetPowerUpModel;
     public GameObject clonePowerUpModel;
     public GameObject shootPowerUpModel;
+
+    public AudioClip itemPickupClip;
 
 
     // Start is called before the first frame update
@@ -96,11 +95,11 @@ public class PowerUpBehaviour : MonoBehaviour
         {
             if (tag == "SmallPU")
             {
-                GameManager.Instance.changePaddleSize(1.75f);
+                GameManager.Instance.changePaddleSize("small");
             }
             else if (tag == "BigPU")
             {
-                GameManager.Instance.changePaddleSize(3.75f);
+                GameManager.Instance.changePaddleSize("big");
             }
             else if (tag == "PowerPU")
             {
@@ -118,6 +117,7 @@ public class PowerUpBehaviour : MonoBehaviour
             {
                 GameManager.Instance.paddle.startShooting();
             }
+            AudioSource.PlayClipAtPoint(itemPickupClip, Camera.main.transform.position);
             Break();
         }
         if (collision.gameObject.tag == "DeathZone")

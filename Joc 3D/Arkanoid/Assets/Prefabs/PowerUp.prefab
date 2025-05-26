@@ -118,6 +118,7 @@ MonoBehaviour:
   magnetPowerUpModel: {fileID: 7902950557306165547}
   clonePowerUpModel: {fileID: 5279357279741255178}
   shootPowerUpModel: {fileID: 5815853200299510399}
+  itemPickupClip: {fileID: 8300000, guid: 9c0ec6bc46023164b9f0b921c2183454, type: 3}
 --- !u!135 &2245394044244578226
 SphereCollider:
   m_ObjectHideFlags: 0
