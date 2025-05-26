@@ -1,0 +1,11 @@
+Model Information:
+* title:	Minecraft Lava Chicken
+* source:	https://sketchfab.com/3d-models/minecraft-lava-chicken-6ce0aad4ed754405a6909b61acda0faf
+* author:	MinecraftModels2.0 (https://sketchfab.com/DaKingOfMinecraftStuff)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Minecraft Lava Chicken" (https://sketchfab.com/3d-models/minecraft-lava-chicken-6ce0aad4ed754405a6909b61acda0faf) by MinecraftModels2.0 (https://sketchfab.com/DaKingOfMinecraftStuff) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
