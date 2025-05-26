@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 11f70aff04ceb174db41896f0c8c1693, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -19903,17 +19903,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1603046313 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 453642719754839585, guid: 2c6ad04fd71e68f42a4daae44f716fa4, type: 3}
-  m_PrefabInstance: {fileID: 1603046310}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1603046314 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 451053748550117180, guid: 2c6ad04fd71e68f42a4daae44f716fa4, type: 3}
@@ -23903,7 +23892,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfe2e95b0b38f8d4e84b0bbb2e96cfd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activeScene: 
   ballPrefab: {fileID: 3576742904372869324, guid: 9fc18c451f1c18342a9441bd9d289ed0, type: 3}
   paddle: {fileID: 0}
   activeBalls: []
@@ -23911,14 +23899,12 @@ MonoBehaviour:
   lives: 0
   levelStarted: 1
   godModeWall: {fileID: 0}
-  blocksLvl1: 10
-  blocksLvl2: 0
-  blocksLvl3: 0
-  blocksLvl4: 0
-  blocksLvl5: 0
+  blocksCurrent: 0
   blocksDestroyed: 0
   scoreTxt: {fileID: 1603046314}
-  livesTxt: {fileID: 1603046313}
+  lifeSlots: []
+  fullHeart: {fileID: 0}
+  emptyHeart: {fileID: 0}
   levelTxt: {fileID: 1603046312}
   NextLvlButton: {fileID: 1603046311}
 --- !u!4 &1868779154
