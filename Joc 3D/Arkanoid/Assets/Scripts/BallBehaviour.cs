@@ -19,7 +19,7 @@ public class BallBehaviour : MonoBehaviour
     //triggers
     private bool _first_collision;
     private bool _wasShoot;
-    private bool _ballDead;
+    public bool ballDead;
 
     //Timers
     private float _powerTimer;
@@ -45,7 +45,7 @@ public class BallBehaviour : MonoBehaviour
             _first_collision = true;
             _wasShoot = false;
         }
-        _ballDead = false;
+        ballDead = false;
         _paddleOffset = 0.0f;
         _powerTimer = 0;
         speed = 8;
@@ -60,7 +60,7 @@ public class BallBehaviour : MonoBehaviour
         transform.position = paddle.transform.position + new Vector3(_paddleOffset, 0.0f, 0.75f);
 
         _wasShoot = false;
-        _ballDead = false;
+        ballDead = false;
     }
 
     // Update is called once per frame
@@ -72,11 +72,16 @@ public class BallBehaviour : MonoBehaviour
             if (_powerTimer > 0)
             {
                 _powerTimer -= Time.deltaTime;
-                if (_powerTimer <= 0) setPower(false);
+                UIBehaviour.Instance.updateUI("power", (int)_powerTimer);
+                if (_powerTimer <= 0)
+                {
+                    UIBehaviour.Instance.ch_stateItemUI("power", false);
+                    setPower(false, 0);
+                }
             }
 
             //Input control
-            if (!_ballDead && !_wasShoot && Input.GetKeyUp(KeyCode.Space))
+            if (!ballDead && !_wasShoot && Input.GetKeyUp(KeyCode.Space))
             {
                 _wasShoot = true;
                 _rb.isKinematic = false;
@@ -85,28 +90,38 @@ public class BallBehaviour : MonoBehaviour
                 paddle.playHitSound();
             }
 
-            if (_ballDead && Input.GetKeyUp(KeyCode.Space)) Restart();
+            if (ballDead && Input.GetKeyUp(KeyCode.Space)) Restart();
         }
     }
 
     private void FixedUpdate()
     {
-        if (!_wasShoot && !_ballDead)
+        if (!_wasShoot && !ballDead)
         {
             Vector3 newPos = transform.position;
             transform.position = paddle.transform.position + new Vector3(_paddleOffset, 0, 0.75f);
         }
-        else if (!_ballDead)
+        else if (!ballDead)
         {
             Vector3 velocity = _rb.velocity;
 
-            if (Mathf.Abs(velocity.z) < 2.0f)
+            //Normaliza la velocidad
+            if (velocity.magnitude != speed)
             {
-                float sign = Mathf.Sign(velocity.z) != 0 ? Mathf.Sign(velocity.z) : 1f;     //Per si de cas fos 0 va predeterminat endavant
-                velocity.z = 2.0f * sign;
                 velocity = velocity.normalized * speed;
-                _rb.velocity = velocity;
             }
+
+            //Assegurar una minima velocitat vertical
+            if (Mathf.Abs(velocity.z) < 0.6f) 
+            {
+                float sign = Mathf.Sign(velocity.z) != 0 ? Mathf.Sign(velocity.z) : 1f;
+                velocity.z = 0.6f * sign; 
+
+                // Renormalizas para mantener la velocidad total
+                velocity = velocity.normalized * speed;
+            }
+
+            _rb.velocity = velocity;
         }
     }
 
@@ -121,6 +136,8 @@ public class BallBehaviour : MonoBehaviour
                 _rb.isKinematic = true;
                 _paddleOffset = transform.position.x - paddle.transform.position.x;
                 --paddle.magnetRemain;
+                if (paddle.magnetRemain > 0) UIBehaviour.Instance.updateUI("magnet", paddle.magnetRemain);
+                else UIBehaviour.Instance.ch_stateItemUI("magnet", false);
             }
             else if (!_first_collision)
             {
@@ -152,7 +169,7 @@ public class BallBehaviour : MonoBehaviour
     {
         if (collision.gameObject.tag == "DeathZone")
         {
-            _ballDead = true;
+            ballDead = true;
             if (GameManager.Instance.activeBalls.Count > 1)
             {
                 GameManager.Instance.activeBalls.Remove(this);
@@ -165,11 +182,20 @@ public class BallBehaviour : MonoBehaviour
         }
     }
 
-    public void setPower(bool value)
+    public void setPower(bool value, float time)
     {
-        if (value) _powerTimer = _PU_POWER_DURATION;
+        if (value)
+        {
+            if (time == 0) _powerTimer = _PU_POWER_DURATION;
+            else _powerTimer = time;
+        }
         Physics.IgnoreLayerCollision(gameObject.layer, LayerMask.NameToLayer("Block"), value);
         transform.GetChild(1).gameObject.SetActive(value);
+    }
+
+    public float getPowerTime()
+    {
+        return _powerTimer;
     }
 
     public void initAfterClone(Vector3 dir)

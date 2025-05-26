@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ public class PaddleBehaviour : MonoBehaviour
     private Rigidbody _rb;
     private AudioSource _audioSource;
     private List<AudioClip> hitClips;
+    public AudioClip shootClip;
 
     //Movement
     private Vector3 _dir;
@@ -26,8 +28,8 @@ public class PaddleBehaviour : MonoBehaviour
     private float _sizeTimer;
     private const float _PU_SIZE_DURATION = 8;
     public int magnetRemain;
-    private float _timeShooting;
-    private const float _TIME_SHOOTING = 10;
+    private int _nShoots;
+    private const int _N_SHOOTS = 7;
     private float _nextShoot;
     private const float _TIME_BETWEEN_SHOOT = 2;
 
@@ -59,20 +61,27 @@ public class PaddleBehaviour : MonoBehaviour
         if (_sizeTimer > 0)
         {
             _sizeTimer -= Time.deltaTime;
+            UIBehaviour.Instance.updateUI("big", (int)_sizeTimer);
+            UIBehaviour.Instance.updateUI("small", (int)_sizeTimer);
             if (_sizeTimer <= 0)
             {
                 paddleSize = 2.75f;
                 updateSize();
+                UIBehaviour.Instance.ch_stateItemUI("big", false);
+                UIBehaviour.Instance.ch_stateItemUI("small", false);
+
             }
         }
 
-        if (_timeShooting > 0)
+        if (_nShoots > 0)
         {
-            _timeShooting -= Time.deltaTime;
             _nextShoot -= Time.deltaTime;
             if (_nextShoot <= 0)
             {
-                shootBullets();
+                --_nShoots;
+                if (_nShoots > 0) UIBehaviour.Instance.updateUI("shoot", _nShoots);
+                else UIBehaviour.Instance.ch_stateItemUI("shoot", false);
+                    shootBullets();
                 _nextShoot = _TIME_BETWEEN_SHOOT;
             }
         }
@@ -97,10 +106,13 @@ public class PaddleBehaviour : MonoBehaviour
         _rb.MovePosition(newPos);
     }
 
-    public void changeSize(float size)
+    public void changeSize(string size)
     {
+        if (paddleSize > 3) UIBehaviour.Instance.ch_stateItemUI("big", false);
+        else if (paddleSize < 2) UIBehaviour.Instance.ch_stateItemUI("small", false);
+        UIBehaviour.Instance.ch_stateItemUI(size, true);
         _sizeTimer = _PU_SIZE_DURATION;
-        paddleSize = size;
+        paddleSize = (size == "big" ? 4f : 1.80f);
         updateSize();
     }
 
@@ -109,13 +121,16 @@ public class PaddleBehaviour : MonoBehaviour
         Vector3 newSize = GetComponent<BoxCollider>().size;
         newSize.x = paddleSize;
         GetComponent<BoxCollider>().size = newSize;
-        newSize.y = transform.GetChild(0).localScale.y;
-        transform.GetChild(0).localScale = newSize;
+        if (paddleSize > 3) transform.GetChild(0).localScale = new Vector3(1.42f, 1f, 1.42f);
+        else if (paddleSize < 2) transform.GetChild(0).localScale = new Vector3(0.65f, 1f, 0.65f);
+        else transform.GetChild(0).localScale = new Vector3(1f, 1f, 1f);
     }
 
     public void activateMagnet()
     {
-        magnetRemain = 5;
+        UIBehaviour.Instance.ch_stateItemUI("magnet", true);
+        magnetRemain += 5;
+        UIBehaviour.Instance.updateUI("magnet", magnetRemain);
     }
 
     public void shootBullets()
@@ -126,17 +141,20 @@ public class PaddleBehaviour : MonoBehaviour
         GameObject bullet1 = Instantiate(bulletPrefab, posB, Quaternion.identity);
         posB.x += paddleSize - 1f;
         GameObject bullet2 = Instantiate(bulletPrefab, posB, Quaternion.identity);
+        _audioSource.PlayOneShot(shootClip);
     }
 
     public void startShooting()
     {
-        _timeShooting = _TIME_SHOOTING;
+        UIBehaviour.Instance.ch_stateItemUI("shoot", true);
+        _nShoots += _N_SHOOTS;
         _nextShoot = 0;
+        UIBehaviour.Instance.updateUI("shoot", _nShoots);
     }
 
     public void playHitSound()
     {
-        int index = Random.Range(0, hitClips.Count);
+        int index = UnityEngine.Random.Range(0, hitClips.Count);
         _audioSource.PlayOneShot(hitClips[index]);
         //AudioSource.PlayClipAtPoint(hitClips[index], Camera.main.transform.position);
     }

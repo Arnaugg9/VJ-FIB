@@ -127,6 +127,9 @@ public class GameManager : MonoBehaviour
         {
             playRandomClip();
         }
+
+        if (activeBalls.Count > 1 || (activeBalls.Count > 0 && !activeBalls[0].ballDead)) UIBehaviour.Instance.updateUI("ball", activeBalls.Count);
+        else UIBehaviour.Instance.updateUI("ball", 0);
     }
 
     private bool checkNextLvl()
@@ -164,7 +167,7 @@ public class GameManager : MonoBehaviour
         _audioSource.Play();
     }
 
-    public void changePaddleSize(float size)
+    public void changePaddleSize(string size)
     {
         paddle.changeSize(size);
     }
@@ -179,6 +182,7 @@ public class GameManager : MonoBehaviour
     {
         GameObject newBall = Instantiate(ballPrefab, pos, Quaternion.identity);
         newBall.GetComponent<BallBehaviour>().initAfterClone(dir);
+        if (activeBalls[0].getPowerTime() > 0) newBall.GetComponent<BallBehaviour>().setPower(true, activeBalls[0].getPowerTime());
     }
 
     public void loseGame()
@@ -188,9 +192,10 @@ public class GameManager : MonoBehaviour
 
     public void activatePower()
     {
+        UIBehaviour.Instance.ch_stateItemUI("power", true);
         for (int i = 0; i < activeBalls.Count; ++i)
         {
-            activeBalls[i].setPower(true);
+            activeBalls[i].setPower(true, 0);
         }
     }
 

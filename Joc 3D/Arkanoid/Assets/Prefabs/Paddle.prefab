@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.52388275, y: 0, z: -2.68}
-  m_LocalScale: {x: 1, y: 0.3, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1375737094750317358}
@@ -55,7 +55,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.75, y: 10, z: 0.4}
+  m_Size: {x: 2.75, y: 5, z: 0.4}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &6009307764244652091
 Rigidbody:
@@ -96,6 +96,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 884a5e3043e365449af6e4149acbe2f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shootClip: {fileID: 8300000, guid: cd1ac953c3d4c2d4cb4f4b408c23fd70, type: 3}
   speed: 12
   leftWall: {fileID: 0}
   rightWall: {fileID: 0}

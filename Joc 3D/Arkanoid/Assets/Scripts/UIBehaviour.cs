@@ -1,10 +1,21 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class UIBehaviour : MonoBehaviour
 {
     public static UIBehaviour Instance { get; private set; }
+
+    public GameObject itemBalls;
+    public GameObject itemBig;
+    public GameObject itemSmall;
+    public GameObject itemMagnet;
+    public GameObject itemPower;
+    public GameObject itemShoot;
+
+    public AudioClip breakItemClip;
 
     private void Awake()
     {
@@ -20,7 +31,50 @@ public class UIBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        initInventory();
+    }
+
+    public void initInventory()
+    {
+        itemBalls.GetComponentInChildren<TextMeshProUGUI>().text = "0";
+
+        itemBig.GetComponentInChildren<TextMeshProUGUI>().text = "0";
+        itemBig.SetActive(false);
+
+        itemSmall.GetComponentInChildren<TextMeshProUGUI>().text = "0";
+        itemSmall.SetActive(false);
+
+        itemMagnet.GetComponentInChildren<TextMeshProUGUI>().text = "0";
+        itemMagnet.SetActive(false);
+
+        itemPower.GetComponentInChildren<TextMeshProUGUI>().text = "0";
+        itemPower.SetActive(false);
+
+        itemShoot.GetComponentInChildren<TextMeshProUGUI>().text = "0";
+        itemShoot.SetActive(false);
+    }
+
+    public void updateUI(string item, int value)
+    {
+        if (item == "ball") itemBalls.GetComponentInChildren<TextMeshProUGUI>().text = value.ToString();
+        else if (item == "big") itemBig.GetComponentInChildren<TextMeshProUGUI>().text = value.ToString();
+        else if (item == "small") itemSmall.GetComponentInChildren<TextMeshProUGUI>().text = value.ToString();
+        else if (item == "magnet") itemMagnet.GetComponentInChildren<TextMeshProUGUI>().text = value.ToString();
+        else if (item == "power") itemPower.GetComponentInChildren<TextMeshProUGUI>().text = value.ToString();
+        else if (item == "shoot") itemShoot.GetComponentInChildren<TextMeshProUGUI>().text = value.ToString();
+        else Debug.LogError("Error when changing UI item State");
+    }
+
+    public void ch_stateItemUI(string item, bool state)
+    {
+        if (item == "big") itemBig.SetActive(state);
+        else if (item == "small") itemSmall.SetActive(state);
+        else if (item == "magnet") itemMagnet.SetActive(state);
+        else if (item == "power") itemPower.SetActive(state);
+        else if (item == "shoot") itemShoot.SetActive(state);
+        else Debug.LogError("Error when changing UI item State");
+
+        if (!state) AudioSource.PlayClipAtPoint(breakItemClip, Camera.main.transform.position);
     }
 
     // Update is called once per frame
