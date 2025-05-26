@@ -29,7 +29,7 @@ public class PaddleBehaviour : MonoBehaviour
     private const float _PU_SIZE_DURATION = 8;
     public int magnetRemain;
     private int _nShoots;
-    private const int _N_SHOOTS = 10;
+    private const int _N_SHOOTS = 7;
     private float _nextShoot;
     private const float _TIME_BETWEEN_SHOOT = 2;
 
@@ -112,7 +112,7 @@ public class PaddleBehaviour : MonoBehaviour
         else if (paddleSize < 2) UIBehaviour.Instance.ch_stateItemUI("small", false);
         UIBehaviour.Instance.ch_stateItemUI(size, true);
         _sizeTimer = _PU_SIZE_DURATION;
-        paddleSize = (size == "big" ? 3.75f : 1.75f);
+        paddleSize = (size == "big" ? 4f : 1.80f);
         updateSize();
     }
 
@@ -121,8 +121,9 @@ public class PaddleBehaviour : MonoBehaviour
         Vector3 newSize = GetComponent<BoxCollider>().size;
         newSize.x = paddleSize;
         GetComponent<BoxCollider>().size = newSize;
-        newSize.y = transform.GetChild(0).localScale.y;
-        transform.GetChild(0).localScale = newSize;
+        if (paddleSize > 3) transform.GetChild(0).localScale = new Vector3(1.42f, 1f, 1.42f);
+        else if (paddleSize < 2) transform.GetChild(0).localScale = new Vector3(0.65f, 1f, 0.65f);
+        else transform.GetChild(0).localScale = new Vector3(1f, 1f, 1f);
     }
 
     public void activateMagnet()
@@ -146,7 +147,7 @@ public class PaddleBehaviour : MonoBehaviour
     public void startShooting()
     {
         UIBehaviour.Instance.ch_stateItemUI("shoot", true);
-        _nShoots = _N_SHOOTS;
+        _nShoots += _N_SHOOTS;
         _nextShoot = 0;
         UIBehaviour.Instance.updateUI("shoot", _nShoots);
     }

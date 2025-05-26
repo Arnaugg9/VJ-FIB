@@ -128,7 +128,7 @@ public class GameManager : MonoBehaviour
             playRandomClip();
         }
 
-        if (activeBalls.Count > 1 || !activeBalls[0].ballDead) UIBehaviour.Instance.updateUI("ball", activeBalls.Count);
+        if (activeBalls.Count > 1 || (activeBalls.Count > 0 && !activeBalls[0].ballDead)) UIBehaviour.Instance.updateUI("ball", activeBalls.Count);
         else UIBehaviour.Instance.updateUI("ball", 0);
     }
 

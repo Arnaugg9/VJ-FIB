@@ -105,13 +105,23 @@ public class BallBehaviour : MonoBehaviour
         {
             Vector3 velocity = _rb.velocity;
 
-            if (Mathf.Abs(velocity.z) < 2.0f)
+            //Normaliza la velocidad
+            if (velocity.magnitude != speed)
             {
-                float sign = Mathf.Sign(velocity.z) != 0 ? Mathf.Sign(velocity.z) : 1f;     //Per si de cas fos 0 va predeterminat endavant
-                velocity.z = 2.0f * sign;
                 velocity = velocity.normalized * speed;
-                _rb.velocity = velocity;
             }
+
+            //Assegurar una minima velocitat vertical
+            if (Mathf.Abs(velocity.z) < 0.6f) 
+            {
+                float sign = Mathf.Sign(velocity.z) != 0 ? Mathf.Sign(velocity.z) : 1f;
+                velocity.z = 0.6f * sign; 
+
+                // Renormalizas para mantener la velocidad total
+                velocity = velocity.normalized * speed;
+            }
+
+            _rb.velocity = velocity;
         }
     }
 
