@@ -112,7 +112,7 @@ public class BlockBehaviour : MonoBehaviour
         int rand = Random.Range(0, 100);
         if (rand < itemSpawnProbability)
         {
-            Instantiate(itemPrefab, transform.position, Quaternion.identity);
+            Instantiate(itemPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
         }
 
         //reprodueix audio

@@ -6,11 +6,20 @@ using UnityEngine;
 
 public class PowerUpBehaviour : MonoBehaviour
 {
-    public enum PowerUpTypes {Big, Small, Power, Magnet, Clone, Shoot};
+    public enum PowerUpTypes { Big, Small, Power, Magnet, Clone, Shoot };
 
     private Rigidbody _rb;
 
     public int fallSpeed;
+
+    // Aquí declararemos las referencias a los GameObjects de los modelos
+    // Asignaremos estos en el editor de Unity
+    public GameObject bigPowerUpModel;
+    public GameObject smallPowerUpModel;
+    public GameObject powerPowerUpModel;
+    public GameObject magnetPowerUpModel;
+    public GameObject clonePowerUpModel;
+    public GameObject shootPowerUpModel;
 
 
     // Start is called before the first frame update
@@ -34,37 +43,51 @@ public class PowerUpBehaviour : MonoBehaviour
 
     void selectPU(PowerUpTypes n)
     {
+        // Primero, desactiva todos los modelos para asegurarte de que solo se muestre el correcto
+        DeactivateAllModels();
+
         if (n == PowerUpTypes.Big)
         {
             tag = "BigPU";
-            GetComponentInChildren<Renderer>().material.color = Color.red;
+            if (bigPowerUpModel != null) bigPowerUpModel.SetActive(true);
         }
         else if (n == PowerUpTypes.Small)
         {
             tag = "SmallPU";
-            GetComponentInChildren<Renderer>().material.color = Color.blue;
+            if (smallPowerUpModel != null) smallPowerUpModel.SetActive(true);
         }
         else if (n == PowerUpTypes.Power)
         {
             tag = "PowerPU";
-            GetComponentInChildren<Renderer>().material.color = Color.magenta;
+            if (powerPowerUpModel != null) powerPowerUpModel.SetActive(true);
         }
         else if (n == PowerUpTypes.Magnet)
         {
             tag = "MagnetPU";
-            GetComponentInChildren<Renderer>().material.color = Color.yellow;
+            if (magnetPowerUpModel != null) magnetPowerUpModel.SetActive(true);
         }
         else if (n == PowerUpTypes.Clone)
         {
             tag = "ClonePU";
-            GetComponentInChildren<Renderer>().material.color = Color.green;
+            if (clonePowerUpModel != null) clonePowerUpModel.SetActive(true);
         }
         else if (n == PowerUpTypes.Shoot)
         {
             tag = "ShootPU";
-            GetComponentInChildren<Renderer>().material.color = Color.grey;
+            if (shootPowerUpModel != null) shootPowerUpModel.SetActive(true);
         }
         print("I am " + tag);
+    }
+
+    // Nuevo método para desactivar todos los modelos.
+    void DeactivateAllModels()
+    {
+        if (bigPowerUpModel != null) bigPowerUpModel.SetActive(false);
+        if (smallPowerUpModel != null) smallPowerUpModel.SetActive(false);
+        if (powerPowerUpModel != null) powerPowerUpModel.SetActive(false);
+        if (magnetPowerUpModel != null) magnetPowerUpModel.SetActive(false);
+        if (clonePowerUpModel != null) clonePowerUpModel.SetActive(false);
+        if (shootPowerUpModel != null) shootPowerUpModel.SetActive(false);
     }
 
     private void OnTriggerEnter(Collider collision)
