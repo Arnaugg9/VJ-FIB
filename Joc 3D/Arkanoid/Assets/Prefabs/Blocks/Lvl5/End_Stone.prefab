@@ -95,7 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c29498ff2f3ff8459476c564971b57a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  breakClips: []
+  destroyParticles: {fileID: 6273636326192111323, guid: da42998ab54eb6d46bbdbb4e53d03c35, type: 3}
   isGrounded: 0
   wasDestroyed: 0
   fallSpeed: 1
