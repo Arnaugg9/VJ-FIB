@@ -9,6 +9,7 @@ public class BallBehaviour : MonoBehaviour
     //components
     private Rigidbody _rb;
     private PaddleBehaviour paddle;
+    private ParticleSystem _particleSystem;
 
     //Movement controll
     public int speed;
@@ -29,6 +30,7 @@ public class BallBehaviour : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         paddle = GameManager.Instance.paddle;
+        _particleSystem = GetComponent<ParticleSystem>();
         GameManager.Instance.activeBalls.Add(this);
     }
 
@@ -163,6 +165,7 @@ public class BallBehaviour : MonoBehaviour
                 _first_collision = false;
             }
         }
+        _particleSystem.Play();
     }
 
     private void OnTriggerEnter(Collider collision)

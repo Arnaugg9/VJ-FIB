@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.ParticleSystem;
 
 public class BlockBehaviour : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class BlockBehaviour : MonoBehaviour
     //Resources
     private List<AudioClip> breakClips;
     private List<AudioClip> breakClips2;
+
+    public GameObject destroyParticles;
 
     //triggers
     public bool isGrounded;
@@ -127,11 +130,16 @@ public class BlockBehaviour : MonoBehaviour
             }
         }
 
+        //Genera Particules
+        GameObject particle;
+        if (destroyParticles != null) particle = Instantiate(destroyParticles, transform.position, Quaternion.identity);
+
         wasDestroyed = true;
         GameManager.Instance.blocksDestroyed++;
         GameManager.Instance.gameScore += 500;
         Destroy(gameObject);
     }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (!wasDestroyed && collision.gameObject.tag == "Ball")
