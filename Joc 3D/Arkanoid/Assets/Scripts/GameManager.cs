@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -33,6 +34,10 @@ public class GameManager : MonoBehaviour
     public GodModeWalls godModeWall;
     public int blocksCurrent;
     public int blocksDestroyed;
+    public List<GameObject> portalBlocks;
+    public int nPortalBlocks;
+    public GameObject DragonEgg;
+    public bool portalUnlocked;
 
     //UI Managment
     public TextMeshProUGUI scoreTxt;
@@ -71,6 +76,7 @@ public class GameManager : MonoBehaviour
         };
 
         levelStarted = false;
+        portalUnlocked = false;
         gameScore = 0;
         lives = 3;
         blocksCurrent = 0;
@@ -116,7 +122,12 @@ public class GameManager : MonoBehaviour
                 changeScene(5);
 
             _canNextLvl = checkNextLvl();
-            if (_canNextLvl)
+            if (!portalUnlocked && _canNextLvl && SceneManager.GetActiveScene().name == "Level5") activatePortalBlocks();
+            else if (portalUnlocked && nPortalBlocks <= 0)
+            {
+                DragonEgg.GetComponent<BlockBehaviour>().isDestroyable = true;
+            } 
+            else if (_canNextLvl && SceneManager.GetActiveScene().name != "Level5")
             {
                 if (!NextLvlButton.activeSelf) NextLvlButton.SetActive(true);
                 if (Input.GetKeyDown(KeyCode.N)) gotoNextLvl();
@@ -130,6 +141,28 @@ public class GameManager : MonoBehaviour
 
         if (activeBalls.Count > 1 || (activeBalls.Count > 0 && !activeBalls[0].ballDead)) UIBehaviour.Instance.updateUI("ball", activeBalls.Count);
         else UIBehaviour.Instance.updateUI("ball", 0);
+    }
+
+    public void endGame()
+    {
+        Debug.Log("GAME ENDED");
+        changeScene(6);
+    }
+
+    private void activatePortalBlocks()
+    {
+        portalUnlocked = true;
+        //reproducir sonido éxito
+
+        foreach (GameObject block in portalBlocks)
+        {
+            if (block != null)
+            {
+                block.SetActive(true);
+                block.GetComponent<BlockBehaviour>().isDestroyable = true;
+            }
+        }
+        DragonEgg.SetActive(true);
     }
 
     private bool checkNextLvl()
@@ -147,6 +180,8 @@ public class GameManager : MonoBehaviour
         blocksCurrent = 0;
         changeMusic(scenes[scene]);
         NextLvlButton.SetActive(false);
+        portalBlocks.Clear();
+        portalUnlocked = false;
         SceneManager.LoadScene(scene);
     }
 
@@ -209,6 +244,8 @@ public class GameManager : MonoBehaviour
         blocksCurrent = 0;
         NextLvlButton.SetActive(false);
         changeMusic(scenes[SceneManager.GetActiveScene().buildIndex + 1]);
+        portalBlocks.Clear();
+        portalUnlocked = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 

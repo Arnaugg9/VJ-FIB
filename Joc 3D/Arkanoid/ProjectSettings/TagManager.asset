@@ -29,6 +29,7 @@ TagManager:
   - EndCrystalBlock
   - BedrockBlock
   - DragonEgg
+  - EndPortalBlock
   layers:
   - Default
   - TransparentFX

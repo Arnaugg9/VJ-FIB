@@ -20,6 +20,7 @@ public class BlockBehaviour : MonoBehaviour
     //triggers
     public bool isGrounded;
     public bool wasDestroyed;
+    public bool isDestroyable;
 
     //properties
     public float fallSpeed;
@@ -42,8 +43,31 @@ public class BlockBehaviour : MonoBehaviour
         wasDestroyed = false;
         floorY = -0.5f;
         isGrounded = true;
-        GameManager.Instance.blocksCurrent++;
-        itemSpawnProbability = 7;
+        isDestroyable = false;
+
+        if (tag == "EndPortalBlock")
+        {
+            gameObject.SetActive(false);
+            GameManager.Instance.portalBlocks.Add(gameObject);
+            GameManager.Instance.nPortalBlocks++;
+        }
+        else if (tag == "DragonEgg")
+        {
+            gameObject.SetActive(false);
+            GameManager.Instance.DragonEgg = gameObject;
+        }
+        else if (tag == "BedrockBlock")
+        {
+            GameManager.Instance.portalBlocks.Add(gameObject);
+            GameManager.Instance.nPortalBlocks++;
+        }
+        else
+        {
+            GameManager.Instance.blocksCurrent++;
+            isDestroyable = true;
+        }
+
+        itemSpawnProbability = 15;
     }
 
     private void assignSounds()
@@ -53,7 +77,7 @@ public class BlockBehaviour : MonoBehaviour
         else if (tag == "CactusBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/Cactus").ToList();
         else if (tag == "SandBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/Sand").ToList();
         else if (tag == "StoneBlock" || tag == "NoStoneBlock" || tag == "BedrockBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/Stone").ToList();
-        else if (tag == "CrystalBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/Crystal").ToList();
+        else if (tag == "CrystalBlock" || tag == "EndPortalBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/Crystal").ToList();
         else if (tag == "NetherBrickBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/NetherBrick").ToList();
         else if (tag == "NetherrackBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/Netherrack").ToList();
         else if (tag == "SoulSandBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/SoulSand").ToList();
@@ -62,7 +86,7 @@ public class BlockBehaviour : MonoBehaviour
             breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/Crystal").ToList();
             breakClips2 = Resources.LoadAll<AudioClip>("Audio/Blocks/Explosion").ToList();
         }
-
+        else breakClips = new List<AudioClip>();
     }
 
     private void changeRandomly()
@@ -111,33 +135,38 @@ public class BlockBehaviour : MonoBehaviour
 
     public void Break()
     {
-        //Spawns item
-        int rand = Random.Range(0, 100);
-        if (rand < itemSpawnProbability)
+        if (isDestroyable)
         {
-            Instantiate(itemPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
-        }
-
-        //reprodueix audio
-        if (breakClips.Count > 0)
-        {
-            int index = Random.Range(0, breakClips.Count);
-            AudioSource.PlayClipAtPoint(breakClips[index], Camera.main.transform.position);
-            if (tag == "EndCrystalBlock" && breakClips2.Count > 0)
+            //Spawns item
+            int rand = Random.Range(0, 100);
+            if (rand < itemSpawnProbability)
             {
-                index = Random.Range(0, breakClips2.Count);
-                AudioSource.PlayClipAtPoint(breakClips2[index], Camera.main.transform.position);
+                Instantiate(itemPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
             }
+
+            //reprodueix audio
+            if (breakClips.Count > 0)
+            {
+                int index = Random.Range(0, breakClips.Count);
+                AudioSource.PlayClipAtPoint(breakClips[index], Camera.main.transform.position);
+                if (tag == "EndCrystalBlock" && breakClips2.Count > 0)
+                {
+                    index = Random.Range(0, breakClips2.Count);
+                    AudioSource.PlayClipAtPoint(breakClips2[index], Camera.main.transform.position);
+                }
+            }
+
+            //Genera Particules
+            GameObject particle;
+            if (destroyParticles != null) particle = Instantiate(destroyParticles, transform.position, Quaternion.identity);
+
+            wasDestroyed = true;
+            GameManager.Instance.blocksDestroyed++;
+            GameManager.Instance.gameScore += 500;
+            if (tag == "EndPortalBlock" || tag == "BedrockBlock") GameManager.Instance.nPortalBlocks--;
+            else if (tag == "DragonEgg") GameManager.Instance.endGame();
+            Destroy(gameObject);
         }
-
-        //Genera Particules
-        GameObject particle;
-        if (destroyParticles != null) particle = Instantiate(destroyParticles, transform.position, Quaternion.identity);
-
-        wasDestroyed = true;
-        GameManager.Instance.blocksDestroyed++;
-        GameManager.Instance.gameScore += 500;
-        Destroy(gameObject);
     }
 
     private void OnCollisionEnter(Collision collision)
