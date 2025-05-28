@@ -128,7 +128,7 @@ MonoBehaviour:
   fallSpeed: 5
   bigPowerUpModel: {fileID: 6901579527793611327}
   smallPowerUpModel: {fileID: 517368971517380608}
-  powerPowerUpModel: {fileID: 2313573277880771914}
+  powerPowerUpModel: {fileID: 1447592676109303973}
   magnetPowerUpModel: {fileID: 7902950557306165547}
   clonePowerUpModel: {fileID: 5279357279741255178}
   shootPowerUpModel: {fileID: 5815853200299510399}
@@ -315,9 +315,9 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2774220344278030320, guid: efefd2e2fd4a79946986e6e646fbb193, type: 3}
   m_PrefabInstance: {fileID: 3980378291415735582}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &2313573277880771914 stripped
+--- !u!1 &1447592676109303973 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 1668111236986419284, guid: efefd2e2fd4a79946986e6e646fbb193, type: 3}
+  m_CorrespondingSourceObject: {fileID: -6689036041284674117, guid: efefd2e2fd4a79946986e6e646fbb193, type: 3}
   m_PrefabInstance: {fileID: 3980378291415735582}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7020410849835132026
