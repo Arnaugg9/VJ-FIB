@@ -189,7 +189,7 @@ public class BallBehaviour : MonoBehaviour
     {
         if (value)
         {
-            if (time == 0) _powerTimer = _PU_POWER_DURATION;
+            if (time == 0) _powerTimer += _PU_POWER_DURATION;
             else _powerTimer = time;
         }
         Physics.IgnoreLayerCollision(gameObject.layer, LayerMask.NameToLayer("Block"), value);

@@ -30,6 +30,12 @@ TagManager:
   - BedrockBlock
   - DragonEgg
   - EndPortalBlock
+  - Villager
+  - Fox
+  - Golem
+  - Zombie
+  - MinecartBlock
+  - Enderman
   layers:
   - Default
   - TransparentFX

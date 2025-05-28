@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4675899156716061972}
   - component: {fileID: 3889680803440863213}
   - component: {fileID: 8301959344458785758}
-  - component: {fileID: 2327135918649306850}
+  - component: {fileID: -1416586877129371383}
   m_Layer: 6
   m_Name: Wither
   m_TagString: SoulSandBlock
@@ -83,7 +83,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 122
   m_CollisionDetection: 0
---- !u!114 &2327135918649306850
+--- !u!114 &-1416586877129371383
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -92,17 +92,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 561958004620619624}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c29498ff2f3ff8459476c564971b57a, type: 3}
+  m_Script: {fileID: 11500000, guid: b8eafac55cf58aa4e89d5dc28b7ade39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destroyParticles: {fileID: 6273636326192111323, guid: fb28ed48ad6985248bb5609854e82164, type: 3}
-  isGrounded: 0
-  wasDestroyed: 0
-  fallSpeed: 1
-  floorY: 0
-  oreBlocks: []
-  itemSpawnProbability: 40
-  itemPrefab: {fileID: 7012138492000490094, guid: 3d53b1010af0a504ea91f5cd19c30583, type: 3}
+  health: 0
+  max_time_idle: 0
+  min_time_idle: 0
+  idle_timer: 0
 --- !u!1001 &6769989840710593392
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -111,14 +107,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4675899156716061972}
     m_Modifications:
-    - target: {fileID: 1151388028547126963, guid: 020dcbffe705a4e49be4ec73e18be3f2, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1151388028547126963, guid: 020dcbffe705a4e49be4ec73e18be3f2, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: -7840867231617242486, guid: 7d16575c2d37f484a955aa4dc9d31a09, type: 3}
       propertyPath: m_Controller
       value: 
@@ -182,6 +170,14 @@ PrefabInstance:
     - target: {fileID: 4357118449180629203, guid: 7d16575c2d37f484a955aa4dc9d31a09, type: 3}
       propertyPath: m_Name
       value: witherBoss
+      objectReference: {fileID: 0}
+    - target: {fileID: 1151388028547126963, guid: 020dcbffe705a4e49be4ec73e18be3f2, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1151388028547126963, guid: 020dcbffe705a4e49be4ec73e18be3f2, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:

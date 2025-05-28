@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2327135918649306850}
   m_Layer: 6
   m_Name: Fox
-  m_TagString: WoodBlock
+  m_TagString: Fox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -95,7 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c29498ff2f3ff8459476c564971b57a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destroyParticles: {fileID: 6273636326192111323, guid: b3687dc64169e4846b6d1c6bb0e83b37, type: 3}
+  destroyParticles: {fileID: 6273636326192111323, guid: 396e595c904acfe448a294ed712fe978, type: 3}
   isGrounded: 0
   wasDestroyed: 0
   fallSpeed: 1
@@ -111,18 +111,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4675899156716061972}
     m_Modifications:
-    - target: {fileID: 1151388028547126963, guid: 9d21316aa8343e540a7482d880c8d021, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1151388028547126963, guid: 9d21316aa8343e540a7482d880c8d021, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1151388028547126963, guid: 9d21316aa8343e540a7482d880c8d021, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: -5644133064174452605, guid: a67bdb851d6b39246a86387bb1a28e76, type: 3}
       propertyPath: m_Controller
       value: 
@@ -185,6 +173,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: a67bdb851d6b39246a86387bb1a28e76, type: 3}
       propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1151388028547126963, guid: 9d21316aa8343e540a7482d880c8d021, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1151388028547126963, guid: 9d21316aa8343e540a7482d880c8d021, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1151388028547126963, guid: 9d21316aa8343e540a7482d880c8d021, type: 3}
+      propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

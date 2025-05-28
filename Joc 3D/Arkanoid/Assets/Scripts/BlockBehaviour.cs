@@ -31,14 +31,23 @@ public class BlockBehaviour : MonoBehaviour
     public int itemSpawnProbability;
     public GameObject itemPrefab;
 
+    //idle sound control for mobs
+    bool hasIdle;
+    public float max_time_idle;
+    public float min_time_idle;
+    public float idle_timer;
+
     // Start is called before the first frame update
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
         _rb.isKinematic = true;
+        max_time_idle = 20f;
+        min_time_idle = 5f;
+        idle_timer = Random.Range(min_time_idle, max_time_idle);
+        hasIdle = false;
         assignSounds();
         if (tag == "StoneBlock") changeRandomly();
-
         wasDestroyed = false;
         floorY = -0.5f;
         isGrounded = true;
@@ -50,10 +59,30 @@ public class BlockBehaviour : MonoBehaviour
     {
         if (tag == "WoodBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/Wood").ToList();
         else if (tag == "GrassBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/Grass").ToList();
+        else if (tag == "Villager")
+        {
+            hasIdle = true;
+            breakClips = Resources.LoadAll<AudioClip>("Audio/Mobs/Villager/Die").ToList();
+            breakClips2 = Resources.LoadAll<AudioClip>("Audio/Mobs/Villager/Idle").ToList();
+        }
+        else if (tag == "Fox")
+        {
+            hasIdle = true;
+            breakClips = Resources.LoadAll<AudioClip>("Audio/Mobs/Fox/Die").ToList();
+            breakClips2 = Resources.LoadAll<AudioClip>("Audio/Mobs/Fox/Idle").ToList();
+        }
         else if (tag == "CactusBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/Cactus").ToList();
         else if (tag == "SandBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/Sand").ToList();
+        else if (tag == "Golem") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/Golem").ToList();
         else if (tag == "StoneBlock" || tag == "NoStoneBlock" || tag == "BedrockBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/Stone").ToList();
-        else if (tag == "CrystalBlock" ||tag == "EndPortalBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/Crystal").ToList();
+        else if (tag == "MinecartBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/Minecart").ToList();
+        else if (tag == "Zombie")
+        {
+            hasIdle = true;
+            breakClips = Resources.LoadAll<AudioClip>("Audio/Mobs/Zombie/Die").ToList();
+            breakClips2 = Resources.LoadAll<AudioClip>("Audio/Mobs/Zombie/Idle").ToList();
+        }
+        else if (tag == "CrystalBlock" || tag == "EndPortalBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/Crystal").ToList();
         else if (tag == "NetherBrickBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/NetherBrick").ToList();
         else if (tag == "NetherrackBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/Netherrack").ToList();
         else if (tag == "SoulSandBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/SoulSand").ToList();
@@ -62,7 +91,12 @@ public class BlockBehaviour : MonoBehaviour
             breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/Crystal").ToList();
             breakClips2 = Resources.LoadAll<AudioClip>("Audio/Blocks/Explosion").ToList();
         }
-
+        else if (tag == "Enderman")
+        {
+            hasIdle = true;
+            breakClips = Resources.LoadAll<AudioClip>("Audio/Mobs/Enderman/Die").ToList();
+            breakClips2 = Resources.LoadAll<AudioClip>("Audio/Mobs/Enderman/Idle").ToList();
+        }
     }
 
     private void changeRandomly()
@@ -90,6 +124,17 @@ public class BlockBehaviour : MonoBehaviour
         //transform.position = transform.GetChild(0).position;
         Vector3 origin = transform.position + Vector3.up * 0.1f; // subir un poco el rayo
         isGrounded = Physics.Raycast(origin, Vector3.down, out RaycastHit hit, 0.11f);
+
+        if (hasIdle)
+        {
+            idle_timer -= Time.deltaTime;
+            if (idle_timer <= 0)
+            {
+                int index = Random.Range(0, breakClips2.Count);
+                AudioSource.PlayClipAtPoint(breakClips2[index], Camera.main.transform.position);
+                idle_timer = Random.Range(min_time_idle, max_time_idle);
+            }
+        }
     }
 
     private void FixedUpdate()

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2327135918649306850}
   m_Layer: 6
   m_Name: Golem
-  m_TagString: NoStoneBlock
+  m_TagString: Golem
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -95,7 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c29498ff2f3ff8459476c564971b57a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destroyParticles: {fileID: 6273636326192111323, guid: 3278101c650e97d45a2fa8ac29a4c5fd, type: 3}
+  destroyParticles: {fileID: 6273636326192111323, guid: 4bdd4a4c1de159d4baaba7a390c21335, type: 3}
   isGrounded: 0
   wasDestroyed: 0
   fallSpeed: 1
@@ -111,14 +111,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4675899156716061972}
     m_Modifications:
-    - target: {fileID: 1151388028547126963, guid: 38316cab4d75d7e43a8dbbaace922a9a, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1151388028547126963, guid: 38316cab4d75d7e43a8dbbaace922a9a, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: -7840867231617242486, guid: 47b8db15de6a39e41b2c62c518dcd269, type: 3}
       propertyPath: m_Controller
       value: 
@@ -182,6 +174,14 @@ PrefabInstance:
     - target: {fileID: 4357118449180629203, guid: 47b8db15de6a39e41b2c62c518dcd269, type: 3}
       propertyPath: m_Name
       value: golem
+      objectReference: {fileID: 0}
+    - target: {fileID: 1151388028547126963, guid: 38316cab4d75d7e43a8dbbaace922a9a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1151388028547126963, guid: 38316cab4d75d7e43a8dbbaace922a9a, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
