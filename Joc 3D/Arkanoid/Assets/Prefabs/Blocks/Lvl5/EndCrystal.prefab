@@ -95,7 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c29498ff2f3ff8459476c564971b57a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  breakClips: []
+  destroyParticles: {fileID: 6273636326192111323, guid: 50e75ff00a3bdb1458dab705f214a78f, type: 3}
   isGrounded: 0
   wasDestroyed: 0
   fallSpeed: 1
@@ -111,6 +111,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4675899156716061972}
     m_Modifications:
+    - target: {fileID: 1151388028547126963, guid: 949b4907f7804cc47a5d6e06c4c37884, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1151388028547126963, guid: 949b4907f7804cc47a5d6e06c4c37884, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1151388028547126963, guid: 949b4907f7804cc47a5d6e06c4c37884, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -3500460014136483016, guid: da338275f52dad84485174101a027351, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.5
@@ -170,18 +182,6 @@ PrefabInstance:
     - target: {fileID: 4357118449180629203, guid: da338275f52dad84485174101a027351, type: 3}
       propertyPath: m_Name
       value: model
-      objectReference: {fileID: 0}
-    - target: {fileID: 1151388028547126963, guid: 949b4907f7804cc47a5d6e06c4c37884, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1151388028547126963, guid: 949b4907f7804cc47a5d6e06c4c37884, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1151388028547126963, guid: 949b4907f7804cc47a5d6e06c4c37884, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

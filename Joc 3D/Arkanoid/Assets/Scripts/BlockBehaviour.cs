@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.ParticleSystem;
 
 public class BlockBehaviour : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class BlockBehaviour : MonoBehaviour
     //Resources
     private List<AudioClip> breakClips;
     private List<AudioClip> breakClips2;
+
+    public GameObject destroyParticles;
 
     //triggers
     public bool isGrounded;
@@ -50,7 +53,7 @@ public class BlockBehaviour : MonoBehaviour
         else if (tag == "CactusBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/Cactus").ToList();
         else if (tag == "SandBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/Sand").ToList();
         else if (tag == "StoneBlock" || tag == "NoStoneBlock" || tag == "BedrockBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/Stone").ToList();
-        else if (tag == "CrystalBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/Crystal").ToList();
+        else if (tag == "CrystalBlock" ||tag == "EndPortalBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/Crystal").ToList();
         else if (tag == "NetherBrickBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/NetherBrick").ToList();
         else if (tag == "NetherrackBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/Netherrack").ToList();
         else if (tag == "SoulSandBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/SoulSand").ToList();
@@ -127,11 +130,16 @@ public class BlockBehaviour : MonoBehaviour
             }
         }
 
+        //Genera Particules
+        GameObject particle;
+        if (destroyParticles != null) particle = Instantiate(destroyParticles, transform.position, Quaternion.identity);
+
         wasDestroyed = true;
         GameManager.Instance.blocksDestroyed++;
         GameManager.Instance.gameScore += 500;
         Destroy(gameObject);
     }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (!wasDestroyed && collision.gameObject.tag == "Ball")
