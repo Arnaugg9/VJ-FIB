@@ -37,6 +37,8 @@ public class GameManager : MonoBehaviour
     public int blocksCurrent;
     public int blocksDestroyed;
 
+    public int itemSpawnProbability;
+
     //UI Managment
     public TextMeshProUGUI scoreTxt;
     public List<GameObject> lifeSlots;
@@ -70,16 +72,29 @@ public class GameManager : MonoBehaviour
             { 3, "Level3" },
             { 4, "Level4" },
             { 5, "Level5" },
-            { 6, "Credits" }
+            { 6, "Credits" },
+            { 7, "Null" }
         };
 
         levelStarted = false;
         gameScore = 0;
         lives = 3;
         blocksCurrent = 0;
+        itemSpawnProbability = getProbabilityByLevel(SceneManager.GetActiveScene().buildIndex);
         changeMusic(SceneManager.GetActiveScene().name);
         drawLife();
         currentBarrier = new GameObject();
+    }
+
+    public int getProbabilityByLevel(int s)
+    {
+        string scene = scenes[s];
+        if (scene == "Level1") return 10;
+        if (scene == "Level2") return 15;
+        if (scene == "Level3") return 20;
+        if (scene == "Level4") return 23;
+        if (scene == "Level5") return 25;
+        else return 0;
     }
 
     public void drawLife()
@@ -151,6 +166,7 @@ public class GameManager : MonoBehaviour
         blocksCurrent = 0;
         changeMusic(scenes[scene]);
         NextLvlButton.SetActive(false);
+        itemSpawnProbability = getProbabilityByLevel(scene);
         SceneManager.LoadScene(scene);
     }
 
@@ -219,6 +235,7 @@ public class GameManager : MonoBehaviour
         blocksCurrent = 0;
         NextLvlButton.SetActive(false);
         changeMusic(scenes[SceneManager.GetActiveScene().buildIndex + 1]);
+        itemSpawnProbability = getProbabilityByLevel(SceneManager.GetActiveScene().buildIndex + 1);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 

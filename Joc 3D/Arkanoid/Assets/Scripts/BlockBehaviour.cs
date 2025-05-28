@@ -52,7 +52,7 @@ public class BlockBehaviour : MonoBehaviour
         floorY = -0.5f;
         isGrounded = true;
         if (tag != "BarrierBlock") GameManager.Instance.blocksCurrent++;
-        itemSpawnProbability = 12;
+        itemSpawnProbability = GameManager.Instance.itemSpawnProbability;
     }
 
     private void assignSounds()
