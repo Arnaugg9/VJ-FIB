@@ -46,6 +46,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ballPrefab: {fileID: 3576742904372869324, guid: 9fc18c451f1c18342a9441bd9d289ed0, type: 3}
+  barrierPrefab: {fileID: 6724171776218158579, guid: fc160638a5991c94d882b0388fe802cf, type: 3}
+  currentBarrier: {fileID: 0}
   paddle: {fileID: 0}
   activeBalls: []
   gameScore: 0

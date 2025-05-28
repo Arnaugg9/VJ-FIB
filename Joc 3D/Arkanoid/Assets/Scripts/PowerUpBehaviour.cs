@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PowerUpBehaviour : MonoBehaviour
 {
-    public enum PowerUpTypes { Big, Small, Power, Magnet, Clone, Shoot };
+    public enum PowerUpTypes { Big, Small, Power, Magnet, Clone, Shoot, Barrier };
 
     private Rigidbody _rb;
 
@@ -17,6 +17,7 @@ public class PowerUpBehaviour : MonoBehaviour
     public GameObject magnetPowerUpModel;
     public GameObject clonePowerUpModel;
     public GameObject shootPowerUpModel;
+    public GameObject barrierPowerUpModel;
 
     public AudioClip itemPickupClip;
 
@@ -26,7 +27,7 @@ public class PowerUpBehaviour : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
 
-        int rand = Random.Range(0, 6);
+        int rand = Random.Range(0, 7);
         selectPU((PowerUpTypes)rand);
     }
 
@@ -75,7 +76,12 @@ public class PowerUpBehaviour : MonoBehaviour
             tag = "ShootPU";
             if (shootPowerUpModel != null) shootPowerUpModel.SetActive(true);
         }
-        print("I am " + tag);
+        else if (n == PowerUpTypes.Barrier)
+        {
+            tag = "BarrierPU";
+            if (barrierPowerUpModel != null) barrierPowerUpModel.SetActive(true);
+        }
+            print("I am " + tag);
     }
 
     // Nuevo método para desactivar todos los modelos.
@@ -87,6 +93,7 @@ public class PowerUpBehaviour : MonoBehaviour
         if (magnetPowerUpModel != null) magnetPowerUpModel.SetActive(false);
         if (clonePowerUpModel != null) clonePowerUpModel.SetActive(false);
         if (shootPowerUpModel != null) shootPowerUpModel.SetActive(false);
+        if (barrierPowerUpModel != null) barrierPowerUpModel.SetActive(false);
     }
 
     private void OnTriggerEnter(Collider collision)
@@ -116,6 +123,10 @@ public class PowerUpBehaviour : MonoBehaviour
             else if (tag == "ShootPU")
             {
                 GameManager.Instance.paddle.startShooting();
+            }
+            else if (tag == "BarrierPU")
+            {
+                GameManager.Instance.spawnBarrier();
             }
             AudioSource.PlayClipAtPoint(itemPickupClip, Camera.main.transform.position);
             Break();

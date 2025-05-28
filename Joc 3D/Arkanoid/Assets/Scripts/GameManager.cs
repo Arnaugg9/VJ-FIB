@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour
 
     //Prefabs
     public GameObject ballPrefab;
+    public GameObject barrierPrefab;
+    public GameObject currentBarrier;
 
     //Scripts Managment
     public PaddleBehaviour paddle;
@@ -77,6 +79,7 @@ public class GameManager : MonoBehaviour
         blocksCurrent = 0;
         changeMusic(SceneManager.GetActiveScene().name);
         drawLife();
+        currentBarrier = new GameObject();
     }
 
     public void drawLife()
@@ -166,6 +169,12 @@ public class GameManager : MonoBehaviour
         _audioSource.loop = false;
         _audioSource.playOnAwake = false;
         _audioSource.Play();
+    }
+
+    public void spawnBarrier()
+    {
+        if (currentBarrier != null) Destroy(currentBarrier);
+        currentBarrier = Instantiate(barrierPrefab, Vector3.zero, Quaternion.identity);
     }
 
     public void changePaddleSize(string size)

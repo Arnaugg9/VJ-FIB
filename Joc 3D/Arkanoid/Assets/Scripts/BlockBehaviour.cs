@@ -51,8 +51,8 @@ public class BlockBehaviour : MonoBehaviour
         wasDestroyed = false;
         floorY = -0.5f;
         isGrounded = true;
-        GameManager.Instance.blocksCurrent++;
-        itemSpawnProbability = 7;
+        if (tag != "BarrierBlock") GameManager.Instance.blocksCurrent++;
+        itemSpawnProbability = 12;
     }
 
     private void assignSounds()
@@ -82,7 +82,7 @@ public class BlockBehaviour : MonoBehaviour
             breakClips = Resources.LoadAll<AudioClip>("Audio/Mobs/Zombie/Die").ToList();
             breakClips2 = Resources.LoadAll<AudioClip>("Audio/Mobs/Zombie/Idle").ToList();
         }
-        else if (tag == "CrystalBlock" || tag == "EndPortalBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/Crystal").ToList();
+        else if (tag == "CrystalBlock" || tag == "EndPortalBlock" || tag == "BarrierBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/Crystal").ToList();
         else if (tag == "NetherBrickBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/NetherBrick").ToList();
         else if (tag == "NetherrackBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/Netherrack").ToList();
         else if (tag == "SoulSandBlock") breakClips = Resources.LoadAll<AudioClip>("Audio/Blocks/SoulSand").ToList();
@@ -157,10 +157,13 @@ public class BlockBehaviour : MonoBehaviour
     public void Break()
     {
         //Spawns item
-        int rand = Random.Range(0, 100);
-        if (rand < itemSpawnProbability)
+        if (tag != "BarrierBlock")
         {
-            Instantiate(itemPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
+            int rand = Random.Range(0, 100);
+            if (rand < itemSpawnProbability)
+            {
+                Instantiate(itemPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
+            }
         }
 
         //reprodueix audio
@@ -180,8 +183,11 @@ public class BlockBehaviour : MonoBehaviour
         if (destroyParticles != null) particle = Instantiate(destroyParticles, transform.position, Quaternion.identity);
 
         wasDestroyed = true;
-        GameManager.Instance.blocksDestroyed++;
-        GameManager.Instance.gameScore += 500;
+        if (tag != "BarrierBlock")
+        {
+            GameManager.Instance.blocksDestroyed++;
+            GameManager.Instance.gameScore += 500;
+        }
         Destroy(gameObject);
     }
 

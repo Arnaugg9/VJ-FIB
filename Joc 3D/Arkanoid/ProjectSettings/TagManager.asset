@@ -36,6 +36,8 @@ TagManager:
   - Zombie
   - MinecartBlock
   - Enderman
+  - BarrierBlock
+  - BarrierPU
   layers:
   - Default
   - TransparentFX
