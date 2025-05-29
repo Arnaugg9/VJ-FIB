@@ -32,7 +32,8 @@ public class GameManager : MonoBehaviour
     public int gameScore;
     public int lives;
     public bool levelStarted;
-    private bool _canNextLvl;
+    public bool canSpawnNextLvl;
+    public AudioClip nextLvlClip;
 
     public int nTotemsActive;
     public AudioClip totemClip;
@@ -130,6 +131,7 @@ public class GameManager : MonoBehaviour
             //Scene change with number
             if (Input.GetKeyDown(KeyCode.G)) godModeWall.gameObject.SetActive(!godModeWall.gameObject.activeSelf);
 
+
             int activeScene = SceneManager.GetActiveScene().buildIndex;
             if (activeScene != 1 && (Input.GetKeyDown(KeyCode.Keypad1) || Input.GetKeyDown(KeyCode.Alpha1)))
                 changeScene(1);
@@ -142,22 +144,7 @@ public class GameManager : MonoBehaviour
             if (activeScene != 5 && (Input.GetKeyDown(KeyCode.Keypad5) || Input.GetKeyDown(KeyCode.Alpha5)))
                 changeScene(5);
 
-            if (activeScene == 4 && !witherSpawner.hasSpawned && brokenPercentage() >= 1)
-            {
-                witherSpawner.spawnWither();
-            } 
-
-            _canNextLvl = checkNextLvl();
-            if (activeScene != 4 && _canNextLvl)
-            {
-                if (!NextLvlButton.activeSelf) NextLvlButton.SetActive(true);
-                if (Input.GetKeyDown(KeyCode.N)) gotoNextLvl();
-            }
-            else if (activeScene == 4 && witherSpawner.isDead)
-            {
-                if (!NextLvlButton.activeSelf) NextLvlButton.SetActive(true);
-                if (Input.GetKeyDown(KeyCode.N)) gotoNextLvl();
-            }
+            checkProgress(activeScene);
         }
 
         if (!_audioSource.isPlaying && scene_themes.Count > 0)
@@ -169,13 +156,57 @@ public class GameManager : MonoBehaviour
         else UIBehaviour.Instance.updateUI("ball", 0);
     }
 
+    private void checkProgress(int activeScene)
+    {
+        float broken = brokenPercentage();
+        //If level is 1 to 3 can spawnNextLvl Item when 95% cleared
+        if (activeScene == 1 || activeScene == 2 || activeScene == 3)
+        {
+            canSpawnNextLvl = broken >= 95;
+            if (broken >= 99)
+            {
+                if (!NextLvlButton.activeSelf) NextLvlButton.SetActive(true);
+                if (Input.GetKeyDown(KeyCode.N)) gotoNextLvl();
+            }
+
+            if (broken >= 100) gotoNextLvl();
+        }
+        //If level 4 -> Spawn wither when broken is 50% and only can change level when 95% cleared and killed wither
+        else if (activeScene == 4)
+        {
+            if (!witherSpawner.hasSpawned && broken >= 1)
+            {
+                witherSpawner.spawnWither();
+            }
+
+            canSpawnNextLvl = witherSpawner.isDead && (broken >= 95);
+
+            if (witherSpawner.isDead && broken >= 99)
+            {
+                if (!NextLvlButton.activeSelf) NextLvlButton.SetActive(true);
+                if (Input.GetKeyDown(KeyCode.N)) gotoNextLvl();
+            }
+
+            if (witherSpawner.isDead && (broken >= 100)) gotoNextLvl();
+        }
+        //If levle5 -> *Still have to do dragon fight
+        else if (activeScene == 5)
+        {
+            canSpawnNextLvl = broken >= 95;
+
+            if (broken >= 99)
+            {
+                if (!NextLvlButton.activeSelf) NextLvlButton.SetActive(true);
+                if (Input.GetKeyDown(KeyCode.N)) gotoNextLvl();
+            }
+
+            if (broken >= 100) gotoNextLvl();
+        }
+    }
+
     private float brokenPercentage()
     {
         return (((float)blocksDestroyed / blocksCurrent) * 100);
-    }
-    private bool checkNextLvl()
-    {
-        return (((float)blocksDestroyed / blocksCurrent) * 100 >= 95);
     }
 
     private void changeScene(int scene)
@@ -271,6 +302,7 @@ public class GameManager : MonoBehaviour
         UIBehaviour.Instance.drawBossUI(0, 0);
         nTotemsActive = 0;
         UIBehaviour.Instance.initInventory();
+        _audioSource.PlayOneShot(nextLvlClip);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 

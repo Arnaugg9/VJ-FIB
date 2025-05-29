@@ -3,11 +3,13 @@ using UnityEngine;
 
 public class PowerUpBehaviour : MonoBehaviour
 {
-    public enum PowerUpTypes { Big, Small, Power, Magnet, Clone, Shoot, Barrier, Totem };
+    public enum PowerUpTypes { Big, Small, Power, Magnet, Clone, Shoot, Barrier, Totem, Nextlvl };
 
     private Rigidbody _rb;
 
     public int fallSpeed;
+
+    public bool canSpawnNextLvl;
 
     // Aquí declararemos las referencias a los GameObjects de los modelos
     // Asignaremos estos en el editor de Unity
@@ -19,6 +21,8 @@ public class PowerUpBehaviour : MonoBehaviour
     public GameObject shootPowerUpModel;
     public GameObject barrierPowerUpModel;
     public GameObject totemPowerUpModel;
+    public GameObject nextLvlPowerUpModel;
+
 
     public AudioClip itemPickupClip;
 
@@ -28,7 +32,14 @@ public class PowerUpBehaviour : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
 
-        int rand = Random.Range(0, 8);
+        canSpawnNextLvl = GameManager.Instance.canSpawnNextLvl;
+        int rand;
+        if (canSpawnNextLvl)
+        {
+            rand = Random.Range(0, 13);
+            if (rand >= 8) rand = 8;
+        }
+        else rand = Random.Range(0, 8);
         selectPU((PowerUpTypes)rand);
     }
 
@@ -87,6 +98,11 @@ public class PowerUpBehaviour : MonoBehaviour
             tag = "TotemPU";
             if (totemPowerUpModel != null) totemPowerUpModel.SetActive(true);
         }
+        else if (n == PowerUpTypes.Nextlvl)
+        {
+            tag = "NextlvlPU";
+            if (nextLvlPowerUpModel != null) nextLvlPowerUpModel.SetActive(true);
+        }
             print("I am " + tag);
     }
 
@@ -100,7 +116,8 @@ public class PowerUpBehaviour : MonoBehaviour
         if (clonePowerUpModel != null) clonePowerUpModel.SetActive(false);
         if (shootPowerUpModel != null) shootPowerUpModel.SetActive(false);
         if (barrierPowerUpModel != null) barrierPowerUpModel.SetActive(false);
-        if (totemPowerUpModel != null) totemPowerUpModel.SetActive(false);    
+        if (totemPowerUpModel != null) totemPowerUpModel.SetActive(false);
+        if (nextLvlPowerUpModel != null) nextLvlPowerUpModel.SetActive(false);
     }
 
     private void OnTriggerEnter(Collider collision)
@@ -139,7 +156,12 @@ public class PowerUpBehaviour : MonoBehaviour
             {
                 GameManager.Instance.getTotem();
             }
-                AudioSource.PlayClipAtPoint(itemPickupClip, Camera.main.transform.position);
+            else if (tag == "NextlvlPU")
+            {
+                GameManager.Instance.gotoNextLvl();
+            }
+            
+            AudioSource.PlayClipAtPoint(itemPickupClip, Camera.main.transform.position);
             Break();
         }
         if (collision.gameObject.tag == "DeathZone")

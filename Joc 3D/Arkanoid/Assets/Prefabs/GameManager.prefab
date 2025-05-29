@@ -53,6 +53,8 @@ MonoBehaviour:
   gameScore: 0
   lives: 0
   levelStarted: 1
+  canNextLvl: 0
+  nextLvlClip: {fileID: 8300000, guid: d0d9ca969a8652b47b4a50c9055ba2c9, type: 3}
   nTotemsActive: 0
   totemClip: {fileID: 8300000, guid: 47ead11dee909f44097cb2268e0e1132, type: 3}
   totemParticles: {fileID: 6273636326192111323, guid: 8f39bfaacad031747b2fbf37cf131290, type: 3}
