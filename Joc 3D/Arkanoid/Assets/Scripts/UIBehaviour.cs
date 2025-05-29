@@ -9,6 +9,7 @@ public class UIBehaviour : MonoBehaviour
     public static UIBehaviour Instance { get; private set; }
 
     public GameObject itemBalls;
+    public GameObject itemTotem;
     public GameObject itemBig;
     public GameObject itemSmall;
     public GameObject itemMagnet;
@@ -42,7 +43,7 @@ public class UIBehaviour : MonoBehaviour
 
     public void initInventory()
     {
-        itemBalls.GetComponentInChildren<TextMeshProUGUI>().text = "0";
+        itemBalls.GetComponentInChildren<TextMeshProUGUI>().text = GameManager.Instance.activeBalls.Count.ToString();
 
         itemBig.GetComponentInChildren<TextMeshProUGUI>().text = "0";
         itemBig.SetActive(false);
@@ -58,6 +59,9 @@ public class UIBehaviour : MonoBehaviour
 
         itemShoot.GetComponentInChildren<TextMeshProUGUI>().text = "0";
         itemShoot.SetActive(false);
+
+        itemTotem.GetComponentInChildren<TextMeshProUGUI>().text = "0";
+        itemTotem.SetActive(false);
     }
 
     public void updateUI(string item, int value)
@@ -68,6 +72,7 @@ public class UIBehaviour : MonoBehaviour
         else if (item == "magnet") itemMagnet.GetComponentInChildren<TextMeshProUGUI>().text = value.ToString();
         else if (item == "power") itemPower.GetComponentInChildren<TextMeshProUGUI>().text = value.ToString();
         else if (item == "shoot") itemShoot.GetComponentInChildren<TextMeshProUGUI>().text = value.ToString();
+        else if (item == "totem") itemTotem.GetComponentInChildren<TextMeshProUGUI>().text = value.ToString();
         else Debug.LogError("Error when changing UI item State");
     }
 
@@ -78,6 +83,7 @@ public class UIBehaviour : MonoBehaviour
         else if (item == "magnet") itemMagnet.SetActive(state);
         else if (item == "power") itemPower.SetActive(state);
         else if (item == "shoot") itemShoot.SetActive(state);
+        else if (item == "totem") itemTotem.SetActive(state);
         else Debug.LogError("Error when changing UI item State");
 
         if (!state) AudioSource.PlayClipAtPoint(breakItemClip, Camera.main.transform.position);

@@ -11,7 +11,9 @@ GameObject:
   - component: {fileID: 4675899156716061972}
   - component: {fileID: 3889680803440863213}
   - component: {fileID: 8301959344458785758}
+  - component: {fileID: 7149723700778660271}
   - component: {fileID: 2327135918649306850}
+  - component: {fileID: 6390536860746263196}
   m_Layer: 6
   m_Name: Fox
   m_TagString: Fox
@@ -50,11 +52,11 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.8, y: 1, z: 0.5}
+  m_Size: {x: 1.1, y: 1, z: 1.1}
   m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!54 &8301959344458785758
 Rigidbody:
@@ -81,8 +83,22 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 122
+  m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &7149723700778660271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 561958004620619624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c7762b83e0a9034a897aa987fe2287d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 0
+  next_random_stop: 0
 --- !u!114 &2327135918649306850
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -103,6 +119,30 @@ MonoBehaviour:
   oreBlocks: []
   itemSpawnProbability: 40
   itemPrefab: {fileID: 7012138492000490094, guid: 3d53b1010af0a504ea91f5cd19c30583, type: 3}
+  max_time_idle: 0
+  min_time_idle: 0
+  idle_timer: 0
+--- !u!95 &6390536860746263196
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 561958004620619624}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b59abde513450f04a85e9cbd8be6155c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &6769989840710593392
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -111,6 +151,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4675899156716061972}
     m_Modifications:
+    - target: {fileID: 1151388028547126963, guid: 9d21316aa8343e540a7482d880c8d021, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1151388028547126963, guid: 9d21316aa8343e540a7482d880c8d021, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1151388028547126963, guid: 9d21316aa8343e540a7482d880c8d021, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -5644133064174452605, guid: a67bdb851d6b39246a86387bb1a28e76, type: 3}
       propertyPath: m_Controller
       value: 
@@ -173,18 +225,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: a67bdb851d6b39246a86387bb1a28e76, type: 3}
       propertyPath: m_ConstrainProportionsScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1151388028547126963, guid: 9d21316aa8343e540a7482d880c8d021, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1151388028547126963, guid: 9d21316aa8343e540a7482d880c8d021, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1151388028547126963, guid: 9d21316aa8343e540a7482d880c8d021, type: 3}
-      propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

@@ -40,6 +40,7 @@ TagManager:
   - BarrierPU
   - MobBarrier
   - EnemyBullet
+  - TotemPU
   layers:
   - Default
   - TransparentFX

@@ -53,9 +53,14 @@ MonoBehaviour:
   gameScore: 0
   lives: 0
   levelStarted: 1
+  nTotemsActive: 0
+  totemClip: {fileID: 8300000, guid: 47ead11dee909f44097cb2268e0e1132, type: 3}
+  totemParticles: {fileID: 6273636326192111323, guid: 8f39bfaacad031747b2fbf37cf131290, type: 3}
   godModeWall: {fileID: 0}
   blocksCurrent: 0
   blocksDestroyed: 0
+  itemSpawnProbability: 0
+  witherSpawner: {fileID: 0}
   scoreTxt: {fileID: 0}
   lifeSlots:
   - {fileID: 0}

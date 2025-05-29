@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PowerUpBehaviour : MonoBehaviour
 {
-    public enum PowerUpTypes { Big, Small, Power, Magnet, Clone, Shoot, Barrier };
+    public enum PowerUpTypes { Big, Small, Power, Magnet, Clone, Shoot, Barrier, Totem };
 
     private Rigidbody _rb;
 
@@ -18,6 +18,7 @@ public class PowerUpBehaviour : MonoBehaviour
     public GameObject clonePowerUpModel;
     public GameObject shootPowerUpModel;
     public GameObject barrierPowerUpModel;
+    public GameObject totemPowerUpModel;
 
     public AudioClip itemPickupClip;
 
@@ -27,7 +28,7 @@ public class PowerUpBehaviour : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
 
-        int rand = Random.Range(0, 7);
+        int rand = Random.Range(0, 8);
         selectPU((PowerUpTypes)rand);
     }
 
@@ -81,6 +82,11 @@ public class PowerUpBehaviour : MonoBehaviour
             tag = "BarrierPU";
             if (barrierPowerUpModel != null) barrierPowerUpModel.SetActive(true);
         }
+        else if (n == PowerUpTypes.Totem)
+        {
+            tag = "TotemPU";
+            if (totemPowerUpModel != null) totemPowerUpModel.SetActive(true);
+        }
             print("I am " + tag);
     }
 
@@ -94,6 +100,7 @@ public class PowerUpBehaviour : MonoBehaviour
         if (clonePowerUpModel != null) clonePowerUpModel.SetActive(false);
         if (shootPowerUpModel != null) shootPowerUpModel.SetActive(false);
         if (barrierPowerUpModel != null) barrierPowerUpModel.SetActive(false);
+        if (totemPowerUpModel != null) totemPowerUpModel.SetActive(false);    
     }
 
     private void OnTriggerEnter(Collider collision)
@@ -128,7 +135,11 @@ public class PowerUpBehaviour : MonoBehaviour
             {
                 GameManager.Instance.spawnBarrier();
             }
-            AudioSource.PlayClipAtPoint(itemPickupClip, Camera.main.transform.position);
+            else if (tag == "TotemPU")
+            {
+                GameManager.Instance.getTotem();
+            }
+                AudioSource.PlayClipAtPoint(itemPickupClip, Camera.main.transform.position);
             Break();
         }
         if (collision.gameObject.tag == "DeathZone")

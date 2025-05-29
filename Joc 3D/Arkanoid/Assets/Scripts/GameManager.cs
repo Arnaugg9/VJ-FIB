@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static UnityEngine.ParticleSystem;
 
 public class GameManager : MonoBehaviour
 {
@@ -32,6 +33,10 @@ public class GameManager : MonoBehaviour
     public int lives;
     public bool levelStarted;
     private bool _canNextLvl;
+
+    public int nTotemsActive;
+    public AudioClip totemClip;
+    public GameObject totemParticles;
 
     public GodModeWalls godModeWall;
     public int blocksCurrent;
@@ -81,6 +86,7 @@ public class GameManager : MonoBehaviour
         levelStarted = false;
         gameScore = 0;
         lives = 3;
+        nTotemsActive = 0;
         blocksCurrent = 0;
         itemSpawnProbability = getProbabilityByLevel(SceneManager.GetActiveScene().buildIndex);
         changeMusic(SceneManager.GetActiveScene().name);
@@ -91,11 +97,11 @@ public class GameManager : MonoBehaviour
     public int getProbabilityByLevel(int s)
     {
         string scene = scenes[s];
-        if (scene == "Level1") return 10;
-        if (scene == "Level2") return 15;
-        if (scene == "Level3") return 20;
-        if (scene == "Level4") return 23;
-        if (scene == "Level5") return 25;
+        if (scene == "Level1") return 7;
+        if (scene == "Level2") return 8;
+        if (scene == "Level3") return 10;
+        if (scene == "Level4") return 13;
+        if (scene == "Level5") return 15;
         else return 0;
     }
 
@@ -184,6 +190,8 @@ public class GameManager : MonoBehaviour
         NextLvlButton.SetActive(false);
         itemSpawnProbability = getProbabilityByLevel(scene);
         UIBehaviour.Instance.drawBossUI(0, 0);
+        nTotemsActive = 0;
+        UIBehaviour.Instance.initInventory();
         SceneManager.LoadScene(scene);
     }
 
@@ -221,6 +229,13 @@ public class GameManager : MonoBehaviour
         instantiateBall(originalPos, new Vector3(1, 0, 1));
     }
 
+    public void getTotem()
+    {
+        ++nTotemsActive;
+        UIBehaviour.Instance.ch_stateItemUI("totem", true);
+        UIBehaviour.Instance.updateUI("totem", nTotemsActive);
+    }
+
     public void instantiateBall(Vector3 pos, Vector3 dir)
     {
         GameObject newBall = Instantiate(ballPrefab, pos, Quaternion.identity);
@@ -254,16 +269,33 @@ public class GameManager : MonoBehaviour
         changeMusic(scenes[SceneManager.GetActiveScene().buildIndex + 1]);
         itemSpawnProbability = getProbabilityByLevel(SceneManager.GetActiveScene().buildIndex + 1);
         UIBehaviour.Instance.drawBossUI(0, 0);
+        nTotemsActive = 0;
+        UIBehaviour.Instance.initInventory();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     public void loseLife()
     {
-        --lives;
-        drawLife();
-        if (lives < 0)
+
+        if (nTotemsActive <= 0)
         {
-            loseGame();
+            --lives;
+            drawLife();
+            if (lives < 0)
+            {
+                loseGame();
+            }
+        }
+        else
+        {
+            AudioSource.PlayClipAtPoint(totemClip, Camera.main.transform.position);
+            --nTotemsActive;
+            GameObject particle = Instantiate(totemParticles, paddle.transform.position, Quaternion.identity);
+            UIBehaviour.Instance.updateUI("totem", nTotemsActive);
+            if (nTotemsActive <= 0)
+            {
+                UIBehaviour.Instance.ch_stateItemUI("totem", false);
+            }
         }
     }
 }
