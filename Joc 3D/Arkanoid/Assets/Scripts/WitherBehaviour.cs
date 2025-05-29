@@ -8,6 +8,7 @@ public class WitherBehaviour : MonoBehaviour
     //Components
     private Rigidbody _rb;
     private Animator _animator;
+    public WitherSpawn spawner;
 
     //Resources
     private List<AudioClip> hurtClips;
@@ -15,8 +16,12 @@ public class WitherBehaviour : MonoBehaviour
     private List<AudioClip> idleClips;
     private AudioClip shootClip;
     private AudioClip spawnClìp;
+    public GameObject hitParticles;
+    public GameObject shootParticles;
+    public GameObject deathParticles;
 
     //properties
+    private int max_health;
     public int health;
 
     //idle sound controll
@@ -57,6 +62,8 @@ public class WitherBehaviour : MonoBehaviour
     public float stopDuration = 1f;
     private float stopTimer = 0f;
 
+    private float totalInvincivility;
+    private float currentInvencivilityPassed;
     private float damageAnimationTime;
     private float currentdamageAimationTime;
 
@@ -66,24 +73,28 @@ public class WitherBehaviour : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
         _animator = GetComponent<Animator>();
 
-        health = 5;
-        max_time_idle = 35f;
+        max_health = 7;
+        health = max_health;
+        UIBehaviour.Instance.drawBossUI(health, max_health);
+        max_time_idle = 25f;
         min_time_idle = 10f;
 
-        speed = 4f;
+        speed = 6f;
         currentDirection = directions[Random.Range(0, directions.Length)];
         isMoving = true;
 
-        random_stop_max = 15f;
+        random_stop_max = 13f;
         random_stop_min = 5f;
         next_random_stop = Random.Range(random_stop_min, random_stop_max);
         random_stop_duration = 3f;
 
-        min_time_shoot = 5f;
-        max_time_shoot = 15f;
+        min_time_shoot = 4f;
+        max_time_shoot = 10f;
         shootTimer = Random.Range(min_time_shoot, max_time_shoot);
 
-        damageAnimationTime = 0.7f;
+        totalInvincivility = 1.5f;
+        currentInvencivilityPassed = 0;
+        damageAnimationTime = 0.2f;
         currentdamageAimationTime = 0;
 
         idle_timer = Random.Range(min_time_idle, max_time_idle);
@@ -138,13 +149,17 @@ public class WitherBehaviour : MonoBehaviour
         }
 
         //Control invencibilitat
-        if (currentdamageAimationTime > 0)
+        if (currentInvencivilityPassed > 0)
         {
+            currentInvencivilityPassed -= Time.deltaTime;
             currentdamageAimationTime -= Time.deltaTime;
             if (currentdamageAimationTime <= 0)
             {
-                gameObject.transform.GetChild(0).gameObject.SetActive(true);
+                currentdamageAimationTime = damageAnimationTime;
+                GameObject go = gameObject.transform.GetChild(0).gameObject;
+                go.SetActive(!go.activeSelf);
             }
+            if (currentInvencivilityPassed <= 0) gameObject.transform.GetChild(0).gameObject.SetActive(true);
         }
     }
 
@@ -155,6 +170,8 @@ public class WitherBehaviour : MonoBehaviour
 
         yield return new WaitForSeconds(0.2f);
 
+        GameObject particle;
+        if (shootParticles != null) particle = Instantiate(shootParticles, shootPoint.position, Quaternion.identity);
         AudioSource.PlayClipAtPoint(shootClip, Camera.main.transform.position);
 
         GameObject bullet = Instantiate((health < 3 ? chargedSkullPrefab : normalSkullPrefab), shootPoint.position, Quaternion.identity);
@@ -206,23 +223,30 @@ public class WitherBehaviour : MonoBehaviour
 
     private void getHurt()
     {
-        if (currentdamageAimationTime <= 0)
+        if (currentInvencivilityPassed <= 0)
         {
+            currentInvencivilityPassed = totalInvincivility;
             currentdamageAimationTime = damageAnimationTime;
             gameObject.transform.GetChild(0).gameObject.SetActive(false);
             --health;
+            UIBehaviour.Instance.drawBossUI(health, max_health);
             //Die
             if (health <= 0)
             {
                 int index = Random.Range(0, dieClips.Count);
                 AudioSource.PlayClipAtPoint(dieClips[index], Camera.main.transform.position);
+                GameObject particle;
+                if (deathParticles != null) particle = Instantiate(deathParticles, transform.position, Quaternion.identity);
                 GameManager.Instance.gameScore += 5000;
+                spawner.isDead = true;
                 Destroy(gameObject);
             }
             else
             {
                 int index = Random.Range(0, hurtClips.Count);
                 AudioSource.PlayClipAtPoint(hurtClips[index], Camera.main.transform.position);
+                GameObject particle;
+                if (hitParticles != null) particle = Instantiate(hitParticles, transform.position, Quaternion.identity);
             }
         }
     }

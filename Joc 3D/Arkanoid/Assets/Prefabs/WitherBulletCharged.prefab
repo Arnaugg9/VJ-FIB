@@ -95,7 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b5432ba25e18dc46b4750a7b58d6b89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosionParticles: {fileID: 6273636326192111323, guid: 50e75ff00a3bdb1458dab705f214a78f, type: 3}
+  explosionParticles: {fileID: 6273636326192111323, guid: 8f39bfaacad031747b2fbf37cf131290, type: 3}
   speed: 10
 --- !u!1001 &634762592584204112
 PrefabInstance:

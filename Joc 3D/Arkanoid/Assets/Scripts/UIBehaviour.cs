@@ -15,6 +15,11 @@ public class UIBehaviour : MonoBehaviour
     public GameObject itemPower;
     public GameObject itemShoot;
 
+    //UI del boss
+    public Texture fullEnemyheart;
+    public Texture emptyHeart;
+    public List<GameObject> enemyLifeSlots;
+
     public AudioClip breakItemClip;
 
     private void Awake()
@@ -32,6 +37,7 @@ public class UIBehaviour : MonoBehaviour
     void Start()
     {
         initInventory();
+        drawBossUI(0, 0);
     }
 
     public void initInventory()
@@ -75,6 +81,25 @@ public class UIBehaviour : MonoBehaviour
         else Debug.LogError("Error when changing UI item State");
 
         if (!state) AudioSource.PlayClipAtPoint(breakItemClip, Camera.main.transform.position);
+    }
+
+    public void drawBossUI (int health, int max_health)
+    {
+        int idx = 0;
+        for (; idx < health; ++idx)
+        {
+            enemyLifeSlots[idx].SetActive(true);
+            enemyLifeSlots[idx].gameObject.GetComponent<UnityEngine.UI.RawImage>().texture = fullEnemyheart;
+        }
+        for (;idx < max_health; ++idx)
+        {
+            enemyLifeSlots[idx].SetActive(true);
+            enemyLifeSlots[idx].gameObject.GetComponent<UnityEngine.UI.RawImage>().texture = emptyHeart;
+        }
+        for (;idx < 10; ++idx)
+        {
+            enemyLifeSlots[idx].SetActive(false);
+        }
     }
 
     // Update is called once per frame

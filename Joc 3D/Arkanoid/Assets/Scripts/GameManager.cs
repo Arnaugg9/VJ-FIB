@@ -39,6 +39,8 @@ public class GameManager : MonoBehaviour
 
     public int itemSpawnProbability;
 
+    public WitherSpawn witherSpawner;
+
     //UI Managment
     public TextMeshProUGUI scoreTxt;
     public List<GameObject> lifeSlots;
@@ -134,8 +136,18 @@ public class GameManager : MonoBehaviour
             if (activeScene != 5 && (Input.GetKeyDown(KeyCode.Keypad5) || Input.GetKeyDown(KeyCode.Alpha5)))
                 changeScene(5);
 
+            if (activeScene == 4 && !witherSpawner.hasSpawned && brokenPercentage() >= 1)
+            {
+                witherSpawner.spawnWither();
+            } 
+
             _canNextLvl = checkNextLvl();
-            if (_canNextLvl)
+            if (activeScene != 4 && _canNextLvl)
+            {
+                if (!NextLvlButton.activeSelf) NextLvlButton.SetActive(true);
+                if (Input.GetKeyDown(KeyCode.N)) gotoNextLvl();
+            }
+            else if (activeScene == 4 && witherSpawner.isDead)
             {
                 if (!NextLvlButton.activeSelf) NextLvlButton.SetActive(true);
                 if (Input.GetKeyDown(KeyCode.N)) gotoNextLvl();
@@ -151,6 +163,10 @@ public class GameManager : MonoBehaviour
         else UIBehaviour.Instance.updateUI("ball", 0);
     }
 
+    private float brokenPercentage()
+    {
+        return (((float)blocksDestroyed / blocksCurrent) * 100);
+    }
     private bool checkNextLvl()
     {
         return (((float)blocksDestroyed / blocksCurrent) * 100 >= 95);
@@ -167,6 +183,7 @@ public class GameManager : MonoBehaviour
         changeMusic(scenes[scene]);
         NextLvlButton.SetActive(false);
         itemSpawnProbability = getProbabilityByLevel(scene);
+        UIBehaviour.Instance.drawBossUI(0, 0);
         SceneManager.LoadScene(scene);
     }
 
@@ -236,6 +253,7 @@ public class GameManager : MonoBehaviour
         NextLvlButton.SetActive(false);
         changeMusic(scenes[SceneManager.GetActiveScene().buildIndex + 1]);
         itemSpawnProbability = getProbabilityByLevel(SceneManager.GetActiveScene().buildIndex + 1);
+        UIBehaviour.Instance.drawBossUI(0, 0);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
