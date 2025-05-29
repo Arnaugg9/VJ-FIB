@@ -37,7 +37,6 @@ public class BallBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Physics.IgnoreLayerCollision(gameObject.layer, LayerMask.NameToLayer("Block"), false);
         if (!_wasShoot)
         {
             _rb.isKinematic = true;

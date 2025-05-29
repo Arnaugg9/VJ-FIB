@@ -42,7 +42,7 @@ public class BlockBehaviour : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         _rb.isKinematic = true;
-        max_time_idle = 20f;
+        max_time_idle = 15f;
         min_time_idle = 5f;
         idle_timer = Random.Range(min_time_idle, max_time_idle);
         hasIdle = false;

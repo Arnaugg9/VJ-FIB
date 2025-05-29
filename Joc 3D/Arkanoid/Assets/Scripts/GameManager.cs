@@ -269,9 +269,10 @@ public class GameManager : MonoBehaviour
 
     public void instantiateBall(Vector3 pos, Vector3 dir)
     {
+        bool powerActive = activeBalls[0].getPowerTime() > 0;
         GameObject newBall = Instantiate(ballPrefab, pos, Quaternion.identity);
         newBall.GetComponent<BallBehaviour>().initAfterClone(dir);
-        if (activeBalls[0].getPowerTime() > 0) newBall.GetComponent<BallBehaviour>().setPower(true, activeBalls[0].getPowerTime());
+        newBall.GetComponent<BallBehaviour>().setPower(powerActive, activeBalls[0].getPowerTime());
     }
 
     public void loseGame()
