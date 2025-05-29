@@ -210,5 +210,10 @@ public class BlockBehaviour : MonoBehaviour
             collision.gameObject.GetComponent<BulletBehaviour>().Break();
             Break();
         }
+        else if (collision.gameObject.tag == "EnemyBullet")
+        {
+            collision.gameObject.GetComponent<EnemyBulletBehaviour>().Break();
+            Break();
+        }
     }
 }

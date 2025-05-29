@@ -38,6 +38,8 @@ TagManager:
   - Enderman
   - BarrierBlock
   - BarrierPU
+  - MobBarrier
+  - EnemyBullet
   layers:
   - Default
   - TransparentFX
@@ -46,8 +48,8 @@ TagManager:
   - Water
   - UI
   - Block
-  - 
-  - 
+  - Mob
+  - Floor
   - 
   - 
   - 
