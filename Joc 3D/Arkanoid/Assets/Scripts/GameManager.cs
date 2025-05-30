@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
     public bool levelStarted;
     public bool canSpawnNextLvl;
     public AudioClip nextLvlClip;
+    public List<AudioClip> playerHurtClips;
 
     public int nTotemsActive;
     public AudioClip totemClip;
@@ -87,6 +88,7 @@ public class GameManager : MonoBehaviour
         levelStarted = false;
         gameScore = 0;
         lives = 3;
+        playerHurtClips = Resources.LoadAll<AudioClip>("Audio/Miscelaneous/PlayerHurt").ToList();
         nTotemsActive = 0;
         blocksCurrent = 0;
         itemSpawnProbability = getProbabilityByLevel(SceneManager.GetActiveScene().buildIndex);
@@ -312,11 +314,16 @@ public class GameManager : MonoBehaviour
 
         if (nTotemsActive <= 0)
         {
-            --lives;
-            drawLife();
-            if (lives < 0)
+            if (!godModeWall.gameObject.activeSelf)
             {
-                loseGame();
+                int rand = UnityEngine.Random.Range(0, playerHurtClips.Count);
+                AudioSource.PlayClipAtPoint(playerHurtClips[rand], Camera.main.transform.position);
+                --lives;
+                drawLife();
+                if (lives < 0)
+                {
+                    loseGame();
+                }
             }
         }
         else
