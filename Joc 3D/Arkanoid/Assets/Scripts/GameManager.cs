@@ -48,6 +48,8 @@ public class GameManager : MonoBehaviour
 
     public WitherSpawn witherSpawner;
 
+    public bool isFinalBoss;
+
     //UI Managment
     public TextMeshProUGUI scoreTxt;
     public List<GameObject> lifeSlots;
@@ -92,6 +94,7 @@ public class GameManager : MonoBehaviour
         nTotemsActive = 0;
         blocksCurrent = 0;
         itemSpawnProbability = getProbabilityByLevel(SceneManager.GetActiveScene().buildIndex);
+        isFinalBoss = false;
         changeMusic(SceneManager.GetActiveScene().name);
         drawLife();
         currentBarrier = new GameObject();
@@ -225,6 +228,7 @@ public class GameManager : MonoBehaviour
         UIBehaviour.Instance.drawBossUI(0, 0);
         nTotemsActive = 0;
         UIBehaviour.Instance.initInventory();
+        isFinalBoss = false;
         SceneManager.LoadScene(scene);
     }
 
@@ -306,6 +310,7 @@ public class GameManager : MonoBehaviour
         nTotemsActive = 0;
         UIBehaviour.Instance.initInventory();
         _audioSource.PlayOneShot(nextLvlClip);
+        isFinalBoss = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 

@@ -78,6 +78,7 @@ public class WitherBehaviour : MonoBehaviour
         UIBehaviour.Instance.drawBossUI(health, max_health);
         max_time_idle = 25f;
         min_time_idle = 10f;
+        idle_timer = Random.Range(min_time_idle, max_time_idle);
 
         speed = 6f;
         currentDirection = directions[Random.Range(0, directions.Length)];
@@ -97,7 +98,6 @@ public class WitherBehaviour : MonoBehaviour
         damageAnimationTime = 0.2f;
         currentdamageAimationTime = 0;
 
-        idle_timer = Random.Range(min_time_idle, max_time_idle);
         hurtClips = Resources.LoadAll<AudioClip>("Audio/Mobs/Wither/Hurt").ToList();
         idleClips = Resources.LoadAll<AudioClip>("Audio/Mobs/Wither/Idle").ToList();
         dieClips = Resources.LoadAll<AudioClip>("Audio/Mobs/Wither/Die").ToList();

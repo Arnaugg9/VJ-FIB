@@ -10,6 +10,7 @@ public class PowerUpBehaviour : MonoBehaviour
     public int fallSpeed;
 
     public bool canSpawnNextLvl;
+    public bool isFinalBoss;
 
     // Aquí declararemos las referencias a los GameObjects de los modelos
     // Asignaremos estos en el editor de Unity
@@ -32,15 +33,19 @@ public class PowerUpBehaviour : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
 
-        canSpawnNextLvl = GameManager.Instance.canSpawnNextLvl;
-        int rand;
-        if (canSpawnNextLvl)
+        isFinalBoss = GameManager.Instance.isFinalBoss;
+        if (!isFinalBoss)
         {
-            rand = Random.Range(0, 13);
-            if (rand >= 8) rand = 8;
+            canSpawnNextLvl = GameManager.Instance.canSpawnNextLvl;
+            int rand;
+            if (canSpawnNextLvl)
+            {
+                rand = Random.Range(0, 13);
+                if (rand >= 8) rand = 8;
+            }
+            else rand = Random.Range(0, 8);
+            selectPU((PowerUpTypes)rand);
         }
-        else rand = Random.Range(0, 8);
-        selectPU((PowerUpTypes)rand);
     }
 
     // Update is called once per frame
@@ -53,7 +58,7 @@ public class PowerUpBehaviour : MonoBehaviour
         }
     }
 
-    void selectPU(PowerUpTypes n)
+    public void selectPU(PowerUpTypes n)
     {
         // Primero, desactiva todos los modelos para asegurarte de que solo se muestre el correcto
         DeactivateAllModels();
@@ -107,7 +112,7 @@ public class PowerUpBehaviour : MonoBehaviour
     }
 
     // Nuevo método para desactivar todos los modelos.
-    void DeactivateAllModels()
+    public void DeactivateAllModels()
     {
         if (bigPowerUpModel != null) bigPowerUpModel.SetActive(false);
         if (smallPowerUpModel != null) smallPowerUpModel.SetActive(false);
