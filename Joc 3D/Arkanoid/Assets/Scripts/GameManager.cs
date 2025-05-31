@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
     private string currentPlayerName;
     public int gameScore;
     public int lives;
+    private int max_lives;
     public bool levelStarted;
     public bool canSpawnNextLvl;
     public AudioClip nextLvlClip;
@@ -53,6 +54,7 @@ public class GameManager : MonoBehaviour
     public DragonSpawner dragonSpawner;
 
     //UI Managment
+    public GameObject Game_UI;
     public TextMeshProUGUI scoreTxt;
     public List<GameObject> lifeSlots;
     public Texture fullHeart;
@@ -93,7 +95,8 @@ public class GameManager : MonoBehaviour
 
         levelStarted = false;
         gameScore = 0;
-        lives = 3;
+        max_lives = 3;
+        lives = max_lives;
         playerHurtClips = Resources.LoadAll<AudioClip>("Audio/Miscelaneous/PlayerHurt").ToList();
         nTotemsActive = 0;
         blocksCurrent = 0;
@@ -131,6 +134,14 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        int activeScene = SceneManager.GetActiveScene().buildIndex;
+
+        if (activeScene == 0 || activeScene == 6)
+        {
+            Game_UI.SetActive(false);
+        }
+        else if (!Game_UI.activeSelf) Game_UI.SetActive(true);
+
         //Text updates
         scoreTxt.text = "Score: " + gameScore;
         levelTxt.text = "Level " + SceneManager.GetActiveScene().buildIndex;
@@ -140,8 +151,6 @@ public class GameManager : MonoBehaviour
             //Scene change with number
             if (Input.GetKeyDown(KeyCode.G)) godModeWall.gameObject.SetActive(!godModeWall.gameObject.activeSelf);
 
-
-            int activeScene = SceneManager.GetActiveScene().buildIndex;
             if (activeScene != 1 && (Input.GetKeyDown(KeyCode.Keypad1) || Input.GetKeyDown(KeyCode.Alpha1)))
                 changeScene(1);
             if (activeScene != 2 && (Input.GetKeyDown(KeyCode.Keypad2) || Input.GetKeyDown(KeyCode.Alpha2)))
@@ -161,8 +170,11 @@ public class GameManager : MonoBehaviour
             playRandomClip();
         }
 
-        if (activeBalls.Count > 1 || (activeBalls.Count > 0 && !activeBalls[0].ballDead)) UIBehaviour.Instance.updateUI("ball", activeBalls.Count);
-        else UIBehaviour.Instance.updateUI("ball", 0);
+        if (UIBehaviour.Instance != null)
+        {
+            if (activeBalls.Count > 1 || (activeBalls.Count > 0 && !activeBalls[0].ballDead)) UIBehaviour.Instance.updateUI("ball", activeBalls.Count);
+            else UIBehaviour.Instance.updateUI("ball", 0);
+        }
     }
 
     private void checkProgress(int activeScene)
@@ -299,18 +311,33 @@ public class GameManager : MonoBehaviour
             Debug.LogError("HighScoreManager not found in scene!");
         }
 
-        // Limpieza y reinicio para la próxima partida
         activeBalls.Clear();
-        // paddle = null; // No lo pongas a null aquí, el GameObject seguirá existiendo. Simplemente no uses su referencia.
-        // godModeWall = null; // Lo mismo.
+        paddle = null;
+        godModeWall = null;
         levelStarted = false;
         blocksDestroyed = 0;
         blocksCurrent = 0;
-        // Reinicia otras variables de estado si es necesario
+        NextLvlButton.SetActive(false);
+        itemSpawnProbability = 0;
+        UIBehaviour.Instance.drawBossUI(0, 0);
         nTotemsActive = 0;
+        UIBehaviour.Instance.initInventory();
         isFinalBoss = false;
-        // UIBehaviour.Instance.drawBossUI(0,0); // Si esto es necesario para limpiar la UI de boss
-        // UIBehaviour.Instance.initInventory(); // Si esto es necesario para limpiar el inventario UI
+        lives = max_lives;
+        drawLife();
+        gameScore = 0;
+
+        if (wonGame)
+        {
+            //Ir a créditos
+            changeMusic("Credits");
+        }
+
+        else
+        {
+            //Hacer pantalla muerte -> De mome
+            changeMusic("MainMenu");
+        }
 
         // Finalmente, carga la escena del menú principal
         SceneManager.LoadScene("MainMenu");
@@ -330,16 +357,15 @@ public class GameManager : MonoBehaviour
         int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
 
         // Si el siguiente nivel es "Credits"
-        if (scenes.ContainsKey(nextSceneIndex) && scenes[nextSceneIndex] == "Credits") // O el índice de tu escena final
+        if (scenes.ContainsKey(nextSceneIndex) && scenes[nextSceneIndex] == "Credits")
         {
-            EndGame(true); // <--- Llama a EndGame(true) cuando el jugador gana el juego
-            return; // Salir de la función para no cargar una escena que no existe
+            EndGame(true);
+            return; 
         }
 
-        // Si no es el final del juego, continúa al siguiente nivel
         activeBalls.Clear();
-        paddle = null; // Asegúrate de que esto no cause null reference issues al cambiar de escena
-        godModeWall = null; // Lo mismo
+        paddle = null; 
+        godModeWall = null; 
         levelStarted = false;
         blocksDestroyed = 0;
         blocksCurrent = 0;
@@ -365,7 +391,7 @@ public class GameManager : MonoBehaviour
                 AudioSource.PlayClipAtPoint(playerHurtClips[rand], Camera.main.transform.position);
                 --lives;
                 drawLife();
-                if (lives < 0)
+                if (lives <= 0)
                 {
                     EndGame(false);
                 }

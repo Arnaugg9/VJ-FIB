@@ -32,6 +32,7 @@ public class UIBehaviour : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+        GameManager.Instance.Game_UI = gameObject;
     }
 
     // Start is called before the first frame update
