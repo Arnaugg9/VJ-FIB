@@ -1,3 +1,4 @@
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -242,6 +243,7 @@ public class GameManager : MonoBehaviour
         blocksCurrent = 0;
         changeMusic(scenes[scene]);
         NextLvlButton.SetActive(false);
+        Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Ball"), LayerMask.NameToLayer("Block"), false);
         itemSpawnProbability = getProbabilityByLevel(scene);
         UIBehaviour.Instance.drawBossUI(0, 0);
         nTotemsActive = 0;
@@ -323,6 +325,7 @@ public class GameManager : MonoBehaviour
         blocksCurrent = 0;
         NextLvlButton.SetActive(false);
         itemSpawnProbability = 0;
+        Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Ball"), LayerMask.NameToLayer("Block"), false);
         UIBehaviour.Instance.drawBossUI(0, 0);
         nTotemsActive = 0;
         UIBehaviour.Instance.initInventory();
@@ -374,6 +377,7 @@ public class GameManager : MonoBehaviour
         blocksDestroyed = 0;
         blocksCurrent = 0;
         NextLvlButton.SetActive(false);
+        Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Ball"), LayerMask.NameToLayer("Block"), false);
         changeMusic(scenes[nextSceneIndex]); // Asegúrate de que scenes[nextSceneIndex] sea válido
         itemSpawnProbability = getProbabilityByLevel(nextSceneIndex);
         UIBehaviour.Instance.drawBossUI(0, 0);

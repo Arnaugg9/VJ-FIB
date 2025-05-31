@@ -141,7 +141,7 @@ public class PaddleBehaviour : MonoBehaviour
     public void activateMagnet()
     {
         UIBehaviour.Instance.ch_stateItemUI("magnet", true);
-        magnetRemain += 5;
+        magnetRemain += 7;
         UIBehaviour.Instance.updateUI("magnet", magnetRemain);
     }
 
