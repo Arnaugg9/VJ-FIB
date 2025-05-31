@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2327135918649306850}
   m_Layer: 6
   m_Name: DragonEgg
-  m_TagString: DragonEgg
+  m_TagString: NoStoneBlock
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -95,6 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c29498ff2f3ff8459476c564971b57a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  destroyParticles: {fileID: 6273636326192111323, guid: a6c1486c0376c1e478694f4efeb68638, type: 3}
   isGrounded: 0
   wasDestroyed: 0
   fallSpeed: 1
@@ -102,6 +103,9 @@ MonoBehaviour:
   oreBlocks: []
   itemSpawnProbability: 40
   itemPrefab: {fileID: 7012138492000490094, guid: 3d53b1010af0a504ea91f5cd19c30583, type: 3}
+  max_time_idle: 0
+  min_time_idle: 0
+  idle_timer: 0
 --- !u!1001 &6769989840710593392
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -110,6 +114,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4675899156716061972}
     m_Modifications:
+    - target: {fileID: 1151388028547126963, guid: 949b4907f7804cc47a5d6e06c4c37884, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1151388028547126963, guid: 949b4907f7804cc47a5d6e06c4c37884, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1151388028547126963, guid: 949b4907f7804cc47a5d6e06c4c37884, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -6689036041284674117, guid: f2358668c5670684291dd19973de5171, type: 3}
       propertyPath: m_Name
       value: scene
@@ -177,18 +193,6 @@ PrefabInstance:
     - target: {fileID: 4007940494327283189, guid: f2358668c5670684291dd19973de5171, type: 3}
       propertyPath: m_LocalPosition.z
       value: -0.84
-      objectReference: {fileID: 0}
-    - target: {fileID: 1151388028547126963, guid: 949b4907f7804cc47a5d6e06c4c37884, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1151388028547126963, guid: 949b4907f7804cc47a5d6e06c4c37884, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1151388028547126963, guid: 949b4907f7804cc47a5d6e06c4c37884, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

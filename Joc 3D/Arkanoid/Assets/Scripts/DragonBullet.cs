@@ -60,5 +60,10 @@ public class DragonBullet : MonoBehaviour
         {
             Break();
         }
+        else if (other.CompareTag("BarrierBlock"))
+        {
+            other.GetComponent<BlockBehaviour>().Break();
+            Break();
+        }
     }
 }

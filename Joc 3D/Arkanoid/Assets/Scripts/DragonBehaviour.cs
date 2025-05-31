@@ -5,7 +5,7 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class DragonBoss : MonoBehaviour
+public class DragonBehaviour : MonoBehaviour
 {
     // Tiempo de espera entre ataques
     private float min_time_shoot = 2f;
@@ -98,13 +98,15 @@ public class DragonBoss : MonoBehaviour
             PowerUpBehaviour.PowerUpTypes.Barrier
         };
 
+    //Spawn Variables
+    public GameObject layout;
+    private bool awake = false;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
         dragonModel = transform.GetChild(0).gameObject;
-
-        GameManager.Instance.isFinalBoss = true;
 
         left = leftWall.position.x + 3f;
         right = rightWall.position.x - 2f;
@@ -115,7 +117,6 @@ public class DragonBoss : MonoBehaviour
 
         max_health = 10;
         health = max_health;
-        UIBehaviour.Instance.drawBossUI(health, max_health);
 
         dragonDead = false;
 
@@ -140,8 +141,18 @@ public class DragonBoss : MonoBehaviour
         min_time_fly_sound = 0.5f;
         fly_timer_sound = Random.Range(min_time_fly_sound, max_time_fly_sound);
 
-        currentState = State.Idle;
-        ResetShootTimer();
+        currentState = State.None;
+    }
+
+    public void startFight(Vector3 startPos)
+    {
+        awake = true;
+        UIBehaviour.Instance.drawBossUI(health, max_health);
+
+        transform.position = startPos;
+
+        descendTarget = basePoint.position;
+        StartCoroutine(BeginDescending());
     }
 
     private void Update()
@@ -187,12 +198,15 @@ public class DragonBoss : MonoBehaviour
             }
 
             //Control idle sounds
-            idle_timer -= Time.deltaTime;
-            if (idle_timer <= 0)
+            if (awake)
             {
-                int index = Random.Range(0, idleClips.Count);
-                AudioSource.PlayClipAtPoint(idleClips[index], Camera.main.transform.position);
-                idle_timer = Random.Range(min_time_idle, max_time_idle);
+                idle_timer -= Time.deltaTime;
+                if (idle_timer <= 0)
+                {
+                    int index = Random.Range(0, idleClips.Count);
+                    AudioSource.PlayClipAtPoint(idleClips[index], Camera.main.transform.position);
+                    idle_timer = Random.Range(min_time_idle, max_time_idle);
+                }
             }
 
             if (currentState == State.PreparingAttack || currentState == State.Shooting || currentState == State.FlyingRandom)
@@ -341,8 +355,9 @@ public class DragonBoss : MonoBehaviour
         currentState = State.None; // temporal para bloquear otros estados
         anim.SetTrigger("Descend");
 
-        yield return new WaitForSeconds(0.5f); 
+        yield return new WaitForSeconds(0.5f);
 
+        Debug.Log("Aqui?");
         currentState = State.Descending;
     }
     Vector3 GetRandomGroundPosition()
@@ -373,13 +388,35 @@ public class DragonBoss : MonoBehaviour
             if (hurtParticlePrefab != null) particle = Instantiate(explosionParticlePrefab, basePoint.position, Quaternion.identity);
 
             createBulletRing();
+
+            if (layout != null)
+            {
+                destroyBlocks();
+            }
+
             anim.SetTrigger("Idle");
             ResetShootTimer();
             currentState = State.Idle;
         }
     }
 
-    void createBulletRing()
+    private void destroyBlocks()
+    {
+        foreach (Transform group in layout.transform.Cast<Transform>().ToArray())
+        {
+            if (group.gameObject.activeSelf)
+            {
+                foreach (Transform block in group.Cast<Transform>().ToArray())
+                {
+                    block.GetComponent<BlockBehaviour>().Break();
+                }
+            }
+        }
+
+        Destroy(layout);
+    }
+
+    private void createBulletRing()
     {
         int bulletCount = 12;
         float angleStep = 360f / bulletCount;

@@ -49,6 +49,7 @@ public class GameManager : MonoBehaviour
     public WitherSpawn witherSpawner;
 
     public bool isFinalBoss;
+    public DragonSpawner dragonSpawner;
 
     //UI Managment
     public TextMeshProUGUI scoreTxt;
@@ -168,7 +169,7 @@ public class GameManager : MonoBehaviour
         if (activeScene == 1 || activeScene == 2 || activeScene == 3)
         {
             canSpawnNextLvl = broken >= 95;
-            if (broken >= 99)
+            if (broken >= 98)
             {
                 if (!NextLvlButton.activeSelf) NextLvlButton.SetActive(true);
                 if (Input.GetKeyDown(KeyCode.N)) gotoNextLvl();
@@ -186,7 +187,7 @@ public class GameManager : MonoBehaviour
 
             canSpawnNextLvl = witherSpawner.isDead && (broken >= 95);
 
-            if (witherSpawner.isDead && broken >= 99)
+            if (witherSpawner.isDead && broken >= 98)
             {
                 if (!NextLvlButton.activeSelf) NextLvlButton.SetActive(true);
                 if (Input.GetKeyDown(KeyCode.N)) gotoNextLvl();
@@ -197,15 +198,15 @@ public class GameManager : MonoBehaviour
         //If levle5 -> *Still have to do dragon fight
         else if (activeScene == 5)
         {
-            canSpawnNextLvl = broken >= 95;
-
-            if (broken >= 99)
+            if (!dragonSpawner.started && broken >= 1)
             {
-                if (!NextLvlButton.activeSelf) NextLvlButton.SetActive(true);
-                if (Input.GetKeyDown(KeyCode.N)) gotoNextLvl();
+                isFinalBoss = true;
+                dragonSpawner.startFight();
             }
 
-            if (broken >= 100) gotoNextLvl();
+            if (dragonSpawner.isDead) {
+                gotoNextLvl();
+            }
         }
     }
 
