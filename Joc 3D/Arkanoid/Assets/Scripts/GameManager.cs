@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
     public List<BallBehaviour> activeBalls;
 
     //Game State Managment
+    private string currentPlayerName;
     public int gameScore;
     public int lives;
     public bool levelStarted;
@@ -71,6 +72,8 @@ public class GameManager : MonoBehaviour
 
         _audioSource = GetComponent<AudioSource>();
         activeBalls = new List<BallBehaviour>();
+
+        currentPlayerName = PlayerPrefs.GetString("LastPlayerName", "Anonymous");
     }
 
     // Start is called before the first frame update
@@ -282,9 +285,35 @@ public class GameManager : MonoBehaviour
         newBall.GetComponent<BallBehaviour>().setPower(powerActive, activeBalls[0].getPowerTime());
     }
 
-    public void loseGame()
+    public void EndGame(bool wonGame)
     {
-        print("LOST");
+        Debug.Log($"Game Over! Player: {currentPlayerName}, Final Score: {gameScore}. {(wonGame ? "You won!" : "You lost.")}");
+
+        // Envía la puntuación al HighScoreManager
+        if (HighScoreManager.Instance != null)
+        {
+            HighScoreManager.Instance.AddNewHighScore(currentPlayerName, gameScore);
+        }
+        else
+        {
+            Debug.LogError("HighScoreManager not found in scene!");
+        }
+
+        // Limpieza y reinicio para la próxima partida
+        activeBalls.Clear();
+        // paddle = null; // No lo pongas a null aquí, el GameObject seguirá existiendo. Simplemente no uses su referencia.
+        // godModeWall = null; // Lo mismo.
+        levelStarted = false;
+        blocksDestroyed = 0;
+        blocksCurrent = 0;
+        // Reinicia otras variables de estado si es necesario
+        nTotemsActive = 0;
+        isFinalBoss = false;
+        // UIBehaviour.Instance.drawBossUI(0,0); // Si esto es necesario para limpiar la UI de boss
+        // UIBehaviour.Instance.initInventory(); // Si esto es necesario para limpiar el inventario UI
+
+        // Finalmente, carga la escena del menú principal
+        SceneManager.LoadScene("MainMenu");
     }
 
     public void activatePower()
@@ -298,21 +327,31 @@ public class GameManager : MonoBehaviour
 
     public void gotoNextLvl()
     {
+        int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
+
+        // Si el siguiente nivel es "Credits"
+        if (scenes.ContainsKey(nextSceneIndex) && scenes[nextSceneIndex] == "Credits") // O el índice de tu escena final
+        {
+            EndGame(true); // <--- Llama a EndGame(true) cuando el jugador gana el juego
+            return; // Salir de la función para no cargar una escena que no existe
+        }
+
+        // Si no es el final del juego, continúa al siguiente nivel
         activeBalls.Clear();
-        paddle = null;
-        godModeWall = null;
+        paddle = null; // Asegúrate de que esto no cause null reference issues al cambiar de escena
+        godModeWall = null; // Lo mismo
         levelStarted = false;
         blocksDestroyed = 0;
         blocksCurrent = 0;
         NextLvlButton.SetActive(false);
-        changeMusic(scenes[SceneManager.GetActiveScene().buildIndex + 1]);
-        itemSpawnProbability = getProbabilityByLevel(SceneManager.GetActiveScene().buildIndex + 1);
+        changeMusic(scenes[nextSceneIndex]); // Asegúrate de que scenes[nextSceneIndex] sea válido
+        itemSpawnProbability = getProbabilityByLevel(nextSceneIndex);
         UIBehaviour.Instance.drawBossUI(0, 0);
         nTotemsActive = 0;
         UIBehaviour.Instance.initInventory();
         _audioSource.PlayOneShot(nextLvlClip);
         isFinalBoss = false;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene(nextSceneIndex);
     }
 
     public void loseLife()
@@ -328,7 +367,7 @@ public class GameManager : MonoBehaviour
                 drawLife();
                 if (lives < 0)
                 {
-                    loseGame();
+                    EndGame(false);
                 }
             }
         }
