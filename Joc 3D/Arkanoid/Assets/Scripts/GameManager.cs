@@ -168,6 +168,7 @@ public class GameManager : MonoBehaviour
 
         if (!_audioSource.isPlaying && scene_themes.Count > 0)
         {
+            changeMusic(scenes[activeScene]);
             playRandomClip();
         }
 
@@ -253,7 +254,7 @@ public class GameManager : MonoBehaviour
     {
         scene_themes.Clear();
         if (scene != "Level5") scene_themes = Resources.LoadAll<AudioClip>("Audio/OST/Levels/Chill").ToList();
-        if (scene == "Level4" || scene == "Level5" || scene == "Level3") Resources.LoadAll<AudioClip>("Audio/OST/Levels/NoChill").ToList();
+        if (scene == "Level4" || scene == "Level5" || scene == "Level3") scene_themes = Resources.LoadAll<AudioClip>("Audio/OST/Levels/NoChill").ToList();
         playRandomClip();
     }
 

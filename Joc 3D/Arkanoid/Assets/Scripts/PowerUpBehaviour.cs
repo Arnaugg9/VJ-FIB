@@ -129,6 +129,8 @@ public class PowerUpBehaviour : MonoBehaviour
     {
         if (collision.gameObject.tag == "Paddle")
         {
+            GameManager.Instance.gameScore += 500;
+
             if (tag == "SmallPU")
             {
                 GameManager.Instance.changePaddleSize("small");
