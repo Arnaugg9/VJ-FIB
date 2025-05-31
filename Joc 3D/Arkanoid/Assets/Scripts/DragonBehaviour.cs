@@ -106,9 +106,9 @@ public class DragonBoss : MonoBehaviour
 
         GameManager.Instance.isFinalBoss = true;
 
-        left = leftWall.position.x - 2f;
-        right = rightWall.position.x + 2f;
-        bottom = bottomWall.position.z + 2f;
+        left = leftWall.position.x + 3f;
+        right = rightWall.position.x - 2f;
+        bottom = bottomWall.position.z + 3f;
         top = topWall.position.z - 2f;
 
         baseY = basePoint.position.y;
@@ -220,9 +220,9 @@ public class DragonBoss : MonoBehaviour
     IEnumerator PrepareAttack()
     {
         currentState = State.PreparingAttack;
-        anim.SetTrigger("PrepareAttack"); // Debes configurar esto en el Animator
+        anim.SetTrigger("PrepareAttack");
 
-        yield return new WaitForSeconds(2f); // Tiempo de carga antes de disparar
+        yield return new WaitForSeconds(2f); 
 
         StartCoroutine(Shoot());
     }
@@ -242,7 +242,7 @@ public class DragonBoss : MonoBehaviour
         }
 
         ResetFlyTimer();
-        anim.SetTrigger("Fly"); // Cambia animación al modo vuelo
+        anim.SetTrigger("Fly");
         StartFlyingRandom();
     }
 
@@ -264,12 +264,12 @@ public class DragonBoss : MonoBehaviour
         flyTimer = Random.Range(min_time_fly, max_time_fly);
         dragonModel.GetComponent<Animator>().SetTrigger("Fly");
 
-        // Guardar altura actual
+        
         ascending = true;
 
         // Establecer primera posición objetivo de vuelo horizontal
         currentFlyTarget = GetRandomPositionWithinBounds();
-        currentFlyTarget.y = baseY; // se mantendrá hasta terminar de ascender
+        currentFlyTarget.y = baseY; 
 
         createPowerUps();
     }
@@ -308,18 +308,18 @@ public class DragonBoss : MonoBehaviour
                 currentFlyTarget.y = targetFlyHeight;
             }
 
-            return; // esperamos a terminar de subir antes de moverse horizontalmente
+            return; 
         }
 
-        // Movimiento horizontal mientras vuela
+        // Movimiento horizontal mientras vuela ya arriba
         if (Vector3.Distance(transform.position, currentFlyTarget) < 0.2f)
         {
             currentFlyTarget = GetRandomPositionWithinBounds();
-            currentFlyTarget.y = targetFlyHeight; // mantener altura fija
+            currentFlyTarget.y = targetFlyHeight; 
         }
 
         Vector3 direction = (currentFlyTarget - transform.position).normalized;
-        direction.y = 0; // ignoramos componente vertical
+        direction.y = 0; 
 
         transform.position += direction * flySpeed * Time.deltaTime;
 

@@ -178,7 +178,6 @@ public class WitherBehaviour : MonoBehaviour
         Vector3 direction = GameManager.Instance.paddle.transform.position - shootPoint.position;
         bullet.GetComponent<EnemyBulletBehaviour>().SetDirection(direction);
 
-        // Esperar el tiempo de parada antes de volver a moverse
         yield return new WaitForSeconds(0.3f);
 
         currentDirection = directions[Random.Range(0, directions.Length)];
@@ -202,7 +201,6 @@ public class WitherBehaviour : MonoBehaviour
 
         foreach (var dir in directions)
         {
-            // Queremos que la nueva dirección se aleje en el eje X si colisionó en X, y lo mismo en Z
             bool awayInX = Mathf.Sign(dir.x) != Mathf.Sign(toObstacle.x) || Mathf.Approximately(toObstacle.x, 0);
             bool awayInZ = Mathf.Sign(dir.z) != Mathf.Sign(toObstacle.z) || Mathf.Approximately(toObstacle.z, 0);
 
@@ -256,7 +254,7 @@ public class WitherBehaviour : MonoBehaviour
         //Debug.Log("Collided with " + collision.gameObject.tag);
         if (collision.gameObject.CompareTag("MobBarrier"))
         {
-            // Solo escoger direcciones que vayan hacia atrás (Z negativo o cero)
+            // Solo escoger direcciones que vayan hacia atrás
             List<Vector3> backwardDirs = directions.Where(dir => dir.z > 0).ToList();
             currentDirection = backwardDirs[Random.Range(0, backwardDirs.Count)];
 

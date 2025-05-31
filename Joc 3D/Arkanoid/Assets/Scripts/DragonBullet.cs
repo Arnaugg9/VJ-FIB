@@ -22,7 +22,6 @@ public class DragonBullet : MonoBehaviour
 
     private void Update()
     {
-        // Mover hacia adelante (en la dirección local "forward" del proyectil)
         transform.Translate(Vector3.forward * speed * Time.deltaTime, Space.Self);
         if (isLast)
         {
@@ -46,7 +45,7 @@ public class DragonBullet : MonoBehaviour
     {
         if (other.CompareTag("Paddle"))
         {
-            // Llamar al método getHurt del paddle
+            // Llamar al método losLife
             GameManager.Instance.loseLife();
 
             // Destruir la bala tras colisión

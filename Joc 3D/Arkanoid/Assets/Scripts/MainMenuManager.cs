@@ -14,7 +14,6 @@ public class MainMenuManager : MonoBehaviour // O UIManager si es un script apar
         uiAudioSource = GetComponent<AudioSource>();
         if (uiAudioSource == null)
         {
-            // Si el AudioSource está en otro GameObject (e.g., UIManager), búscalo
             uiAudioSource = GameObject.Find("UIManager")?.GetComponent<AudioSource>();
             if (uiAudioSource == null)
             {
@@ -25,18 +24,17 @@ public class MainMenuManager : MonoBehaviour // O UIManager si es un script apar
         // Carga los sonidos desde la carpeta Resources
         if (hoverSound == null)
         {
-            hoverSound = Resources.Load<AudioClip>("Audio/UI/Click_stereo"); // Reemplaza con el nombre real de tu archivo
+            hoverSound = Resources.Load<AudioClip>("Audio/UI/Click_stereo"); 
         }
         if (clickSound == null)
         {
-            clickSound = Resources.Load<AudioClip>("Audio/UI/Click_stereo"); // Reemplaza con el nombre real de tu archivo
+            clickSound = Resources.Load<AudioClip>("Audio/UI/Click_stereo"); 
         }
         if (selectSound == null)
         {
-            selectSound = Resources.Load<AudioClip>("Audio/UI/Click_stereo"); // Reemplaza con el nombre real de tu archivo
+            selectSound = Resources.Load<AudioClip>("Audio/UI/Click_stereo"); 
         }
 
-        // Asegúrate de que los sonidos se hayan cargado correctamente
         if (hoverSound == null) Debug.LogWarning("Hover sound not found in Resources/Audio/UI/. Check filename.");
         if (clickSound == null) Debug.LogWarning("Click sound not found in Resources/Audio/UI/. Check filename.");
         if (selectSound == null) Debug.LogWarning("Select sound not found in Resources/Audio/UI/. Check filename.");
@@ -46,6 +44,7 @@ public class MainMenuManager : MonoBehaviour // O UIManager si es un script apar
     {
         if (uiAudioSource != null && hoverSound != null)
         {
+            uiAudioSource.pitch = Random.Range(0.8f, 1.2f);
             uiAudioSource.PlayOneShot(hoverSound);
         }
     }
@@ -54,6 +53,7 @@ public class MainMenuManager : MonoBehaviour // O UIManager si es un script apar
     {
         if (uiAudioSource != null && clickSound != null)
         {
+            uiAudioSource.pitch = Random.Range(0.8f, 1.2f);
             uiAudioSource.PlayOneShot(clickSound);
         }
     }
@@ -62,9 +62,8 @@ public class MainMenuManager : MonoBehaviour // O UIManager si es un script apar
     {
         if (uiAudioSource != null && selectSound != null)
         {
+            uiAudioSource.pitch = Random.Range(0.8f, 1.2f);
             uiAudioSource.PlayOneShot(selectSound);
         }
     }
-
-    // ... tus otras funciones de menú (StartGame, HowToPlay, etc.) ...
 }

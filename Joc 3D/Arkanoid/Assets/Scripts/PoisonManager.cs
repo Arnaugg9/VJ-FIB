@@ -42,7 +42,6 @@ public class PoisonManager : MonoBehaviour
 
             if (!audioSource.isPlaying) audioSource.Play();
 
-            // Variar el pitch suavemente entre 0.9 y 1.1
             audioSource.pitch = Random.Range(0.3f, 1);
         }
         else
