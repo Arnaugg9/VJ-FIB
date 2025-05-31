@@ -16,7 +16,7 @@ public class PaddleBehaviour : MonoBehaviour
 
     //Movement
     private Vector3 _dir;
-    public float speed;
+    public float speed = 12;
     public Transform leftWall;
     public Transform rightWall;
     public float wallWidth;
@@ -121,9 +121,21 @@ public class PaddleBehaviour : MonoBehaviour
         Vector3 newSize = GetComponent<BoxCollider>().size;
         newSize.x = paddleSize;
         GetComponent<BoxCollider>().size = newSize;
-        if (paddleSize > 3) transform.GetChild(0).localScale = new Vector3(1.42f, 1f, 1.42f);
-        else if (paddleSize < 2) transform.GetChild(0).localScale = new Vector3(0.65f, 1f, 0.65f);
-        else transform.GetChild(0).localScale = new Vector3(1f, 1f, 1f);
+        if (paddleSize > 3)
+        {
+            speed = 10;
+            transform.GetChild(0).localScale = new Vector3(1.42f, 1f, 1.42f);
+        }
+        else if (paddleSize < 2)
+        {
+            speed = 15;
+            transform.GetChild(0).localScale = new Vector3(0.65f, 1f, 0.65f);
+        }
+        else
+        {
+            speed = 12;
+            transform.GetChild(0).localScale = new Vector3(1f, 1f, 1f);
+        }
     }
 
     public void activateMagnet()
