@@ -65,7 +65,15 @@ public class EndermanBehaviour : MonoBehaviour
     void Update()
     {
         // Movimiento
-        _rb.MovePosition(transform.position + currentDirection * speed * Time.deltaTime);
+        Vector3 targetPosition = transform.position + currentDirection * speed * Time.deltaTime;
+        if (IsValidPosition(targetPosition))
+        {
+            _rb.MovePosition(targetPosition);
+        }
+        else
+        {
+            currentDirection = GetEscapeDirection(targetPosition);
+        }
 
         if (currentDirection != Vector3.zero)
         {

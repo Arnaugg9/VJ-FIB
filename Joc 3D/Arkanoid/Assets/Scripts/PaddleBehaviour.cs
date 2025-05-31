@@ -26,7 +26,7 @@ public class PaddleBehaviour : MonoBehaviour
 
     //Timers
     private float _sizeTimer;
-    private const float _PU_SIZE_DURATION = 8;
+    private const float _PU_SIZE_DURATION = 15;
     public int magnetRemain;
     private int _nShoots;
     private const int _N_SHOOTS = 7;

@@ -67,11 +67,15 @@ public class WitherBehaviour : MonoBehaviour
     private float damageAnimationTime;
     private float currentdamageAimationTime;
 
+    //posControll
+    private BoxCollider col;
+
     // Start is called before the first frame update
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
         _animator = GetComponent<Animator>();
+        col = GetComponent<BoxCollider>();
 
         max_health = 7;
         health = max_health;
@@ -89,8 +93,8 @@ public class WitherBehaviour : MonoBehaviour
         next_random_stop = Random.Range(random_stop_min, random_stop_max);
         random_stop_duration = 3f;
 
-        min_time_shoot = 4f;
-        max_time_shoot = 10f;
+        min_time_shoot = 3f;
+        max_time_shoot = 8f;
         shootTimer = Random.Range(min_time_shoot, max_time_shoot);
 
         totalInvincivility = 1.5f;
@@ -121,7 +125,16 @@ public class WitherBehaviour : MonoBehaviour
         //Control moviment
         if (isMoving)
         {
-            _rb.MovePosition(transform.position + currentDirection * speed * Time.deltaTime);
+            Vector3 targetPosition = transform.position + currentDirection * speed * Time.deltaTime;
+            if (IsValidPosition(targetPosition))
+            {
+                _rb.MovePosition(targetPosition);
+            }
+            else
+            {
+                currentDirection = GetEscapeDirection(targetPosition);
+            }
+
             next_random_stop -= Time.deltaTime;
             if (next_random_stop <= 0)
             {
@@ -182,6 +195,32 @@ public class WitherBehaviour : MonoBehaviour
 
         currentDirection = directions[Random.Range(0, directions.Length)];
         isMoving = true;
+    }
+
+    bool IsValidPosition(Vector3 position)
+    {
+        Vector3 halfExtents = col.size / 2f;
+        Vector3 checkCenter = position + col.center;
+
+        Collider[] hits = Physics.OverlapBox(
+            checkCenter,
+            halfExtents,
+            transform.rotation
+        );
+
+        foreach (Collider hit in hits)
+        {
+            if (hit.gameObject == gameObject) continue;
+
+            if (hit.CompareTag("Walls") ||
+                hit.CompareTag("MobBarrier") ||
+                hit.gameObject.layer == LayerMask.NameToLayer("Block"))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private Vector3 GetRandomDirection()

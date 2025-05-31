@@ -28,21 +28,35 @@ public class ZombieBehaviour : MonoBehaviour
     private float random_stop_max;
     public float next_random_stop;
 
+    //posControll
+    private BoxCollider col;
+
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
+        col = GetComponent<BoxCollider>();
         speed = 0.75f;
         currentDirection = directions[Random.Range(0, directions.Length)];
 
         random_stop_max = 20f;
         random_stop_min = 10f;
         next_random_stop = Random.Range(random_stop_min, random_stop_max);
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        _rb.MovePosition(transform.position + currentDirection * speed * Time.deltaTime);
+        Vector3 targetPosition = transform.position + currentDirection * speed * Time.deltaTime;
+        if (IsValidPosition(targetPosition))
+        {
+            _rb.MovePosition(targetPosition);
+        }
+        else
+        {
+            currentDirection = GetEscapeDirection(targetPosition);
+        }
+
         if (currentDirection != Vector3.zero)
         {
             Quaternion targetRotation = Quaternion.LookRotation(currentDirection, Vector3.up);
@@ -57,6 +71,32 @@ public class ZombieBehaviour : MonoBehaviour
             currentDirection = directions[Random.Range(0, directions.Length)];
             next_random_stop = Random.Range(random_stop_min, random_stop_max);
         }
+    }
+
+    bool IsValidPosition(Vector3 position)
+    {
+        Vector3 halfExtents = col.size / 2f;
+        Vector3 checkCenter = position + col.center;
+
+        Collider[] hits = Physics.OverlapBox(
+            checkCenter,
+            halfExtents,
+            transform.rotation
+        );
+
+        foreach (Collider hit in hits)
+        {
+            if (hit.gameObject == gameObject) continue;
+
+            if (hit.CompareTag("Walls") ||
+                hit.CompareTag("MobBarrier") ||
+                hit.gameObject.layer == LayerMask.NameToLayer("Block"))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private Vector3 GetRandomDirection()
