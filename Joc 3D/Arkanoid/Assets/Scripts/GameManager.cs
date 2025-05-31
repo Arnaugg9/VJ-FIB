@@ -44,6 +44,8 @@ public class GameManager : MonoBehaviour
     public GameObject totemParticles;
 
     public GodModeWalls godModeWall;
+    public bool fullGodMode;
+    public bool semiGodMode;
     public int blocksCurrent;
     public int blocksDestroyed;
 
@@ -101,6 +103,8 @@ public class GameManager : MonoBehaviour
         playerHurtClips = Resources.LoadAll<AudioClip>("Audio/Miscelaneous/PlayerHurt").ToList();
         nTotemsActive = 0;
         blocksCurrent = 0;
+        fullGodMode = false;
+        semiGodMode = false;
         itemSpawnProbability = getProbabilityByLevel(SceneManager.GetActiveScene().buildIndex);
         isFinalBoss = false;
         scene_themes = new List<AudioClip>();
@@ -151,7 +155,17 @@ public class GameManager : MonoBehaviour
         if (levelStarted)
         {
             //Scene change with number
-            if (Input.GetKeyDown(KeyCode.G)) godModeWall.gameObject.SetActive(!godModeWall.gameObject.activeSelf);
+            if (Input.GetKeyDown(KeyCode.G))
+            {
+                fullGodMode = !fullGodMode;
+                semiGodMode = false;
+            }
+            if (Input.GetKeyDown(KeyCode.H))
+            {
+                semiGodMode = !semiGodMode;
+                fullGodMode = false;
+            }
+            godModeWall.gameObject.SetActive(fullGodMode || semiGodMode);
 
             if (activeScene != 1 && (Input.GetKeyDown(KeyCode.Keypad1) || Input.GetKeyDown(KeyCode.Alpha1)))
                 changeScene(1);
@@ -207,7 +221,11 @@ public class GameManager : MonoBehaviour
 
             if (witherSpawner.isDead && broken >= 98)
             {
-                if (!NextLvlButton.activeSelf) NextLvlButton.SetActive(true);
+                if (!NextLvlButton.activeSelf)
+                {
+                    UIBehaviour.Instance.drawBossUI(0, 0);
+                    NextLvlButton.SetActive(true);
+                }
                 if (Input.GetKeyDown(KeyCode.N)) gotoNextLvl();
             }
 
@@ -393,7 +411,7 @@ public class GameManager : MonoBehaviour
 
         if (nTotemsActive <= 0)
         {
-            if (!godModeWall.gameObject.activeSelf)
+            if (!fullGodMode)
             {
                 int rand = UnityEngine.Random.Range(0, playerHurtClips.Count);
                 AudioSource.PlayClipAtPoint(playerHurtClips[rand], Camera.main.transform.position);
