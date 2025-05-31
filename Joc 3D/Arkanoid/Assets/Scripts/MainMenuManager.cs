@@ -119,7 +119,8 @@ public class MainMenuManager : MonoBehaviour // O UIManager si es un script apar
 
         Debug.Log($"Starting game with player: {currentPlayerName}");
         PlayClickSound(); // Sonido de clic
-        SceneManager.LoadScene("Level1"); // Cargar la escena del juego
+        GameManager.Instance.changeScene(1);
+        //SceneManager.LoadScene("Level1"); // Cargar la escena del juego
     }
 
     // Cuando se hace clic en "Cancel" en el formulario de nombre

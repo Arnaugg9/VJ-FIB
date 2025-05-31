@@ -102,6 +102,7 @@ public class GameManager : MonoBehaviour
         blocksCurrent = 0;
         itemSpawnProbability = getProbabilityByLevel(SceneManager.GetActiveScene().buildIndex);
         isFinalBoss = false;
+        scene_themes = new List<AudioClip>();
         changeMusic(SceneManager.GetActiveScene().name);
         drawLife();
         currentBarrier = new GameObject();
@@ -230,7 +231,7 @@ public class GameManager : MonoBehaviour
         return (((float)blocksDestroyed / blocksCurrent) * 100);
     }
 
-    private void changeScene(int scene)
+    public void changeScene(int scene)
     {
         activeBalls.Clear();
         paddle = null;
@@ -250,7 +251,9 @@ public class GameManager : MonoBehaviour
 
     private void changeMusic(String scene)
     {
-        scene_themes = Resources.LoadAll<AudioClip>("Audio/OST/Levels").ToList();
+        scene_themes.Clear();
+        if (scene != "Level5") scene_themes = Resources.LoadAll<AudioClip>("Audio/OST/Levels/Chill").ToList();
+        if (scene == "Level4" || scene == "Level5" || scene == "Level3") Resources.LoadAll<AudioClip>("Audio/OST/Levels/NoChill").ToList();
         playRandomClip();
     }
 
