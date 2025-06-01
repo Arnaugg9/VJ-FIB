@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
 
     //Sound Managment
     private AudioSource _audioSource;
-    List<AudioClip> scene_themes;
+    public List<AudioClip> scene_themes;
 
     //Prefabs
     public GameObject ballPrefab;
@@ -121,12 +121,14 @@ public class GameManager : MonoBehaviour
 
     public int getProbabilityByLevel(int s)
     {
+        int modifier = 0;
+        if (activeBalls.Count > 0) modifier = activeBalls[0].getPowerTime() > 0 ? 2 : 0;
         string scene = scenes[s];
-        if (scene == "Level1") return 7;
-        if (scene == "Level2") return 8;
-        if (scene == "Level3") return 10;
-        if (scene == "Level4") return 13;
-        if (scene == "Level5") return 15;
+        if (scene == "Level1") return 8 - modifier;
+        if (scene == "Level2") return 9 - modifier;
+        if (scene == "Level3") return 10 - modifier;
+        if (scene == "Level4") return 13 - modifier;
+        if (scene == "Level5") return 15 - modifier;
         else return 0;
     }
 
@@ -318,8 +320,11 @@ public class GameManager : MonoBehaviour
 
     public void cloneBall(UnityEngine.Vector3 originalPos)
     {
-        instantiateBall(originalPos, new Vector3(-1, 0, 1));
-        instantiateBall(originalPos, new Vector3(1, 0, 1));
+        if (!activeBalls[0].ballDead)
+        {
+            instantiateBall(originalPos, new Vector3(-1, 0, 1));
+            instantiateBall(originalPos, new Vector3(1, 0, 1));
+        }
     }
 
     public void getTotem()
@@ -369,6 +374,7 @@ public class GameManager : MonoBehaviour
 
     public void activatePower()
     {
+        itemSpawnProbability = getProbabilityByLevel(SceneManager.GetActiveScene().buildIndex);     //Si s'activa power canvia la probabilitat
         UIBehaviour.Instance.ch_stateItemUI("power", true);
         for (int i = 0; i < activeBalls.Count; ++i)
         {
@@ -495,4 +501,8 @@ public class GameManager : MonoBehaviour
         changeMusic("MainMenu");
     }
 
+    public void recalculateItemSpawnProb()
+    {
+        itemSpawnProbability = getProbabilityByLevel(SceneManager.GetActiveScene().buildIndex);
+    }
 }

@@ -78,6 +78,7 @@ public class BallBehaviour : MonoBehaviour
                 {
                     UIBehaviour.Instance.ch_stateItemUI("power", false);
                     setPower(false, 0);
+                    GameManager.Instance.recalculateItemSpawnProb();
                 }
             }
 

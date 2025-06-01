@@ -159,6 +159,7 @@ public class BlockBehaviour : MonoBehaviour
         //Spawns item
         if (tag != "BarrierBlock")
         {
+            itemSpawnProbability = GameManager.Instance.itemSpawnProbability;
             int rand = Random.Range(0, 100);
             if (rand < itemSpawnProbability)
             {
