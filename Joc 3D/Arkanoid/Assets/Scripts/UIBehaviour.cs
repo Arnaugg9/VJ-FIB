@@ -22,6 +22,7 @@ public class UIBehaviour : MonoBehaviour
     public List<GameObject> enemyLifeSlots;
 
     public AudioClip breakItemClip;
+    public AudioClip buttonClip;
 
     private void Awake()
     {
@@ -40,6 +41,7 @@ public class UIBehaviour : MonoBehaviour
     {
         initInventory();
         drawBossUI(0, 0);
+        buttonClip = Resources.Load<AudioClip>("Audio/UI/Click_stereo");
     }
 
     public void initInventory()
@@ -106,6 +108,19 @@ public class UIBehaviour : MonoBehaviour
         for (;idx < 10; ++idx)
         {
             enemyLifeSlots[idx].SetActive(false);
+        }
+    }
+
+    public void gotoNextLvl()
+    {
+        GameManager.Instance.gotoNextLvl();
+    }
+
+    public void PlaySound()
+    {
+        if (buttonClip != null)
+        {
+            AudioSource.PlayClipAtPoint(buttonClip, Camera.main.transform.position);
         }
     }
 

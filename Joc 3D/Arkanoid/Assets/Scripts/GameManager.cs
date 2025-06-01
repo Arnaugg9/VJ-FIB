@@ -65,6 +65,11 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI levelTxt;
     public GameObject NextLvlButton;
 
+    //PAuse managment
+    public PauseManager pauseManager;
+    private AudioClip buttonClip;
+    public bool paused = false;
+
     private void Awake()
     {
         if (Instance != null)
@@ -100,6 +105,7 @@ public class GameManager : MonoBehaviour
         gameScore = 0;
         max_lives = 3;
         lives = max_lives;
+        buttonClip = Resources.Load<AudioClip>("Audio/UI/Click_stereo");
         playerHurtClips = Resources.LoadAll<AudioClip>("Audio/Miscelaneous/PlayerHurt").ToList();
         nTotemsActive = 0;
         blocksCurrent = 0;
@@ -148,11 +154,18 @@ public class GameManager : MonoBehaviour
         }
         else if (!Game_UI.activeSelf) Game_UI.SetActive(true);
 
+        if (Input.GetKeyDown(KeyCode.Escape) && activeScene != 0 && activeScene != 6)
+        {
+            _audioSource.PlayOneShot(buttonClip);
+            if (!paused) pauseGame();
+            else resume();
+        }
+
         //Text updates
         scoreTxt.text = "Score: " + gameScore;
         levelTxt.text = "Level " + SceneManager.GetActiveScene().buildIndex;
 
-        if (levelStarted)
+        if (levelStarted && !paused)
         {
             //Scene change with number
             if (Input.GetKeyDown(KeyCode.G))
@@ -335,37 +348,18 @@ public class GameManager : MonoBehaviour
             Debug.LogError("HighScoreManager not found in scene!");
         }
 
-        activeBalls.Clear();
-        paddle = null;
-        godModeWall = null;
-        levelStarted = false;
-        blocksDestroyed = 0;
-        blocksCurrent = 0;
-        NextLvlButton.SetActive(false);
-        itemSpawnProbability = 0;
-        Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Ball"), LayerMask.NameToLayer("Block"), false);
-        UIBehaviour.Instance.drawBossUI(0, 0);
-        nTotemsActive = 0;
-        UIBehaviour.Instance.initInventory();
-        isFinalBoss = false;
-        lives = max_lives;
-        drawLife();
-        gameScore = 0;
 
         if (wonGame)
         {
-            //Ir a créditos
+            restartGameState();
             changeMusic("Credits");
+            changeScene(6);
         }
 
         else
         {
-            //Hacer pantalla muerte -> De mome
-            changeMusic("MainMenu");
+            pauseDeath();
         }
-
-        // Finalmente, carga la escena del menú principal
-        SceneManager.LoadScene("MainMenu");
     }
 
     public void activatePower()
@@ -435,4 +429,64 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
+    //PAUSE FUNCTIONS
+    private void pauseGame()
+    {
+        paused = true;
+        Time.timeScale = 0f;
+        pauseManager.ShowPauseMenu();
+    } 
+
+    private void pauseDeath()
+    {
+        pauseManager.setScore(gameScore);
+        paused = true;
+        Time.timeScale = 0f;
+        pauseManager.ShowDeathMenu();
+    }
+    public void resume()
+    {
+        pauseManager.HidePauseMenu();
+        pauseManager.HideDeathMenu();
+        paused = false;
+        Time.timeScale = 1f;
+    }
+
+    public void backToMenu()
+    {
+        resume();
+        restartGameState();
+        changeScene(0);
+    }
+
+    public void restartGame()
+    {
+        resume();
+        restartGameState();
+        changeScene(1);
+    }
+
+    private void restartGameState()
+    {
+        resume();
+        activeBalls.Clear();
+        paddle = null;
+        godModeWall = null;
+        levelStarted = false;
+        blocksDestroyed = 0;
+        blocksCurrent = 0;
+        NextLvlButton.SetActive(false);
+        itemSpawnProbability = 0;
+        Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Ball"), LayerMask.NameToLayer("Block"), false);
+        UIBehaviour.Instance.drawBossUI(0, 0);
+        nTotemsActive = 0;
+        UIBehaviour.Instance.initInventory();
+        isFinalBoss = false;
+        lives = max_lives;
+        drawLife();
+        gameScore = 0;
+        changeMusic("MainMenu");
+    }
+
 }
