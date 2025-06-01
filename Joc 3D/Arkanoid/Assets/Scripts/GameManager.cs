@@ -378,7 +378,7 @@ public class GameManager : MonoBehaviour
         // Si el siguiente nivel es "Credits"
         if (scenes.ContainsKey(nextSceneIndex) && scenes[nextSceneIndex] == "Credits")
         {
-            EndGame(true);
+            SceneManager.LoadScene("Credits");
             return; 
         }
 

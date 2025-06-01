@@ -167,8 +167,6 @@ public class MainMenuManager : MonoBehaviour // O UIManager si es un script apar
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.AppendLine("--- HIGH SCORES ---");
-        sb.AppendLine("-------------------");
 
         List<ScoreEntry> scores = HighScoreManager.Instance.CurrentHighScores;
 
