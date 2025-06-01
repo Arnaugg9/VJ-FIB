@@ -113,10 +113,10 @@ public class BallBehaviour : MonoBehaviour
             }
 
             //Assegurar una minima velocitat vertical
-            if (Mathf.Abs(velocity.z) < 0.6f) 
+            if (Mathf.Abs(velocity.z) < 1f) 
             {
                 float sign = Mathf.Sign(velocity.z) != 0 ? Mathf.Sign(velocity.z) : 1f;
-                velocity.z = 0.6f * sign; 
+                velocity.z = 1f * sign; 
 
                 // Renormalizas para mantener la velocidad total
                 velocity = velocity.normalized * speed;

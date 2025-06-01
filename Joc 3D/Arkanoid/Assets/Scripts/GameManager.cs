@@ -253,6 +253,8 @@ public class GameManager : MonoBehaviour
                 dragonSpawner.startFight();
             }
 
+            canSpawnNextLvl = false;
+
             if (dragonSpawner.isDead) {
                 gotoNextLvl();
             }
