@@ -11,6 +11,7 @@ public class MainMenuManager : MonoBehaviour // O UIManager si es un script apar
     public GameObject mainButtonsGroup; // Asigna el objeto MainButtonsGroup en el Inspector
     public GameObject highScoresPanel;   // Asigna el HighScoresPanel en el Inspector
     public GameObject playerNamePanel;   // Asigna el PlayerNamePanel en el Inspector
+    public GameObject howToPlayPanel;
 
     public TMP_InputField playerNameInput; // Asigna el PlayerNameInputField en el Inspector
     public Button playGameButton;          // Asigna el PlayGameButton en el Inspector
@@ -78,6 +79,7 @@ public class MainMenuManager : MonoBehaviour // O UIManager si es un script apar
         mainButtonsGroup.SetActive(true);
         highScoresPanel.SetActive(false);
         playerNamePanel.SetActive(false);
+        howToPlayPanel.SetActive(false);
 
         if (splashTextObject != null) splashTextObject.SetActive(true);
         if (title3DObject != null) title3DObject.SetActive(true);
@@ -119,7 +121,6 @@ public class MainMenuManager : MonoBehaviour // O UIManager si es un script apar
         GameManager.Instance.currentPlayerName = currentPlayerName;
 
         Debug.Log($"Starting game with player: {currentPlayerName}");
-        PlayClickSound(); // Sonido de clic
         GameManager.Instance.changeScene(1);
         //SceneManager.LoadScene("Level1"); // Cargar la escena del juego
     }
@@ -129,7 +130,6 @@ public class MainMenuManager : MonoBehaviour // O UIManager si es un script apar
     {
         playerNamePanel.SetActive(false);   // Ocultar formulario de nombre
         SetMainMenuElementsActive(true); // Mostrar botones principales
-        PlayClickSound(); // Sonido de clic
     }
 
     // Método que se llama cuando el texto del InputField cambia
@@ -146,16 +146,15 @@ public class MainMenuManager : MonoBehaviour // O UIManager si es un script apar
         SetMainMenuElementsActive(false); // Ocultar botones principales y otros elementos del menú
         playerNamePanel.SetActive(false); // Asegurarse de que PlayerName Panel esté oculto
         highScoresPanel.SetActive(true);   // Mostrar el panel de High Scores
+        howToPlayPanel.SetActive(false);
 
         UpdateHighScoresDisplay();
-        PlayClickSound();
     }
 
     public void HideHighScores()
     {
         highScoresPanel.SetActive(false);   // Ocultar panel de High Scores
         SetMainMenuElementsActive(true); // Mostrar botones principales y otros elementos del menú
-        PlayClickSound(); // Sonido de clic
     }
 
     private void UpdateHighScoresDisplay()
@@ -185,6 +184,20 @@ public class MainMenuManager : MonoBehaviour // O UIManager si es un script apar
         }
 
         rankingDisplay.text = sb.ToString();
+    }
+
+    public void ShowHowToPlay()
+    {
+        SetMainMenuElementsActive(false); // Ocultar botones principales y otros elementos del menú
+        playerNamePanel.SetActive(false); // Asegurarse de que PlayerName Panel esté oculto
+        highScoresPanel.SetActive(false); // Asegurarse de que High Scores Panel esté oculto
+        howToPlayPanel.SetActive(true);   // Mostrar el panel de How To Play
+    }
+
+    public void HideHowToPlay()
+    {
+        howToPlayPanel.SetActive(false);  // Ocultar panel de How To Play
+        SetMainMenuElementsActive(true);  // Mostrar botones principales y otros elementos del menú
     }
 
     // --- Funciones de Sonido (las que ya tenías) ---

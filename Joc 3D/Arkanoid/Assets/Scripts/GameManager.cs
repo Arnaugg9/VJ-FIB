@@ -360,9 +360,6 @@ public class GameManager : MonoBehaviour
         if (wonGame)
         {
             restartGameState();
-            changeMusic("Credits");
-            if (paused) resume();
-            //Hay que cambiar por creditos
             changeScene(0);
         }
 
@@ -389,6 +386,7 @@ public class GameManager : MonoBehaviour
         // Si el siguiente nivel es "Credits"
         if (scenes.ContainsKey(nextSceneIndex) && scenes[nextSceneIndex] == "Credits")
         {
+            changeMusic("Credits");
             SceneManager.LoadScene("Credits");
             return; 
         }
