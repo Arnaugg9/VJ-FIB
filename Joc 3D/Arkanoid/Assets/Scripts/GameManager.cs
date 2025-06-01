@@ -225,7 +225,7 @@ public class GameManager : MonoBehaviour
         //If level 4 -> Spawn wither when broken is 50% and only can change level when 95% cleared and killed wither
         else if (activeScene == 4)
         {
-            if (!witherSpawner.hasSpawned && broken >= 1)
+            if (!witherSpawner.hasSpawned && broken >= 50)
             {
                 witherSpawner.spawnWither();
             }
@@ -244,10 +244,10 @@ public class GameManager : MonoBehaviour
 
             if (witherSpawner.isDead && (broken >= 100)) gotoNextLvl();
         }
-        //If levle5 -> *Still have to do dragon fight
+        
         else if (activeScene == 5)
         {
-            if (!dragonSpawner.started && broken >= 1)
+            if (!dragonSpawner.started && broken >= 95)
             {
                 isFinalBoss = true;
                 dragonSpawner.startFight();
@@ -280,6 +280,7 @@ public class GameManager : MonoBehaviour
         nTotemsActive = 0;
         UIBehaviour.Instance.initInventory();
         isFinalBoss = false;
+        if (paused) resume();
         SceneManager.LoadScene(scene);
     }
 
@@ -353,7 +354,9 @@ public class GameManager : MonoBehaviour
         {
             restartGameState();
             changeMusic("Credits");
-            changeScene(6);
+            if (paused) resume();
+            //Hay que cambiar por creditos
+            changeScene(0);
         }
 
         else
@@ -397,6 +400,7 @@ public class GameManager : MonoBehaviour
         UIBehaviour.Instance.initInventory();
         _audioSource.PlayOneShot(nextLvlClip);
         isFinalBoss = false;
+        if (paused) resume();
         SceneManager.LoadScene(nextSceneIndex);
     }
 
