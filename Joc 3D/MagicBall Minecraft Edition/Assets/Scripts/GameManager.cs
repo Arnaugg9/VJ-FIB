@@ -249,7 +249,7 @@ public class GameManager : MonoBehaviour
         
         else if (activeScene == 5)
         {
-            if (!dragonSpawner.started && broken >= 1)
+            if (!dragonSpawner.started && broken >= 95)
             {
                 isFinalBoss = true;
                 dragonSpawner.startFight();

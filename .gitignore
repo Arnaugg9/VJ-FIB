@@ -1,23 +1,23 @@
 # Ignorar carpetas generadas automáticamente por Unity
-Joc 3D/Arkanoid/Library/
-Joc 3D/Arkanoid/Temp/
-Joc 3D/Arkanoid/Logs/
-Joc 3D/Arkanoid/Obj/
-Joc 3D/Arkanoid/Build/
-Joc 3D/Arkanoid/Builds/
+Joc 3D/MagicBall Minecraft Edition/Library/
+Joc 3D/MagicBall Minecraft Edition/Temp/
+Joc 3D/MagicBall Minecraft Edition/Logs/
+Joc 3D/MagicBall Minecraft Edition/Obj/
+Joc 3D/MagicBall Minecraft Edition/Build/
+Joc 3D/MagicBall Minecraft Edition/Builds/
 
 # Ignorar configuraciones de usuario locales
-Joc 3D/Arkanoid/UserSettings/
+Joc 3D/MagicBall Minecraft Edition/UserSettings/
 
 # Ignorar archivos de Visual Studio
-Joc 3D/Arkanoid/*.sln
-Joc 3D/Arkanoid/*.csproj
-Joc 3D/Arkanoid/*.pidb
-Joc 3D/Arkanoid/*.user
-Joc 3D/Arkanoid/*.userprefs
-Joc 3D/Arkanoid/.vsconfig
-Joc 3D/Arkanoid/.vs/*
+Joc 3D/MagicBall Minecraft Edition/*.sln
+Joc 3D/MagicBall Minecraft Edition/*.csproj
+Joc 3D/MagicBall Minecraft Edition/*.pidb
+Joc 3D/MagicBall Minecraft Edition/*.user
+Joc 3D/MagicBall Minecraft Edition/*.userprefs
+Joc 3D/MagicBall Minecraft Edition/.vsconfig
+Joc 3D/MagicBall Minecraft Edition/.vs/
 
 # Ignorar archivos del sistema operativo
-Joc 3D/Arkanoid/.DS_Store
-Joc 3D/Arkanoid/Thumbs.db
+Joc 3D/MagicBall Minecraft Edition/.DS_Store
+Joc 3D/MagicBall Minecraft Edition/Thumbs.db
