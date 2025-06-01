@@ -182,7 +182,7 @@ public class CreditsManager : MonoBehaviour
         // Asegúrate de que HighScoreManager y GameManager son Singletons y persisten.
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.EndGame(true); // 'true' porque el jugador ganó el juego
+            GameManager.Instance.changeScene(0);
         }
         else
         {

@@ -249,7 +249,7 @@ public class GameManager : MonoBehaviour
         
         else if (activeScene == 5)
         {
-            if (!dragonSpawner.started && broken >= 95)
+            if (!dragonSpawner.started && broken >= 1)
             {
                 isFinalBoss = true;
                 dragonSpawner.startFight();
@@ -360,7 +360,7 @@ public class GameManager : MonoBehaviour
         if (wonGame)
         {
             restartGameState();
-            changeScene(0);
+            changeScene(6);
         }
 
         else
@@ -386,8 +386,7 @@ public class GameManager : MonoBehaviour
         // Si el siguiente nivel es "Credits"
         if (scenes.ContainsKey(nextSceneIndex) && scenes[nextSceneIndex] == "Credits")
         {
-            changeMusic("Credits");
-            SceneManager.LoadScene("Credits");
+            EndGame(true);
             return; 
         }
 

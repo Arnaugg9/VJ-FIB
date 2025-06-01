@@ -54,6 +54,8 @@ public class DragonBullet : MonoBehaviour
         }
         else if (other.CompareTag("Walls"))
         {
+            if (isLast) Instantiate(poisonPrefab, transform.position, Quaternion.identity);
+
             Break();
         }
         else if (other.CompareTag("DeathZone"))

@@ -234,4 +234,9 @@ public class MainMenuManager : MonoBehaviour // O UIManager si es un script apar
         UnityEditor.EditorApplication.isPlaying = false;
         #endif
     }
+
+    public void goToCredits()
+    {
+        GameManager.Instance.changeScene(6);
+    }
 }
