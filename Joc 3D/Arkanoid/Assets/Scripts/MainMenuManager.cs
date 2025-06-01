@@ -31,7 +31,7 @@ public class MainMenuManager : MonoBehaviour // O UIManager si es un script apar
         uiAudioSource = GetComponent<AudioSource>();
         if (uiAudioSource == null)
         {
-            uiAudioSource = GameObject.Find("UIManager")?.GetComponent<AudioSource>();
+            uiAudioSource = GameObject.Find("UI Manager")?.GetComponent<AudioSource>();
             if (uiAudioSource == null)
             {
                 Debug.LogWarning("No AudioSource found for UI sounds. Please add one to this GameObject or a UIManager object.");
@@ -116,6 +116,7 @@ public class MainMenuManager : MonoBehaviour // O UIManager si es un script apar
 
         PlayerPrefs.SetString("LastPlayerName", currentPlayerName);
         PlayerPrefs.Save();
+        GameManager.Instance.currentPlayerName = currentPlayerName;
 
         Debug.Log($"Starting game with player: {currentPlayerName}");
         PlayClickSound(); // Sonido de clic

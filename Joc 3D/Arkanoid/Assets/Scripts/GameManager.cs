@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
     public List<BallBehaviour> activeBalls;
 
     //Game State Managment
-    private string currentPlayerName;
+    public string currentPlayerName;
     public int gameScore;
     public int lives;
     private int max_lives;
